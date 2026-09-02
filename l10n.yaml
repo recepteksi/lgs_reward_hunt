@@ -1,0 +1,10 @@
+# Turkish is the template, not English: the product is for students sitting a
+# Turkish exam, so tr is the language the copy is written in and en is the
+# translation. Making en the template would mean every string is authored twice
+# and the one that ships to almost every user is the derived one.
+arb-dir: lib/presentation/l10n/arb
+template-arb-file: app_tr.arb
+output-localization-file: app_localizations.dart
+output-class: AppL10n
+output-dir: lib/presentation/l10n/generated
+nullable-getter: false

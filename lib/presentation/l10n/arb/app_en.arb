@@ -1,0 +1,13 @@
+{
+  "@@locale": "en",
+
+  "appTitle": "LGS Reward Hunt",
+  "countdownTitle": "Until the LGS",
+  "countdownDays": "{days, plural, =0{Today!} one{{days} day} other{{days} days}}",
+  "countdownExamDate": "Exam date: {date}",
+  "commonRetry": "Try again",
+  "failureNetwork": "Could not reach the internet.",
+  "failureUnexpectedResponse": "The server sent something unexpected.",
+  "failureExamDateMissing": "The exam date has not been announced yet.",
+  "failureUnknown": "Something went wrong."
+}

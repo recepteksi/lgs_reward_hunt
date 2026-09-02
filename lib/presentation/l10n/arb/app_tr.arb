@@ -1,0 +1,36 @@
+{
+  "@@locale": "tr",
+
+  "appTitle": "LGS Ödül Avı",
+  "@appTitle": { "description": "Uygulamanın adı." },
+
+  "countdownTitle": "LGS'ye kalan",
+  "@countdownTitle": { "description": "Geri sayım kartının başlığı." },
+
+  "countdownDays": "{days, plural, =0{Bugün!} one{{days} gün} other{{days} gün}}",
+  "@countdownDays": {
+    "description": "Sınava kalan gün sayısı. Sıfır günün ayrı bir metni var: '0 gün' sınav günü yanlış okunuyor.",
+    "placeholders": { "days": { "type": "int" } }
+  },
+
+  "countdownExamDate": "Sınav tarihi: {date}",
+  "@countdownExamDate": {
+    "description": "Geri sayımın altındaki tam tarih.",
+    "placeholders": { "date": { "type": "DateTime", "format": "yMMMMd" } }
+  },
+
+  "commonRetry": "Tekrar dene",
+  "@commonRetry": { "description": "Hata durumunda yeniden deneme düğmesi." },
+
+  "failureNetwork": "İnternet bağlantısı kurulamadı.",
+  "@failureNetwork": { "description": "Ağ hatası." },
+
+  "failureUnexpectedResponse": "Sunucudan beklenmeyen bir yanıt geldi.",
+  "@failureUnexpectedResponse": { "description": "Çözümlenemeyen yanıt." },
+
+  "failureExamDateMissing": "Sınav tarihi henüz belirlenmedi.",
+  "@failureExamDateMissing": { "description": "Yıla ait sınav tarihi yok." },
+
+  "failureUnknown": "Bir şeyler ters gitti.",
+  "@failureUnknown": { "description": "Başka açıklaması olmayan hata." }
+}

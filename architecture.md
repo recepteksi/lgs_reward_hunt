@@ -1,0 +1,151 @@
+# Architecture
+
+[CLAUDE.md](CLAUDE.md) is the rule list — what you must do. This file is the
+reasoning: why the boundaries sit where they do, and what breaks when one is
+crossed. When the two disagree, CLAUDE.md wins and this file needs an edit.
+
+This is the Recipely architecture in Dart. The layer names, the `Result` /
+`Failure` contract, the port naming and the "one declaration per file" rule are
+the same ideas; what changed is the state container — a Zustand store becomes a
+`Cubit`, and a hand-rolled DI container becomes `get_it` + `injectable`.
+
+---
+
+## The dependency rule
+
+```
+core ← domain ← application ← infrastructure
+                    ↑              ↑
+                    └─ presentation ┘
+```
+
+Arrows point at what a layer may import. Nothing points back up.
+
+| Layer | Holds | May import |
+|---|---|---|
+| `core/` | `Result`, `Failure`, named constants | nothing |
+| `domain/` | entities, value objects, repository **interfaces** | `core` |
+| `application/` | use cases, Cubits + states, DI wiring | `core`, `domain` |
+| `infrastructure/` | repository implementations, DTOs, mappers, config | `core`, `domain` |
+| `presentation/` | widgets, screens, router, theme, l10n | `core`, `domain`, `application` |
+
+**`presentation` never imports `infrastructure`.** A widget that constructs a
+repository has skipped the use case, and with it the failure handling the use
+case exists to do. The composition root (`application/di/`) is the one place
+allowed to know about both — that is what a composition root is for.
+
+The payoff is concrete: `domain/` and `application/` have no Flutter import at
+all, so they test in milliseconds with no widget tree, no device and no network.
+
+## Errors are values, not control flow
+
+`domain/` and `application/` do not throw. They return `Result<T>`, which is
+`sealed` over [`Ok`] and [`Err`] — so a `switch` over an outcome is exhaustive
+and a caller that ignores the failure case does not compile. An exception is
+invisible in a signature and lands wherever a `try` happens to be.
+
+A `Failure` carries a **`messageKey`, never a sentence**. Copy is resolved at
+the presentation edge by `failureCopy`, which is the one place that mapping
+happens. That is what lets the same failure read differently in Turkish and
+English, and lets copy be reworded without touching a use case.
+
+`Failure`'s variants share one file because Dart requires a `sealed` type's
+subtypes to live in its library — the single place the one-declaration-per-file
+rule gives way, and it gives way to the language rather than to convenience.
+
+## Cubit is the store; it orchestrates and does not compute
+
+A `Cubit` is Recipely's Zustand store: it holds state, calls use cases, and
+emits. What it must not do is decide anything a lower layer owns.
+
+- **How many days are left** is `ExamCountdownEntity`'s question. Left in the
+  Cubit it would be unreachable from anywhere else, which is how the same
+  calculation ends up written twice and differently.
+- **Where the date comes from** is the use case's.
+- **What words a failure gets** is the presentation's.
+
+State is `sealed`, one variant per thing the screen can be showing. The
+alternative — one class with `isLoading`, `failure` and `data` all nullable —
+permits "loading AND failed AND has data", a combination nobody designed and
+every widget has to guess about. Sealed means the widget's `switch` is
+exhaustive, so a state added later cannot silently render as a blank screen.
+
+**A Cubit that owns a timer or a subscription owns cancelling it**, in `close()`.
+A ticker owned by a widget outlives the widget on the first navigation that
+forgets it, and then emits into a closed stream.
+
+## Ports
+
+A capability the upper layers need and the lower layers provide is declared as
+an interface *by the layer that needs it*, and implemented by the one that can.
+
+- A **repository interface** is declared in `domain/`, beside the aggregate it
+  loads.
+- An **application port** (a hasher, a clock, a notifier) is declared in
+  `application/`, because the domain has no opinion about platform services.
+
+Both are named `*Interface` in a `*_interface.dart` file. The suffix is at the
+END and spelled out: a leading `I` reads as noise at every use, and an `i_`
+prefix sorts the port away from the implementation it describes in a file
+listing. The same convention is used in the Recipely repos, on both sides of
+the wire.
+
+## Dependency injection
+
+`get_it`, with the graph generated from `@injectable` annotations. Adding a use
+case is one annotation rather than an edit to a wiring file that is easy to
+forget and impossible to notice.
+
+**Only the composition root and a screen's `BlocProvider` may touch `getIt`.**
+Everything else takes its dependencies through its constructor. A class that
+reaches into the container is a class no test can substitute anything into, and
+the boundary the layers exist to draw stops being enforceable.
+
+## Flavors
+
+Two environments, `dev` and `prod`, generated by `flutter_flavorizr` from the
+`flavorizr:` block in `pubspec.yaml`. `dev` carries a suffixed application id
+(`com.lgsrewardhunt.app.dev`) and its own display name so both can sit on one
+device — the alternative is uninstalling one to test the other, which is how a
+tester reports a bug against the wrong build.
+
+**There is one `main.dart`, not one per flavor.** The flavor arrives from the
+build (`--flavor`, which Flutter surfaces as `appFlavor`), so the two builds run
+identical code and cannot drift. A `main_dev.dart` that grows a line
+`main_prod.dart` never got is the failure this avoids.
+
+Everything that differs between them is read through `AppConfig`, never by
+asking `F.appFlavor` at the point of use — a `switch` on the flavor scattered
+across the codebase is the same decision spelled in many places, and the first
+one that is missed is a dev build talking to production.
+
+Regenerate the native config with `dart run flutter_flavorizr -f` after changing
+the block. It rewrites `android/` and `ios/`, so review that diff.
+
+## Localization
+
+Turkish is the **template**, English the translation. The product is for
+students sitting a Turkish exam; making English the template would mean every
+string is authored twice and the one that ships to almost every user is the
+derived one.
+
+All user-visible copy comes from `AppL10n`. A string literal in a widget is a
+string that cannot be translated, and it is invisible until someone switches
+language.
+
+Plurals go through ICU (`{days, plural, ...}`) rather than an `if`. Turkish and
+English disagree about plural forms, and the zero case is a *different sentence*
+here — "0 gün" on exam day is wrong where "Bugün!" is right.
+
+## Where a new thing goes
+
+| Adding… | Goes in |
+|---|---|
+| A rule about what a task or reward *is* | `domain/<feature>/*_entity.dart` |
+| An action the user can take | `application/<feature>/*_use_case.dart` |
+| Screen state + orchestration | `application/<feature>/*_cubit.dart` + `*_state.dart` |
+| A capability from outside the app | interface in `domain/` or `application/`, impl in `infrastructure/` |
+| A word the app branches on | an `abstract final class` of constants in `core/constants/` |
+| A user-visible error | a `Failure` variant + a key + a case in `failureCopy` + both ARB files |
+| A screen | `presentation/screens/<feature>/`, plus a route in `AppRouter` |
+| A design measurement | `presentation/theme/app_*.dart` — never a raw number in a widget |

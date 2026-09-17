@@ -1,0 +1,186 @@
+# The quality gate on every pull request and push, and distribution on dev and
+# main once the gate is green.
+#
+#   PR → dev / main   gate only
+#   push dev          gate → Android dev APK to Firebase App Distribution
+#                          → iOS dev build to TestFlight          (in parallel)
+#   push main         gate → Android prod APK to Firebase App Distribution
+#                          → Android prod AAB to Google Play, internal testing
+#                          → iOS prod build to TestFlight          (in parallel)
+#
+# Build numbers are the run number plus an offset, so every upload is higher
+# than the last and higher than any build uploaded by hand before CI existed.
+# A distribution job whose secrets are not configured yet is skipped with a
+# notice rather than failed: the gate stays meaningful while a store is still
+# being set up. Secrets are listed in WORKFLOW.md.
+name: ci
+
+on:
+  pull_request:
+    branches: [dev, main]
+  push:
+    branches: [dev, main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+env:
+  BUILD_NUMBER_OFFSET: 100
+
+jobs:
+  gate:
+    name: Gate (analyze · check_structure · test)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: flutter analyze
+      - run: dart run tool/check_structure.dart
+      - run: flutter test
+
+  plan:
+    name: Plan distribution
+    needs: gate
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    outputs:
+      flavor: ${{ steps.plan.outputs.flavor }}
+      build_number: ${{ steps.plan.outputs.build_number }}
+      firebase: ${{ steps.plan.outputs.firebase }}
+      play: ${{ steps.plan.outputs.play }}
+      testflight: ${{ steps.plan.outputs.testflight }}
+    steps:
+      - id: plan
+        env:
+          HAS_FIREBASE: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON != '' && secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+          HAS_PLAY: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON != '' && secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+          HAS_TESTFLIGHT: ${{ secrets.APP_STORE_CONNECT_KEY_P8 != '' }}
+        run: |
+          if [ "$GITHUB_REF" = "refs/heads/main" ]; then flavor=prod; else flavor=dev; fi
+          echo "flavor=$flavor" >> "$GITHUB_OUTPUT"
+          echo "build_number=$((GITHUB_RUN_NUMBER + BUILD_NUMBER_OFFSET))" >> "$GITHUB_OUTPUT"
+          echo "firebase=$HAS_FIREBASE" >> "$GITHUB_OUTPUT"
+          if [ "$flavor" = "prod" ]; then echo "play=$HAS_PLAY" >> "$GITHUB_OUTPUT"; else echo "play=false" >> "$GITHUB_OUTPUT"; fi
+          echo "testflight=$HAS_TESTFLIGHT" >> "$GITHUB_OUTPUT"
+          [ "$HAS_FIREBASE" = "true" ] || echo "::notice::Firebase App Distribution skipped — FIREBASE_SERVICE_ACCOUNT_JSON / ANDROID_KEYSTORE_BASE64 not set"
+          [ "$flavor" != "prod" ] || [ "$HAS_PLAY" = "true" ] || echo "::notice::Google Play skipped — PLAY_SERVICE_ACCOUNT_JSON not set"
+          [ "$HAS_TESTFLIGHT" = "true" ] || echo "::notice::TestFlight skipped — APP_STORE_CONNECT_KEY_P8 not set"
+
+  android:
+    name: Android ${{ needs.plan.outputs.flavor }} → Firebase${{ needs.plan.outputs.flavor == 'prod' && ' + Play internal' || '' }}
+    needs: plan
+    if: needs.plan.outputs.firebase == 'true' || needs.plan.outputs.play == 'true'
+    runs-on: ubuntu-latest
+    env:
+      FLAVOR: ${{ needs.plan.outputs.flavor }}
+      BUILD_NUMBER: ${{ needs.plan.outputs.build_number }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - name: Restore the upload keystore
+        env:
+          KEYSTORE: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          STORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          echo "$KEYSTORE" | base64 -d > "$RUNNER_TEMP/upload.jks"
+          printf 'storeFile=%s\nstorePassword=%s\nkeyAlias=%s\nkeyPassword=%s\n' \
+            "$RUNNER_TEMP/upload.jks" "$STORE_PASSWORD" "$KEY_ALIAS" "$KEY_PASSWORD" > android/key.properties
+      - run: flutter pub get
+      - name: Build APK
+        run: flutter build apk --flavor "$FLAVOR" --release --build-number "$BUILD_NUMBER"
+      - name: Firebase App Distribution
+        if: needs.plan.outputs.firebase == 'true'
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{ env.FLAVOR == 'prod' && '1:451080433558:android:3f3edee3c33e5af5ca37b7' || '1:451080433558:android:1ea75b6d4e4cd3a3ca37b7' }}
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+          groups: testers
+          file: build/app/outputs/flutter-apk/app-${{ env.FLAVOR }}-release.apk
+          releaseNotes: ${{ github.event.head_commit.message }}
+      - name: Build AAB
+        if: needs.plan.outputs.play == 'true'
+        run: flutter build appbundle --flavor prod --release --build-number "$BUILD_NUMBER"
+      - name: Google Play internal testing
+        if: needs.plan.outputs.play == 'true'
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: com.lgsrewardhunt.app
+          releaseFiles: build/app/outputs/bundle/prodRelease/app-prod-release.aab
+          track: internal
+          status: ${{ vars.PLAY_RELEASE_STATUS || 'completed' }}
+
+  ios:
+    name: iOS ${{ needs.plan.outputs.flavor }} → TestFlight
+    needs: plan
+    if: needs.plan.outputs.testflight == 'true'
+    runs-on: macos-latest
+    env:
+      FLAVOR: ${{ needs.plan.outputs.flavor }}
+      BUILD_NUMBER: ${{ needs.plan.outputs.build_number }}
+      ASC_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - name: Restore the App Store Connect key
+        env:
+          KEY_P8: ${{ secrets.APP_STORE_CONNECT_KEY_P8 }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/keys"
+          printf '%s' "$KEY_P8" > "$RUNNER_TEMP/keys/AuthKey_${ASC_KEY_ID}.p8"
+      - run: flutter pub get
+      - name: Build Flutter for iOS
+        run: flutter build ios --flavor "$FLAVOR" --release --no-codesign --build-number "$BUILD_NUMBER"
+      - name: Archive (cloud-managed signing)
+        run: |
+          xcodebuild archive \
+            -workspace ios/Runner.xcworkspace -scheme "$FLAVOR" \
+            -configuration "Release-$FLAVOR" -destination generic/platform=iOS \
+            -archivePath "$RUNNER_TEMP/Runner.xcarchive" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$RUNNER_TEMP/keys/AuthKey_${ASC_KEY_ID}.p8" \
+            -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID"
+      - name: Export and upload to TestFlight
+        run: |
+          xcodebuild -exportArchive \
+            -archivePath "$RUNNER_TEMP/Runner.xcarchive" \
+            -exportOptionsPlist ios/ExportOptions.plist \
+            -exportPath "$RUNNER_TEMP/export" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$RUNNER_TEMP/keys/AuthKey_${ASC_KEY_ID}.p8" \
+            -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID"
+
+  tag:
+    name: Tag the release
+    needs: [android, ios]
+    if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main' && !contains(needs.*.result, 'failure')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          version=$(grep '^version:' pubspec.yaml | sed 's/version: //; s/+.*//')
+          tag="v${version}-build.$((GITHUB_RUN_NUMBER + BUILD_NUMBER_OFFSET))"
+          git tag -a "$tag" -m "$tag"
+          git push origin "$tag"

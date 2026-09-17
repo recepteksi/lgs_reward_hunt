@@ -53,3 +53,13 @@ app.*.map.json
 
 # Local IDE state
 .vscode/launch.json.bak
+
+# Build output and secrets that must never reach git
+/android/build/
+android/key.properties
+*.jks
+*.keystore
+*.p8
+*.mobileprovision
+/ios/build/
+.claude/settings.local.json

@@ -4,3 +4,7 @@
 ASSET_PREFIX=prod
 BUNDLE_NAME=LGS Ödül Avı
 BUNDLE_DISPLAY_NAME=LGS Ödül Avı
+GOOGLE_CLIENT_ID=451080433558-39beqcc5vqimbkiuv6n5o7fvmv891t24.apps.googleusercontent.com
+GOOGLE_REVERSED_CLIENT_ID=com.googleusercontent.apps.451080433558-39beqcc5vqimbkiuv6n5o7fvmv891t24
+CODE_SIGN_ENTITLEMENTS=Runner/Runner.entitlements
+DEVELOPMENT_TEAM=8PB3FJ7CPA

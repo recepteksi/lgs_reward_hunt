@@ -1,0 +1,8 @@
+#!/bin/sh
+# The fast half of the gate, before a commit exists. `flutter test` runs in CI
+# (.github/workflows/quality.yml); these two finish in seconds and catch what
+# review would otherwise have to: lint, layout, naming, native wiring, the map.
+# Enabled once per clone with: git config core.hooksPath .githooks
+set -e
+flutter analyze
+dart run tool/check_structure.dart

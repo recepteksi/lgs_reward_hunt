@@ -22,7 +22,7 @@ part 'home_state.dart';
 ///
 /// `load(quietly: true)` is the tab coming back into view: it shows no
 /// loading page and keeps what is on screen if the reload fails, and does
-/// nothing unless the page is settled on [HomeReady].
+/// nothing unless the map is showing and no task is being completed.
 @injectable
 final class HomeCubit extends Cubit<HomeState> {
   HomeCubit(this._loadMap, this._completeTask, this._readSnapshot)
@@ -38,7 +38,9 @@ final class HomeCubit extends Cubit<HomeState> {
   DateTime Function() clock;
 
   Future<void> load({bool quietly = false}) async {
-    if (quietly && state is! HomeReady) return;
+    if (quietly && state is! HomeReady && state is! HomeCompleteFailed) {
+      return;
+    }
     if (!quietly) emit(HomeLoading(_readSnapshot()));
 
     final result = await _loadMap(now: clock());

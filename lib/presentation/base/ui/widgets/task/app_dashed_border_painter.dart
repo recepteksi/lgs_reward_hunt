@@ -46,7 +46,10 @@ class AppDashedBorderPainter extends CustomPainter {
       double start = ValueConstants.zeroDouble;
 
       while (start < metric.length) {
-        final double end = (start + _dash).clamp(0, metric.length);
+        final double end = (start + _dash).clamp(
+          ValueConstants.zeroDouble,
+          metric.length,
+        );
         canvas.drawPath(metric.extractPath(start, end), paint);
         start = end + _gap;
       }

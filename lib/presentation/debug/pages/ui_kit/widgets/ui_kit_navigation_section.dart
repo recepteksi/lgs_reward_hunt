@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lgs_reward_hunt/core/constants/value_constants.dart';
 import 'package:lgs_reward_hunt/presentation/base/ui/values/app_palette.dart';
 import 'package:lgs_reward_hunt/presentation/base/ui/values/app_radii.dart';
 import 'package:lgs_reward_hunt/presentation/base/ui/values/app_spacing.dart';
@@ -71,6 +72,7 @@ class _UiKitNavigationSectionState extends State<UiKitNavigationSection> {
         const SizedBox(height: AppSpacing.md),
         AppTabScope(
           currentTab: AppNavTabEnum.rewards,
+          returns: ValueConstants.zero,
           child: AppTabRefresh(
             tab: AppNavTabEnum.rewards,
             onShown: (_) {},

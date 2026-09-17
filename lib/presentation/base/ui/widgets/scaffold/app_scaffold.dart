@@ -77,7 +77,8 @@ class AppScaffold extends StatelessWidget {
       body: SafeArea(
         top: appBar == null && !extendBehindAppBar,
         bottom:
-            bottomNavigationBar == null && AppTabScope.maybeOf(context) == null,
+            bottomNavigationBar == null &&
+            AppTabScope.maybeTabOf(context) == null,
         child: Padding(padding: padding, child: body),
       ),
     );

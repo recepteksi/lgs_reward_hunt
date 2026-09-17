@@ -23,7 +23,7 @@ part 'rewards_state.dart';
 ///
 /// `load(quietly: true)` is the tab coming back into view: it shows no
 /// loading page and keeps what is on screen if the reload fails, and does
-/// nothing unless the page is settled on [RewardsReady].
+/// nothing unless the shop is showing and no request is on its way.
 @injectable
 final class RewardsCubit extends Cubit<RewardsState> {
   RewardsCubit(
@@ -42,7 +42,9 @@ final class RewardsCubit extends Cubit<RewardsState> {
   final ReadChildSnapshotUseCase _readSnapshot;
 
   Future<void> load({bool quietly = false}) async {
-    if (quietly && state is! RewardsReady) return;
+    if (quietly && (state is! RewardsShowing || state is RewardsRequesting)) {
+      return;
+    }
     if (!quietly) emit(RewardsLoading(_readSnapshot()));
 
     final header = await _loadHeader();

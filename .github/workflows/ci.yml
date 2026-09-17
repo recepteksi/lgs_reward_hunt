@@ -8,8 +8,10 @@
 #                          → Android prod AAB to Google Play, internal testing
 #                          → iOS prod build to TestFlight          (in parallel)
 #
-# Build numbers are the run number plus an offset, so every upload is higher
-# than the last and higher than any build uploaded by hand before CI existed.
+# Build numbers are run number × 10 + attempt, plus an offset, so every upload
+# — a re-run included — is higher than the last and than any build uploaded by
+# hand before CI existed. The Firebase client config is not in the public repo;
+# every job restores it from the FIREBASE_CONFIG_ARCHIVE secret.
 # A distribution job whose secrets are not configured yet is skipped with a
 # notice rather than failed: the gate stays meaningful while a store is still
 # being set up. Secrets are listed in WORKFLOW.md.
@@ -23,14 +25,14 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 env:
-  BUILD_NUMBER_OFFSET: 100
+  BUILD_NUMBER_OFFSET: 1000
 
 jobs:
   gate:
@@ -38,6 +40,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: ./.github/actions/firebase-config
+        with:
+          archive: ${{ secrets.FIREBASE_CONFIG_ARCHIVE }}
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
@@ -67,7 +72,7 @@ jobs:
         run: |
           if [ "$GITHUB_REF" = "refs/heads/main" ]; then flavor=prod; else flavor=dev; fi
           echo "flavor=$flavor" >> "$GITHUB_OUTPUT"
-          echo "build_number=$((GITHUB_RUN_NUMBER + BUILD_NUMBER_OFFSET))" >> "$GITHUB_OUTPUT"
+          echo "build_number=$((GITHUB_RUN_NUMBER * 10 + GITHUB_RUN_ATTEMPT + BUILD_NUMBER_OFFSET))" >> "$GITHUB_OUTPUT"
           echo "firebase=$HAS_FIREBASE" >> "$GITHUB_OUTPUT"
           if [ "$flavor" = "prod" ]; then echo "play=$HAS_PLAY" >> "$GITHUB_OUTPUT"; else echo "play=false" >> "$GITHUB_OUTPUT"; fi
           echo "testflight=$HAS_TESTFLIGHT" >> "$GITHUB_OUTPUT"
@@ -85,6 +90,9 @@ jobs:
       BUILD_NUMBER: ${{ needs.plan.outputs.build_number }}
     steps:
       - uses: actions/checkout@v4
+      - uses: ./.github/actions/firebase-config
+        with:
+          archive: ${{ secrets.FIREBASE_CONFIG_ARCHIVE }}
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -140,6 +148,9 @@ jobs:
       ASC_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
     steps:
       - uses: actions/checkout@v4
+      - uses: ./.github/actions/firebase-config
+        with:
+          archive: ${{ secrets.FIREBASE_CONFIG_ARCHIVE }}
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
@@ -174,13 +185,26 @@ jobs:
 
   tag:
     name: Tag the release
-    needs: [android, ios]
-    if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main' && !contains(needs.*.result, 'failure')
+    needs: [gate, plan, android, ios]
+    if: >-
+      always() && github.event_name == 'push' && github.ref == 'refs/heads/main' &&
+      needs.gate.result == 'success' && needs.plan.result == 'success' &&
+      !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled')
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      BUILD_NUMBER: ${{ needs.plan.outputs.build_number }}
     steps:
       - uses: actions/checkout@v4
       - run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           version=$(grep '^version:' pubspec.yaml | sed 's/version: //; s/+.*//')
-          tag="v${version}-build.$((GITHUB_RUN_NUMBER + BUILD_NUMBER_OFFSET))"
+          tag="v${version}-build.${BUILD_NUMBER}"
+          if git ls-remote --exit-code --tags origin "refs/tags/$tag" >/dev/null; then
+            echo "::notice::$tag already exists"
+            exit 0
+          fi
           git tag -a "$tag" -m "$tag"
           git push origin "$tag"

@@ -57,12 +57,13 @@ gh pr merge <number> --merge
 Distribution, the prod AAB to Google Play internal testing, and the iOS prod app
 to TestFlight, then tags `v<version>-build.<n>`. Bump `version:` in
 `pubspec.yaml` for a new version name; build numbers are automatic
-(run number + 100).
+(run number × 10 + attempt + 1000).
 
 ## Secrets (GitHub → Settings → Secrets and variables → Actions)
 
 | Secret | What | Used by |
 |---|---|---|
+| `FIREBASE_CONFIG_ARCHIVE` | base64 tar.gz of the six Firebase config files (`google-services.json` ×2, `GoogleService-Info.plist` ×2, `firebase_options_*.dart` ×2), kept out of the public repo | every job, gate included |
 | `ANDROID_KEYSTORE_BASE64` | `base64` of the upload keystore | Firebase, Play |
 | `ANDROID_KEYSTORE_PASSWORD` / `ANDROID_KEY_ALIAS` / `ANDROID_KEY_PASSWORD` | its passwords and alias | Firebase, Play |
 | `FIREBASE_SERVICE_ACCOUNT_JSON` | service account with *Firebase App Distribution Admin* | Firebase |
@@ -76,3 +77,15 @@ that the default, `completed`, rolls internal releases out.
 The upload keystore lives outside the repo at `~/.lgs-reward-hunt-signing/`
 (`upload.jks`, `key.properties`). **Back it up** — Play App Signing can reset a
 lost upload key, but only through support.
+
+### Refreshing the Firebase config secret
+
+After `flutterfire configure`, a key rotation or a new SHA-1, re-upload the six
+files:
+
+```bash
+tar czf - android/app/src/{dev,prod}/google-services.json \
+  ios/config/{dev,prod}/GoogleService-Info.plist \
+  lib/infrastructure/config/firebase/firebase_options_{dev,prod}.dart \
+  | base64 | gh secret set FIREBASE_CONFIG_ARCHIVE
+```

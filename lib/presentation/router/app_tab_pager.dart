@@ -9,9 +9,13 @@ import 'package:lgs_reward_hunt/presentation/router/app_keep_alive_page.dart';
 /// order) sit in a horizontal `PageView`, each kept alive. The two ways of
 /// changing tab stay in step: a swipe that settles on a page calls
 /// `goBranch`, so the bar and the address follow; a tap on the bar changes
-/// [shell]'s index, and the pager animates to it. A horizontal list inside a
-/// tab — the reward categories — still scrolls itself; the pager takes the
-/// gesture everywhere else.
+/// [shell]'s index, and the pager animates to it. While that animation runs,
+/// the pages it passes are not tab changes — without the guard a tap from the
+/// map to the profile would switch to rewards and progress on the way, and
+/// reload both. Only the tab on screen keeps its tickers running (`TickerMode`):
+/// a hidden tab's shimmer or animation does not spin in the background. A
+/// horizontal list inside a tab — the reward categories — still scrolls
+/// itself; the pager takes the gesture everywhere else.
 class AppTabPager extends StatefulWidget {
   const AppTabPager({required this.shell, required this.children, super.key});
 
@@ -28,17 +32,23 @@ class _AppTabPagerState extends State<AppTabPager> {
     initialPage: widget.shell.currentIndex,
   );
 
+  bool _animating = false;
+
   @override
   void didUpdateWidget(AppTabPager oldWidget) {
     super.didUpdateWidget(oldWidget);
     final int index = widget.shell.currentIndex;
-    if (_controller.hasClients && _controller.page?.round() != index) {
-      _controller.animateToPage(
-        index,
-        duration: DurationConstants.pageTurn,
-        curve: Curves.easeOut,
-      );
-    }
+    if (!_controller.hasClients || _animating) return;
+    if (_controller.page?.round() == index) return;
+
+    _animating = true;
+    _controller
+        .animateToPage(
+          index,
+          duration: DurationConstants.pageTurn,
+          curve: Curves.easeOut,
+        )
+        .whenComplete(() => _animating = false);
   }
 
   @override
@@ -52,11 +62,17 @@ class _AppTabPagerState extends State<AppTabPager> {
     return PageView(
       controller: _controller,
       onPageChanged: (int index) {
-        if (index != widget.shell.currentIndex) widget.shell.goBranch(index);
+        if (_animating || index == widget.shell.currentIndex) return;
+        widget.shell.goBranch(index);
       },
       children: <Widget>[
-        for (final Widget child in widget.children)
-          AppKeepAlivePage(child: child),
+        for (int index = 0; index < widget.children.length; index++)
+          AppKeepAlivePage(
+            child: TickerMode(
+              enabled: index == widget.shell.currentIndex,
+              child: widget.children[index],
+            ),
+          ),
       ],
     );
   }

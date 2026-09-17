@@ -21,7 +21,7 @@ List<String> literalRules(List<SourceFile> lib) {
       final String code = file.code[i];
       final String where = '${file.path}:${i + 1}';
 
-      if (line.contains("''") &&
+      if ((line.contains("''") || line.contains('""')) &&
           !line.trimLeft().startsWith('//') &&
           !file.path.endsWith('char_constants.dart')) {
         problems.add('$where  empty string — use CharConstants.empty');
@@ -51,13 +51,12 @@ final RegExp _hex = RegExp('0x[0-9A-Fa-f]{6,8}');
 
 bool _holdsValues(String path) =>
     path.contains('core/constants/') ||
-    path.endsWith('_rules.dart') ||
+    (path.contains('/rules/') && path.endsWith('_rules.dart')) ||
     path.contains('base/ui/values/');
 
 bool _isDeclaration(String line) {
   final String trimmed = line.trimLeft();
   return trimmed.startsWith('static const') ||
-      trimmed.startsWith('const ') ||
-      trimmed.startsWith('final ') ||
+      RegExp(r'^const \w+ \w+ =').hasMatch(trimmed) ||
       trimmed.startsWith('//');
 }

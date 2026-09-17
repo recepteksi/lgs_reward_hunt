@@ -53,6 +53,10 @@ android {
         }
     }
 
+    if (System.getenv("CI") != null && keyProperties.isEmpty) {
+        throw GradleException("android/key.properties is missing on CI — a release would be debug-signed")
+    }
+
     buildTypes {
         release {
             signingConfig = if (keyProperties.isEmpty) {

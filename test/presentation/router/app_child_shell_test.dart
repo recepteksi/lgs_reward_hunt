@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lgs_reward_hunt/application/account/use_cases/load_child_header_use_case.dart';
 import 'package:lgs_reward_hunt/application/account/use_cases/read_child_snapshot_use_case.dart';
 import 'package:lgs_reward_hunt/application/di/injection.dart';
@@ -198,4 +199,68 @@ void main() {
     );
     expect(find.byType(AppLoadingView), findsNothing);
   });
+
+  Future<GoRouter> pumpShell(WidgetTester tester, String at) async {
+    tester.view.physicalSize = smallPhone;
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    final GoRouter router = AppRouter.build(at);
+    await tester.pumpWidget(
+      BlocProvider<AppearanceCubit>.value(
+        value: appearance,
+        child: MaterialApp.router(
+          theme: AppTheme.light(AppAccentEnum.blue),
+          locale: const Locale('tr'),
+          localizationsDelegates: AppL10n.localizationsDelegates,
+          supportedLocales: AppL10n.supportedLocales,
+          routerConfig: router,
+        ),
+      ),
+    );
+    await tester.pump(const Duration(seconds: 1));
+    await tester.pumpAndSettle();
+    return router;
+  }
+
+  testWidgets(
+    'a tap on a far tab goes straight there, not through the tabs between',
+    (WidgetTester tester) async {
+      final GoRouter router = await pumpShell(
+        tester,
+        AppRoutePaths.home.path(),
+      );
+      final List<String> visited = <String>[];
+      router.routerDelegate.addListener(
+        () => visited.add(router.routerDelegate.currentConfiguration.uri.path),
+      );
+
+      await tester.tap(find.text('Profil'));
+      await tester.pump(const Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
+      expect(visited.toSet(), <String>{AppRoutePaths.profile.path()});
+    },
+  );
+
+  testWidgets(
+    'coming back from a page over the tabs refreshes the tab on screen',
+    (WidgetTester tester) async {
+      final GoRouter router = await pumpShell(
+        tester,
+        AppRoutePaths.profile.path(),
+      );
+      client.mockStore.children.first['name'] = 'Zeynep';
+
+      router.push(AppRoutePaths.uiKit.path());
+      await tester.pump(const Duration(seconds: 1));
+      await tester.pumpAndSettle();
+      router.pop();
+      await tester.pump(const Duration(seconds: 1));
+      await tester.pumpAndSettle();
+      await tester.pump(const Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Zeynep'), findsWidgets);
+    },
+  );
 }

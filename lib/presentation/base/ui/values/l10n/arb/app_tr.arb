@@ -835,6 +835,15 @@
   "parentExit": "Çık",
   "@parentExit": {"description": "Ebeveyn modundan çıkış."},
 
+  "parentSignOut": "Hesaptan çıkış yap",
+  "@parentSignOut": {"description": "Ebeveynin cihazdaki oturumu kapatması; çıkış ikonunun okunan adı."},
+
+  "parentSignOutTitle": "Hesaptan çıkılsın mı?",
+  "@parentSignOutTitle": {"description": "Çıkış onay sayfasının başlığı."},
+
+  "parentSignOutBody": "Tekrar girmek için e-posta ve şifren ya da Google/Apple hesabın gerekecek.",
+  "@parentSignOutBody": {"description": "Çıkış onay sayfasının açıklaması."},
+
   "parentActiveChildLabel": "BU CİHAZDA SEÇİLİ ÇOCUK",
   "@parentActiveChildLabel": {"description": "Çocuk seçicinin etiketi."},
 

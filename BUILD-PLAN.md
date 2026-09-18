@@ -18,8 +18,9 @@ methods are the flow spec — save it to a file and grep, never read whole),
 ## Open
 
 - [ ] A real backend to replace the mock (Firestore + Cloud Functions are the
-      natural fit in the existing Firebase project). Testers see device-only
-      data that resets with the app until then.
+      natural fit in the existing Firebase project). Until then testers see
+      device-only data: the mock store is kept on the device
+      (`MockStoreArchive`) and is lost only when the app is deleted.
 - [ ] Design's sizes artboard (icon scale, paddings, control heights) has not
       landed; `AppSizes` holds values read off the prototype.
 - [ ] First `main` release: it ships prod to Firebase, Play internal testing and

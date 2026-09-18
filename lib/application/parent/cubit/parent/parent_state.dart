@@ -17,6 +17,11 @@ final class ParentFailed extends ParentState {
   final Failure failure;
 }
 
+/// The parent signed out; the page leaves for the intro.
+final class ParentSignedOut extends ParentState {
+  const ParentSignedOut();
+}
+
 /// Every state with the dashboard on screen.
 sealed class ParentShowing extends ParentState {
   const ParentShowing(this.dashboard);

@@ -13,16 +13,19 @@ import 'package:lgs_reward_hunt/presentation/base/ui/widgets/app_bar/app_snapsho
 import 'package:lgs_reward_hunt/presentation/base/ui/widgets/navigation/app_nav_tab_enum.dart';
 import 'package:lgs_reward_hunt/presentation/base/ui/widgets/navigation/app_tab_refresh.dart';
 import 'package:lgs_reward_hunt/presentation/base/ui/widgets/scaffold/app_scaffold.dart';
-import 'package:lgs_reward_hunt/presentation/base/ui/widgets/state/app_error_view.dart';
 import 'package:lgs_reward_hunt/presentation/profile/pages/profile/body/profile_body.dart';
+import 'package:lgs_reward_hunt/presentation/profile/pages/profile/widgets/profile_failure.dart';
 import 'package:lgs_reward_hunt/presentation/profile/pages/profile/widgets/profile_skeleton.dart';
 import 'package:lgs_reward_hunt/presentation/router/app_route_paths.dart';
 
 /// The profile tab: who the child is, the appearance setting, and the door to
 /// the parent's side.
 ///
-/// It carries the same floating bar and navigation as the other tabs. The
-/// `switch` over [ProfileState] is exhaustive.
+/// It carries the same floating bar and navigation as the other tabs, in every
+/// state that has something for it. A failed load keeps the appearance card and the
+/// parent-mode door, and the bar shows only what is already known, because
+/// nothing more is coming.
+/// The `switch` over [ProfileState] is exhaustive.
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
@@ -50,10 +53,21 @@ class ProfilePage extends StatelessWidget {
                         context.push(AppRoutePaths.parentGate.path()),
                   ),
                 ),
-                ProfileFailed(:final failure) => AppScaffold(
-                  body: AppErrorView(
+                ProfileFailed(:final failure, :final snapshot) => AppScaffold(
+                  appBar: snapshot.header == null
+                      ? null
+                      : AppAppBar.overlay(
+                          start: AppSnapshotChildPill(header: snapshot.header),
+                          actions: <Widget>[
+                            if (snapshot.balance case final int balance)
+                              AppBalancePill(balance: balance),
+                          ],
+                        ),
+                  body: ProfileFailure(
                     message: failureCopy(AppL10n.of(context), failure),
                     onRetry: context.read<ProfileCubit>().load,
+                    onParentMode: () =>
+                        context.push(AppRoutePaths.parentGate.path()),
                   ),
                 ),
                 ProfileReady(:final profile) => AppScaffold(

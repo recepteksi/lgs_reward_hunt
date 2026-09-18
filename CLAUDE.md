@@ -147,6 +147,6 @@ content in `assets/mock/*.json`).
 
 Branch from `dev` → gate → one `code-reviewer` pass on the diff → PR to `dev`
 (CI gate required) → squash merge. A merge to `dev` ships the dev app to
-Firebase App Distribution (Android) and TestFlight; `dev` → `main` is a release
+Firebase App Distribution (Android and iOS) and TestFlight; `dev` → `main` is a release
 (ask first) and ships prod to Firebase, Play internal testing and TestFlight.
 Never commit keystores, `key.properties` or `.p8` keys.

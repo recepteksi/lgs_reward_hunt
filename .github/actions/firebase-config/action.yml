@@ -1,0 +1,23 @@
+name: Restore Firebase config
+description: >
+  Writes the six Firebase client configuration files (google-services.json,
+  GoogleService-Info.plist and firebase_options_*.dart for dev and prod) from
+  the FIREBASE_CONFIG_ARCHIVE secret — a base64 tar.gz. They are kept out of
+  the public repository; the app does not compile without them.
+inputs:
+  archive:
+    description: The FIREBASE_CONFIG_ARCHIVE secret
+    required: true
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      env:
+        ARCHIVE: ${{ inputs.archive }}
+      run: |
+        if [ -z "$ARCHIVE" ]; then
+          echo "::error::FIREBASE_CONFIG_ARCHIVE is not set — see WORKFLOW.md"
+          exit 1
+        fi
+        printf '%s' "$ARCHIVE" | base64 -d | tar xzf -
+        test -f lib/infrastructure/config/firebase/firebase_options_dev.dart

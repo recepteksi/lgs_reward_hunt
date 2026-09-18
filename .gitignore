@@ -53,3 +53,20 @@ app.*.map.json
 
 # Local IDE state
 .vscode/launch.json.bak
+
+# Build output and secrets that must never reach git
+/android/build/
+android/key.properties
+*.jks
+*.keystore
+*.p8
+*.mobileprovision
+/ios/build/
+.claude/settings.local.json
+
+# Firebase client configuration. Not secret by Firebase's design, but the repo
+# is public and the API keys inside are scanned: CI restores these six files
+# from the FIREBASE_CONFIG_ARCHIVE secret (see WORKFLOW.md).
+android/app/src/*/google-services.json
+ios/config/*/GoogleService-Info.plist
+lib/infrastructure/config/firebase/firebase_options_*.dart

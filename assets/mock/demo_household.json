@@ -1,0 +1,91 @@
+{
+  "parent": {
+    "id": "parent_seed",
+    "name": "Ayşe",
+    "email": "ayse@ornek.com",
+    "password": "lgs12345",
+    "pin": "1234",
+    "linkCode": "LGS274"
+  },
+  "child": {
+    "id": "child_seed",
+    "name": "Elif",
+    "gradeLevel": 8,
+    "avatarId": "av_k_03"
+  },
+  "rewards": [
+    {
+      "name": "1 saat ekstra oyun",
+      "category": "screen",
+      "cost": 200
+    },
+    {
+      "name": "Sevdiğin tatlı",
+      "category": "treat",
+      "cost": 80
+    },
+    {
+      "name": "Hafta sonu geç yatma",
+      "category": "free",
+      "cost": 350
+    },
+    {
+      "name": "Sinema bileti",
+      "category": "fun",
+      "cost": 800
+    },
+    {
+      "name": "Kablosuz kulaklık",
+      "category": "free",
+      "cost": 5000
+    }
+  ],
+  "dailyTasks": [
+    {
+      "title": "Çarpanlar ve Katlar",
+      "category": "math",
+      "hour": 19,
+      "durationMinutes": 40,
+      "points": 30
+    },
+    {
+      "title": "Paragrafta anlam",
+      "category": "turkish",
+      "hour": 20,
+      "durationMinutes": 30,
+      "points": 25
+    },
+    {
+      "title": "Basınç testi",
+      "category": "science",
+      "hour": 17,
+      "durationMinutes": 25,
+      "points": 20
+    },
+    {
+      "title": "Millî Uyanış",
+      "category": "history",
+      "hour": 16,
+      "durationMinutes": 20,
+      "points": 15
+    }
+  ],
+  "historyDays": 6,
+  "minutesToFinishTask": 45,
+  "pendingRequest": {
+    "rewardIndex": 0,
+    "hoursAgo": 3
+  },
+  "extraPlanLines": [
+    {
+      "kind": "lesson",
+      "category": "practiceExam",
+      "topic": "LGS genel deneme",
+      "startMinute": 600,
+      "durationMinutes": 120,
+      "points": 50,
+      "repeat": "weekend"
+    }
+  ],
+  "completedToday": 2
+}

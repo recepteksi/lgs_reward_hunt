@@ -1,0 +1,83 @@
+[
+  {
+    "id": "av_k_01",
+    "name": "Defne",
+    "gender": "girl",
+    "style": "long",
+    "skin": "#F7D3B6",
+    "hair": "#3B2A24",
+    "shirt": "#F08BB0",
+    "background": "#FDE7EF"
+  },
+  {
+    "id": "av_k_02",
+    "name": "Zeynep",
+    "gender": "girl",
+    "style": "pigtail",
+    "skin": "#E9BC92",
+    "hair": "#1F1A18",
+    "shirt": "#7FD0C0",
+    "background": "#E3F5F1"
+  },
+  {
+    "id": "av_k_03",
+    "name": "Elif",
+    "gender": "girl",
+    "style": "bun",
+    "skin": "#F3C49A",
+    "hair": "#8A4B2A",
+    "shirt": "#8FB4F5",
+    "background": "#E6EEFD"
+  },
+  {
+    "id": "av_k_04",
+    "name": "Nisa",
+    "gender": "girl",
+    "style": "curly",
+    "skin": "#B97A4E",
+    "hair": "#2A1B14",
+    "shirt": "#F2C75C",
+    "background": "#FDF2DA"
+  },
+  {
+    "id": "av_e_01",
+    "name": "Kerem",
+    "gender": "boy",
+    "style": "short",
+    "skin": "#F7D3B6",
+    "hair": "#2C2016",
+    "shirt": "#6FA8F0",
+    "background": "#E6EEFD"
+  },
+  {
+    "id": "av_e_02",
+    "name": "Yiğit",
+    "gender": "boy",
+    "style": "spiky",
+    "skin": "#E9BC92",
+    "hair": "#3E2A1E",
+    "shirt": "#78D2A4",
+    "background": "#E4F5EC"
+  },
+  {
+    "id": "av_e_03",
+    "name": "Mert",
+    "gender": "boy",
+    "style": "cap",
+    "skin": "#F3C49A",
+    "hair": "#241A14",
+    "shirt": "#F2A03D",
+    "background": "#FDEAE4",
+    "accessory": "#E0574B"
+  },
+  {
+    "id": "av_e_04",
+    "name": "Ali",
+    "gender": "boy",
+    "style": "wave",
+    "skin": "#C0824F",
+    "hair": "#1E1712",
+    "shirt": "#B99BF2",
+    "background": "#F0EAFD"
+  }
+]

@@ -1,0 +1,22 @@
+# The launch screen, drawn by the platform before Flutter's first frame.
+# Source art is assets/brand/, exported from the "LGS Ödül Avı Brand" page in
+# the Claude Design project. Both flavors share it — the DEV mark is on the
+# icon, which is where two installs side by side are told apart.
+#
+#   dart run flutter_native_splash:create
+flutter_native_splash:
+  color: "#3D74D6"
+  image: assets/brand/splash.png
+  color_dark: "#0C1426"
+  image_dark: assets/brand/splash.png
+
+  android_12:
+    image: assets/brand/splash_android12.png
+    color: "#3D74D6"
+    icon_background_color: "#3D74D6"
+    image_dark: assets/brand/splash_android12.png
+    color_dark: "#0C1426"
+    icon_background_color_dark: "#3D74D6"
+
+  fullscreen: false
+  web: false

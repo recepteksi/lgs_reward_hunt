@@ -1,0 +1,1005 @@
+{
+  "@@locale": "tr",
+
+  "appTitle": "LGS Ödül Avı",
+  "@appTitle": { "description": "Uygulamanın adı." },
+
+  "streakDays": "{days, plural, other{{days} gün}}",
+  "@streakDays": {
+    "description": "Seri göstergesi. Yalnızca 2 ve üzeri gün için gösterilir; Türkçede tek çoğul biçim var.",
+    "placeholders": { "days": { "type": "int" } }
+  },
+
+  "taskPointsAward": "+{points}P",
+  "@taskPointsAward": {
+    "description": "Görev satırındaki kazanılacak puan. P harfi 'puan' kısaltması.",
+    "placeholders": { "points": { "type": "int" } }
+  },
+
+  "taskPointsLocked": "{points}P",
+  "@taskPointsLocked": {
+    "description": "Henüz açılmamış görevin puanı; artı işareti yok çünkü kazanılmış değil.",
+    "placeholders": { "points": { "type": "int" } }
+  },
+
+  "themeModeSystem": "Sistem",
+  "@themeModeSystem": { "description": "Tema cihazın ayarını izler." },
+
+  "themeModeLight": "Açık",
+  "@themeModeLight": { "description": "Açık tema." },
+
+  "themeModeDark": "Koyu",
+  "@themeModeDark": { "description": "Koyu tema." },
+
+  "accentBlue": "Mavi",
+  "@accentBlue": { "description": "Renk yolu adı." },
+
+  "accentPink": "Pembe",
+  "@accentPink": { "description": "Renk yolu adı." },
+
+  "accentGreen": "Yeşil",
+  "@accentGreen": { "description": "Renk yolu adı." },
+
+  "accentYellow": "Sarı",
+  "@accentYellow": { "description": "Renk yolu adı." },
+
+  "accentRed": "Kırmızı",
+  "@accentRed": { "description": "Renk yolu adı." },
+
+  "progressRatio": "{completed}/{total}",
+  "@progressRatio": {
+    "description": "Gün halkasının ortasındaki oran: tamamlanan / toplam görev.",
+    "placeholders": {
+      "completed": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+
+  "pointsUnit": "puan",
+  "@pointsUnit": { "description": "Ödül kartındaki rakamın altındaki birim." },
+
+  "navHome": "Ana sayfa",
+  "@navHome": { "description": "Alt navigasyon: harita sekmesi." },
+
+  "navRewards": "Ödüller",
+  "@navRewards": { "description": "Alt navigasyon: ödül dükkânı." },
+
+  "navProgress": "İlerleme",
+  "@navProgress": { "description": "Alt navigasyon: istatistikler." },
+
+  "navProfile": "Profil",
+  "@navProfile": { "description": "Alt navigasyon: profil ve ayarlar." },
+
+  "navParent": "Ebeveyn",
+  "@navParent": { "description": "Alt navigasyonun ortasındaki ebeveyn modu düğmesi." },
+
+  "commonLoading": "Yükleniyor",
+  "@commonLoading": { "description": "Yükleme göstergesinin altındaki söz." },
+
+  "introSkip": "Geç",
+  "@introSkip": { "description": "Tanıtımı atla." },
+
+  "introContinue": "Devam",
+  "@introContinue": { "description": "Tanıtımda sonraki slayt." },
+
+  "introTitleOne": "Görevleri bitir,\nhazineyi aç.",
+  "@introTitleOne": { "description": "İlk tanıtım slaytının başlığı." },
+
+  "introBodyOne": "Her gün haritada bir durak. Ailenle birlikte belirlediğiniz görevleri tamamla, puan topla, ödül havuzundan istediğini seç.",
+  "@introBodyOne": { "description": "İlk tanıtım slaytının metni." },
+
+  "introTitleTwo": "Her gün bir durak,\nbirkaç görev.",
+  "@introTitleTwo": { "description": "İkinci tanıtım slaytının başlığı." },
+
+  "introBodyTwo": "Ailenle belirlediğiniz görevler her sabah haritada karşına çıkar. Bitirdikçe puan kazanır, patikada bir durak ilerlersin.",
+  "@introBodyTwo": { "description": "İkinci tanıtım slaytının metni." },
+
+  "introTitleThree": "Puanlar ödüle\ndönüşür.",
+  "@introTitleThree": { "description": "Üçüncü tanıtım slaytının başlığı." },
+
+  "introBodyThree": "Biriken puanla ödül havuzundan seçim yaparsın. Her talep ebeveyn onayından geçer, böylece ödül ikinizin kararı olur.",
+  "@introBodyThree": { "description": "Üçüncü tanıtım slaytının metni." },
+
+  "introCreateAccount": "Hesap oluştur",
+  "@introCreateAccount": { "description": "Tanıtımın sonundaki birincil eylem." },
+
+  "introEmblemMark": "LGS",
+  "@introEmblemMark": { "description": "İlk tanıtım slaytındaki amblemin üzerindeki yazı." },
+
+  "introEmblemPoints": "P",
+  "@introEmblemPoints": { "description": "Amblemin köşesindeki puan rozeti; P harfi 'puan' kısaltması." },
+
+  "introTasksTitle": "Bugünün görevleri",
+  "@introTasksTitle": { "description": "İkinci tanıtım slaytındaki örnek günün başlığı." },
+
+  "introTasksMeta": "{stop}. durak · {points}P",
+  "@introTasksMeta": {
+    "description": "Örnek günün hangi durak olduğu ve toplam puanı.",
+    "placeholders": { "stop": { "type": "int" }, "points": { "type": "int" } }
+  },
+
+  "introSampleMathTitle": "Matematik",
+  "@introSampleMathTitle": { "description": "Tanıtımdaki örnek görev: ders." },
+
+  "introSampleMathMeta": "Çarpanlar ve katlar · 30 dk",
+  "@introSampleMathMeta": { "description": "Tanıtımdaki örnek görev: konu ve süre." },
+
+  "introSampleTurkishTitle": "Türkçe",
+  "@introSampleTurkishTitle": { "description": "Tanıtımdaki örnek görev: ders." },
+
+  "introSampleTurkishMeta": "Paragrafta anlam · 25 dk",
+  "@introSampleTurkishMeta": { "description": "Tanıtımdaki örnek görev: konu ve süre." },
+
+  "introSampleScienceTitle": "Fen Bilimleri",
+  "@introSampleScienceTitle": { "description": "Tanıtımdaki örnek görev: ders." },
+
+  "introSampleScienceMeta": "Basınç · 25 dk",
+  "@introSampleScienceMeta": { "description": "Tanıtımdaki örnek görev: konu ve süre." },
+
+  "introSampleReadingTitle": "Okuma",
+  "@introSampleReadingTitle": { "description": "Tanıtımdaki örnek görev: ders." },
+
+  "introSampleReadingMeta": "20 sayfa kitap · 20 dk",
+  "@introSampleReadingMeta": { "description": "Tanıtımdaki örnek görev: konu ve süre." },
+
+  "introBalanceTitle": "Puan hesabın",
+  "@introBalanceTitle": { "description": "Üçüncü tanıtım slaytındaki bakiye kartının başlığı." },
+
+  "introBalanceMeta": "{points} puan birikti",
+  "@introBalanceMeta": {
+    "description": "Üçüncü tanıtım slaytındaki örnek bakiye.",
+    "placeholders": { "points": { "type": "int" } }
+  },
+
+  "introRewardName": "Sinema bileti",
+  "@introRewardName": { "description": "Üçüncü tanıtım slaytındaki örnek ödül." },
+
+  "introRewardCost": "{points} puan",
+  "@introRewardCost": {
+    "description": "Örnek ödülün bedeli.",
+    "placeholders": { "points": { "type": "int" } }
+  },
+
+  "introRewardPending": "Onay bekliyor",
+  "@introRewardPending": { "description": "Örnek talebin durumu." },
+
+  "introRewardNote": "Annen onayladığında haber vereceğiz.",
+  "@introRewardNote": { "description": "Örnek talebin altındaki not." },
+
+  "authTitle": "Ebeveyn hesabı",
+  "@authTitle": { "description": "Kayıt/giriş ekranının başlığı." },
+
+  "authBody": "Görevleri ve ödül havuzunu sen kuruyorsun. Çocuğunun hesabını da bu hesaptan açacaksın.",
+  "@authBody": { "description": "Kayıt/giriş ekranının açıklaması." },
+
+  "authTabSignUp": "Kayıt ol",
+  "@authTabSignUp": { "description": "Yeni hesap sekmesi." },
+
+  "authTabSignIn": "Giriş yap",
+  "@authTabSignIn": { "description": "Mevcut hesap sekmesi." },
+
+  "authOrEmail": "veya e-posta ile",
+  "@authOrEmail": { "description": "Sosyal giriş ile form arasındaki ayırıcı." },
+
+  "authTerms": "Devam ederek Kullanım Koşulları ve Gizlilik Politikası'nı kabul ediyorsun.",
+  "@authTerms": { "description": "Kayıt formunun altındaki yasal not." },
+
+  "fieldFullName": "AD SOYAD",
+  "@fieldFullName": { "description": "Ad soyad alanının etiketi." },
+
+  "fieldFullNameHint": "Adın ve soyadın",
+  "@fieldFullNameHint": { "description": "Ad soyad alanının ipucu." },
+
+  "fieldEmail": "E-POSTA",
+  "@fieldEmail": { "description": "E-posta alanının etiketi." },
+
+  "fieldEmailHint": "ornek@eposta.com",
+  "@fieldEmailHint": { "description": "E-posta alanının ipucu." },
+
+  "fieldPassword": "ŞİFRE",
+  "@fieldPassword": { "description": "Şifre alanının etiketi." },
+
+  "fieldPasswordHint": "Hesap şifren",
+  "@fieldPasswordHint": { "description": "Giriş ekranındaki şifre ipucu." },
+
+  "fieldPasswordRepeat": "ŞİFRE TEKRAR",
+  "@fieldPasswordRepeat": { "description": "Şifre tekrar alanının etiketi." },
+
+  "passwordTitle": "Şifre belirle",
+  "@passwordTitle": { "description": "Şifre belirleme ekranının başlığı." },
+
+  "passwordBody": "Ödül onaylarına ve ebeveyn paneline girerken bu şifreyi kullanacaksın. Çocuğunla paylaşma.",
+  "@passwordBody": { "description": "Şifre belirleme ekranının açıklaması." },
+
+  "passwordShow": "Göster",
+  "@passwordShow": { "description": "Şifreyi açık göster." },
+
+  "passwordHide": "Gizle",
+  "@passwordHide": { "description": "Şifreyi gizle." },
+
+  "passwordMismatch": "Şifreler aynı değil.",
+  "@passwordMismatch": { "description": "İki şifre alanı uyuşmuyor." },
+
+  "passwordRuleLength": "En az 8 karakter",
+  "@passwordRuleLength": { "description": "Şifre kuralı: uzunluk." },
+
+  "passwordRuleDigit": "Bir rakam",
+  "@passwordRuleDigit": { "description": "Şifre kuralı: rakam." },
+
+  "passwordRuleUppercase": "Bir büyük harf",
+  "@passwordRuleUppercase": { "description": "Şifre kuralı: büyük harf." },
+
+  "pinTitleSet": "Ebeveyn PIN'i belirle",
+  "@pinTitleSet": { "description": "PIN'in ilk aşaması." },
+
+  "pinTitleRepeat": "PIN'i tekrar gir",
+  "@pinTitleRepeat": { "description": "PIN'in ikinci aşaması." },
+
+  "pinBodySet": "Ebeveyn moduna geçişte 4 haneli bu kod sorulur. Şifreden ayrı, hızlı giriş için.",
+  "@pinBodySet": { "description": "PIN'in ilk aşamasının açıklaması." },
+
+  "pinBodyRepeat": "Aynı 4 haneyi bir daha gir; yanlış yazarsan baştan başlayacağız.",
+  "@pinBodyRepeat": { "description": "PIN'in ikinci aşamasının açıklaması." },
+
+  "pinNote": "PIN'i çocuğunla paylaşma; ebeveyn moduna her geçişte sorulacak.",
+  "@pinNote": { "description": "PIN ekranının altındaki not." },
+
+  "setupStepAccount": "Kayıt",
+  "@setupStepAccount": { "description": "Kurulum adımı adı." },
+
+  "setupStepPassword": "Şifre",
+  "@setupStepPassword": { "description": "Kurulum adımı adı." },
+
+  "setupStepPin": "Ebeveyn PIN'i",
+  "@setupStepPin": { "description": "Kurulum adımı adı." },
+
+  "setupStepChild": "Çocuk",
+  "@setupStepChild": { "description": "Kurulum adımı adı." },
+
+  "setupStepTasks": "Görevler",
+  "@setupStepTasks": { "description": "Kurulum adımı adı." },
+
+  "setupStepRewards": "Ödüller",
+  "@setupStepRewards": { "description": "Kurulum adımı adı." },
+
+  "setupStepCount": "{index}/{total}",
+  "@setupStepCount": {
+    "description": "Kurulumda kaçıncı adımda olduğumuz.",
+    "placeholders": { "index": { "type": "int" }, "total": { "type": "int" } }
+  },
+
+  "commonBack": "Geri",
+  "@commonBack": { "description": "Bir adım geri." },
+
+  "commonContinue": "Devam et",
+  "@commonContinue": { "description": "Bir adım ileri." },
+
+  "failureEmailInvalid": "E-posta adresi geçerli görünmüyor.",
+  "@failureEmailInvalid": { "description": "E-posta biçimi hatalı." },
+
+  "failurePasswordTooShort": "Şifre en az 8 karakter olmalı.",
+  "@failurePasswordTooShort": { "description": "Şifre kısa." },
+
+  "failurePasswordTooWeak": "Şifrede bir rakam ve bir büyük harf olmalı.",
+  "@failurePasswordTooWeak": { "description": "Şifre kuralları eksik." },
+
+  "failureCredentialsInvalid": "E-posta ya da şifre hatalı.",
+  "@failureCredentialsInvalid": { "description": "Giriş başarısız." },
+
+  "failureEmailInUse": "Bu e-posta ile bir hesap zaten var.",
+  "@failureEmailInUse": { "description": "E-posta kayıtlı." },
+
+  "failurePinInvalid": "PIN 4 haneli olmalı.",
+  "@failurePinInvalid": { "description": "PIN biçimi hatalı." },
+
+  "failurePinMismatch": "Kodlar aynı değil, baştan deneyelim.",
+  "@failurePinMismatch": { "description": "İki PIN girişi uyuşmadı." },
+
+  "failureNotSignedIn": "Önce giriş yapman gerekiyor.",
+  "@failureNotSignedIn": { "description": "Oturum yok." },
+
+  "commonRetry": "Tekrar dene",
+  "@commonRetry": { "description": "Hata durumunda yeniden deneme düğmesi." },
+
+  "childSetupTitle": "Çocuğunu ekle",
+  "@childSetupTitle": {"description": "Çocuk kurulumu ekranının başlığı."},
+
+  "childSetupBody": "Her çocuğun kendi görev haritası ve puan hesabı olur. Şimdilik en fazla {max} çocuk ekleyebilirsin.",
+  "@childSetupBody": {"description": "Çocuk kurulumu ekranının açıklaması.", "placeholders": {"max": {"type": "int"}}},
+
+  "childSetupParentVia": "E-posta",
+  "@childSetupParentVia": {"description": "Ebeveyn kartındaki giriş yöntemi rozeti."},
+
+  "childSetupAdd": "Çocuk ekle",
+  "@childSetupAdd": {"description": "Yeni çocuk formunu açan düğme."},
+
+  "childSetupLimit": "{max} çocuk sınırına ulaştın. Daha fazlası için ebeveyn panelinden talep gönderebilirsin.",
+  "@childSetupLimit": {"description": "Çocuk sınırına ulaşıldığında gösterilen not.", "placeholders": {"max": {"type": "int"}}},
+
+  "childSetupNeedOne": "En az bir çocuk ekle",
+  "@childSetupNeedOne": {"description": "Hiç çocuk yokken devam düğmesinin yazısı."},
+
+  "childSetupRowMeta": "{grade}. sınıf · {avatar} avatarı",
+  "@childSetupRowMeta": {"description": "Çocuk satırındaki sınıf ve avatar bilgisi.", "placeholders": {"grade": {"type": "int"}, "avatar": {"type": "String"}}},
+
+  "childSetupRowMetaNoAvatar": "{grade}. sınıf",
+  "@childSetupRowMetaNoAvatar": {"description": "Avatarı olmayan çocuğun satırındaki bilgi.", "placeholders": {"grade": {"type": "int"}}},
+
+  "childSetupRemove": "Çocuğu kaldır",
+  "@childSetupRemove": {"description": "Çocuk satırındaki kaldırma düğmesinin ekran okuyucu etiketi."},
+
+  "childFormTitle": "Çocuk bilgileri",
+  "@childFormTitle": {"description": "Çocuk formunun başlığı."},
+
+  "childFormName": "ADI",
+  "@childFormName": {"description": "Çocuğun adı alanının etiketi."},
+
+  "childFormNameHint": "Çocuğunun adı",
+  "@childFormNameHint": {"description": "Çocuğun adı alanının ipucu."},
+
+  "childFormGrade": "SINIFI",
+  "@childFormGrade": {"description": "Sınıf seçiminin etiketi."},
+
+  "childFormGradeOption": "{grade}. sınıf",
+  "@childFormGradeOption": {"description": "Sınıf seçeneği.", "placeholders": {"grade": {"type": "int"}}},
+
+  "childFormAvatar": "AVATARI",
+  "@childFormAvatar": {"description": "Avatar seçiminin etiketi."},
+
+  "childFormGirl": "Kız",
+  "@childFormGirl": {"description": "Avatar kataloğunun kız sekmesi."},
+
+  "childFormBoy": "Erkek",
+  "@childFormBoy": {"description": "Avatar kataloğunun erkek sekmesi."},
+
+  "childFormAvatarsLoading": "Avatar kataloğu sunucudan yükleniyor…",
+  "@childFormAvatarsLoading": {"description": "Avatarlar yüklenirken gösterilen not."},
+
+  "childFormAvatarsFailed": "Avatarlar yüklenemedi.",
+  "@childFormAvatarsFailed": {"description": "Avatar kataloğu yüklenemediğinde gösterilen cümle."},
+
+  "childFormAvatarPick": "Çocuğun için bir avatar seç.",
+  "@childFormAvatarPick": {"description": "Henüz avatar seçilmemişken gösterilen not."},
+
+  "childFormAvatarPicked": "Seçilen avatar: {name}",
+  "@childFormAvatarPicked": {"description": "Seçilen avatarın adı.", "placeholders": {"name": {"type": "String"}}},
+
+  "childFormSave": "Çocuğu ekle",
+  "@childFormSave": {"description": "Çocuk formunu kaydeden düğme."},
+
+  "failureChildNameEmpty": "Çocuğunun adını yaz.",
+  "@failureChildNameEmpty": {"description": "Çocuk adı boş."},
+
+  "failureChildGradeInvalid": "Sınıf 7 ya da 8 olmalı.",
+  "@failureChildGradeInvalid": {"description": "Geçersiz sınıf."},
+
+  "failureChildAvatarMissing": "Çocuğun için bir avatar seç.",
+  "@failureChildAvatarMissing": {"description": "Avatar seçilmemiş."},
+
+  "failureChildLimitReached": "Bu hesaba daha fazla çocuk eklenemez.",
+  "@failureChildLimitReached": {"description": "Çocuk sınırı dolu."},
+
+  "taskSetupTitle": "Günlük görevler",
+  "@taskSetupTitle": {"description": "Görev kurulumu sayfasının başlığı."},
+
+  "taskSetupBody": "Standart bir çalışma günü hazırladık. Silebilir, düzenleyebilir, yenilerini ekleyebilirsin — sonra ebeveyn panelinden de değişir.",
+  "@taskSetupBody": {"description": "Görev kurulumu sayfasının açıklaması."},
+
+  "taskSetupSummary": "{lessons} ders · {chores} sorumluluk · bugün {points}P",
+  "@taskSetupSummary": {"description": "Görev listesinin üstündeki özet.", "placeholders": {"lessons": {"type": "int"}, "chores": {"type": "int"}, "points": {"type": "int"}}},
+
+  "taskSetupEmpty": "Henüz görev yok",
+  "@taskSetupEmpty": {"description": "Plan boşken özet satırı."},
+
+  "taskMeta": "{topic} · {time} · {minutes} dk",
+  "@taskMeta": {"description": "Görev satırındaki konu, saat ve süre.", "placeholders": {"topic": {"type": "String"}, "time": {"type": "String"}, "minutes": {"type": "int"}}},
+
+  "taskSetupAdd": "Görev ekle",
+  "@taskSetupAdd": {"description": "Plana yeni görev ekleyen düğme."},
+
+  "taskSetupNeedOne": "En az bir görev ekle",
+  "@taskSetupNeedOne": {"description": "Plan boşken devam düğmesinin yazısı."},
+
+  "taskSetupRemove": "Görevi sil",
+  "@taskSetupRemove": {"description": "Görev satırındaki silme düğmesinin ekran okuyucu etiketi."},
+
+  "taskSetupKind": "TÜR",
+  "@taskSetupKind": {"description": "Görev türü seçiminin etiketi."},
+
+  "taskSetupCategoryLesson": "DERS",
+  "@taskSetupCategoryLesson": {"description": "Ders seçiminin etiketi."},
+
+  "taskSetupCategoryChore": "SORUMLULUK",
+  "@taskSetupCategoryChore": {"description": "Sorumluluk seçiminin etiketi."},
+
+  "taskSetupTopicLesson": "KONU",
+  "@taskSetupTopicLesson": {"description": "Dersin konu alanının etiketi."},
+
+  "taskSetupTopicChore": "AÇIKLAMA",
+  "@taskSetupTopicChore": {"description": "Sorumluluğun açıklama alanının etiketi."},
+
+  "taskSetupTopicHintLesson": "Örn. Çarpanlar ve katlar",
+  "@taskSetupTopicHintLesson": {"description": "Konu alanının ipucu."},
+
+  "taskSetupTopicHintChore": "Örn. Masa ve yatak",
+  "@taskSetupTopicHintChore": {"description": "Açıklama alanının ipucu."},
+
+  "taskSetupTime": "SAAT",
+  "@taskSetupTime": {"description": "Saat seçiminin etiketi."},
+
+  "taskSetupDuration": "SÜRE",
+  "@taskSetupDuration": {"description": "Süre seçiminin etiketi."},
+
+  "taskSetupMinutes": "{minutes} dk",
+  "@taskSetupMinutes": {"description": "Süre seçeneği.", "placeholders": {"minutes": {"type": "int"}}},
+
+  "taskSetupPoints": "PUAN",
+  "@taskSetupPoints": {"description": "Puan sayacının etiketi."},
+
+  "taskSetupRepeat": "SIKLIK",
+  "@taskSetupRepeat": {"description": "Tekrar seçiminin etiketi."},
+
+  "taskKindLesson": "Ders",
+  "@taskKindLesson": {"description": "Görev türü: ders."},
+
+  "taskKindChore": "Sorumluluk",
+  "@taskKindChore": {"description": "Görev türü: ev sorumluluğu."},
+
+  "taskCategoryMath": "Matematik",
+  "@taskCategoryMath": {"description": "Ders."},
+
+  "taskCategoryTurkish": "Türkçe",
+  "@taskCategoryTurkish": {"description": "Ders."},
+
+  "taskCategoryScience": "Fen Bilimleri",
+  "@taskCategoryScience": {"description": "Ders."},
+
+  "taskCategoryHistory": "İnkılap Tarihi",
+  "@taskCategoryHistory": {"description": "Ders."},
+
+  "taskCategoryEnglish": "İngilizce",
+  "@taskCategoryEnglish": {"description": "Ders."},
+
+  "taskCategoryReading": "Okuma",
+  "@taskCategoryReading": {"description": "Ders."},
+
+  "taskCategoryPracticeExam": "Deneme sınavı",
+  "@taskCategoryPracticeExam": {"description": "Ders."},
+
+  "taskCategoryBrushTeeth": "Diş fırçalama",
+  "@taskCategoryBrushTeeth": {"description": "Sorumluluk."},
+
+  "taskCategoryTidyRoom": "Oda toplama",
+  "@taskCategoryTidyRoom": {"description": "Sorumluluk."},
+
+  "taskCategoryDishes": "Bulaşık",
+  "@taskCategoryDishes": {"description": "Sorumluluk."},
+
+  "taskCategoryTrash": "Çöp atma",
+  "@taskCategoryTrash": {"description": "Sorumluluk."},
+
+  "taskCategoryLaundry": "Çamaşır",
+  "@taskCategoryLaundry": {"description": "Sorumluluk."},
+
+  "taskCategoryDrinkWater": "Su içme",
+  "@taskCategoryDrinkWater": {"description": "Sorumluluk."},
+
+  "taskCategoryExercise": "Spor",
+  "@taskCategoryExercise": {"description": "Sorumluluk."},
+
+  "taskCategoryEarlyBed": "Erken yatma",
+  "@taskCategoryEarlyBed": {"description": "Sorumluluk."},
+
+  "taskCategoryScreenFree": "Ekransız saat",
+  "@taskCategoryScreenFree": {"description": "Sorumluluk."},
+
+  "taskRepeatOnce": "Bir kez",
+  "@taskRepeatOnce": {"description": "Tekrar: yalnızca bir gün."},
+
+  "taskRepeatDaily": "Her gün",
+  "@taskRepeatDaily": {"description": "Tekrar."},
+
+  "taskRepeatWeekdays": "Hafta içi",
+  "@taskRepeatWeekdays": {"description": "Tekrar."},
+
+  "taskRepeatWeekend": "Hafta sonu",
+  "@taskRepeatWeekend": {"description": "Tekrar."},
+
+  "taskRepeatWeekly": "Haftada bir",
+  "@taskRepeatWeekly": {"description": "Tekrar."},
+
+  "failureTaskPlanEmpty": "En az bir görev ekle.",
+  "@failureTaskPlanEmpty": {"description": "Boş plan."},
+
+  "failureTaskTitleEmpty": "Her görevin bir konusu ya da açıklaması olmalı.",
+  "@failureTaskTitleEmpty": {"description": "Konusu boş görev."},
+
+  "failureTaskPointsInvalid": "Görev puanı izin verilen aralığın dışında.",
+  "@failureTaskPointsInvalid": {"description": "Geçersiz puan."},
+
+  "failureTaskDurationInvalid": "Görev süresi izin verilen aralığın dışında.",
+  "@failureTaskDurationInvalid": {"description": "Geçersiz süre."},
+
+  "failureTaskCategoryInvalid": "Görevin türü ile konusu uyuşmuyor.",
+  "@failureTaskCategoryInvalid": {"description": "Tür ile kategori uyuşmazlığı."},
+
+  "failureTaskTimeInvalid": "Görev saati geçerli değil.",
+  "@failureTaskTimeInvalid": {"description": "Geçersiz saat."},
+
+  "rewardSetupTitle": "Ödül havuzu",
+  "@rewardSetupTitle": {"description": "Ödül kurulumu sayfasının başlığı."},
+
+  "rewardSetupBody": "Puanların harcanacağı ödüller. Bunlar da bir başlangıç; çocuğunla birlikte değiştirin.",
+  "@rewardSetupBody": {"description": "Ödül kurulumu sayfasının açıklaması."},
+
+  "rewardSetupSummary": "{count, plural, other{{count} ödül}} · {cheapest}P–{dearest}P",
+  "@rewardSetupSummary": {"description": "Ödül listesinin üstündeki özet: sayı ve fiyat aralığı.", "placeholders": {"count": {"type": "int"}, "cheapest": {"type": "int"}, "dearest": {"type": "int"}}},
+
+  "rewardSetupEmpty": "Henüz ödül yok",
+  "@rewardSetupEmpty": {"description": "Havuz boşken özet satırı."},
+
+  "rewardSetupAdd": "Ödül ekle",
+  "@rewardSetupAdd": {"description": "Havuza yeni ödül ekleyen düğme."},
+
+  "rewardSetupRemove": "Ödülü sil",
+  "@rewardSetupRemove": {"description": "Ödül satırındaki silme düğmesinin ekran okuyucu etiketi."},
+
+  "rewardSetupName": "ÖDÜL",
+  "@rewardSetupName": {"description": "Ödül adı alanının etiketi."},
+
+  "rewardSetupNameHint": "Örn. Sinema bileti",
+  "@rewardSetupNameHint": {"description": "Ödül adı alanının ipucu."},
+
+  "rewardSetupCategory": "KATEGORİ",
+  "@rewardSetupCategory": {"description": "Ödül kategorisi seçiminin etiketi."},
+
+  "rewardSetupCost": "PUAN",
+  "@rewardSetupCost": {"description": "Ödül fiyatı sayacının etiketi."},
+
+  "rewardSetupFinish": "Kurulumu bitir",
+  "@rewardSetupFinish": {"description": "Kurulumu bitiren birincil eylem."},
+
+  "rewardSetupNeedOne": "En az bir ödül ekle",
+  "@rewardSetupNeedOne": {"description": "Havuz boşken birincil düğmenin yazısı."},
+
+  "commonDone": "Tamam",
+  "@commonDone": {"description": "Açık bir satırı ya da paneli kapatan onay."},
+
+  "commonPointsDown": "Puan azalt",
+  "@commonPointsDown": {"description": "Puan sayacının eksi düğmesi."},
+
+  "commonPointsUp": "Puan artır",
+  "@commonPointsUp": {"description": "Puan sayacının artı düğmesi."},
+
+  "rewardCategoryScreen": "Ekran",
+  "@rewardCategoryScreen": {"description": "Ödül kategorisi."},
+
+  "rewardCategoryFun": "Eğlence",
+  "@rewardCategoryFun": {"description": "Ödül kategorisi."},
+
+  "rewardCategoryTreat": "Lezzet",
+  "@rewardCategoryTreat": {"description": "Ödül kategorisi."},
+
+  "rewardCategorySocial": "Sosyal",
+  "@rewardCategorySocial": {"description": "Ödül kategorisi."},
+
+  "rewardCategoryFree": "Serbest",
+  "@rewardCategoryFree": {"description": "Ödül kategorisi."},
+
+  "failureRewardPoolEmpty": "En az bir ödül ekle.",
+  "@failureRewardPoolEmpty": {"description": "Boş ödül havuzu."},
+
+  "failureRewardNameEmpty": "Her ödülün bir adı olmalı.",
+  "@failureRewardNameEmpty": {"description": "Adı boş ödül."},
+
+  "failureRewardCostInvalid": "Ödül puanı izin verilen aralığın dışında.",
+  "@failureRewardCostInvalid": {"description": "Geçersiz ödül fiyatı."},
+
+  "failureInsufficientPoints": "Bu ödül için puanın yetmiyor.",
+  "@failureInsufficientPoints": {"description": "Yetersiz bakiye."},
+
+  "failureRedemptionNotPending": "Bu talep zaten yanıtlandı.",
+  "@failureRedemptionNotPending": {"description": "Karara bağlanmış talep."},
+
+  "deviceChildTitle": "Bu cihazı kim kullanıyor?",
+  "@deviceChildTitle": {"description": "Cihaz adımının başlığı."},
+
+  "deviceChildBody": "Uygulama seçtiğin çocuğun haritasını açar. Ebeveyn modundan her zaman diğerine geçebilirsin.",
+  "@deviceChildBody": {"description": "Cihaz adımının açıklaması."},
+
+  "deviceChildRowMeta": "{grade}. sınıf · {points} puan",
+  "@deviceChildRowMeta": {"description": "Çocuk satırındaki sınıf ve bakiye.", "placeholders": {"grade": {"type": "int"}, "points": {"type": "int"}}},
+
+  "deviceChildNote": "İki çocuğunun verileri ayrı tutulur; ebeveyn modunda hangisinin seçili olduğunu değiştirebilirsin.",
+  "@deviceChildNote": {"description": "Cihaz adımının altındaki not."},
+
+  "mapLeg": "{zone}. etap · {month}",
+  "@mapLeg": {"description": "Haritanın üst çubuğunda çocuğun adının altındaki satır.", "placeholders": {"zone": {"type": "int"}, "month": {"type": "String"}}},
+
+  "mapExamDay": "Sınav günü",
+  "@mapExamDay": {"description": "Haritanın tepesindeki sınav bayrağı."},
+
+  "mapExamMark": "LGS",
+  "@mapExamMark": {"description": "Sınav bayrağındaki yazı."},
+
+  "mapStopsAhead": "{count} durak ilerde",
+  "@mapStopsAhead": {"description": "Patikanın çizilmeyen kısmındaki kalan gün sayısı.", "placeholders": {"count": {"type": "int"}}},
+
+  "mapZone": "{number}. BÖLÜM",
+  "@mapZone": {"description": "Harita bölüm ayracı.", "placeholders": {"number": {"type": "int"}}},
+
+  "mapStopToday": "Bugün · {done}/{total}",
+  "@mapStopToday": {"description": "Bugünün durağı.", "placeholders": {"done": {"type": "int"}, "total": {"type": "int"}}},
+
+  "mapStopTodayDone": "Bugün · tamam · +{points}P",
+  "@mapStopTodayDone": {"description": "Tamamlanmış bugünün durağı.", "placeholders": {"points": {"type": "int"}}},
+
+  "mapStopEarned": "+{points}P",
+  "@mapStopEarned": {"description": "Tamamlanmış geçmiş gün.", "placeholders": {"points": {"type": "int"}}},
+
+  "mapStopProgress": "{done}/{total}",
+  "@mapStopProgress": {"description": "Yarım kalmış geçmiş gün.", "placeholders": {"done": {"type": "int"}, "total": {"type": "int"}}},
+
+  "mapStopSpecial": "Özel görev · {points}P",
+  "@mapStopSpecial": {"description": "Deneme sınavı olan gün.", "placeholders": {"points": {"type": "int"}}},
+
+  "mapStopTasks": "{count} görev · {points}P",
+  "@mapStopTasks": {"description": "Gelecek gün.", "placeholders": {"count": {"type": "int"}, "points": {"type": "int"}}},
+
+  "mapSheetToday": "Bugünün görevleri",
+  "@mapSheetToday": {"description": "Gün sayfası başlığı: bugün."},
+
+  "mapSheetTodayDone": "Bugün tamamlandı",
+  "@mapSheetTodayDone": {"description": "Gün sayfası başlığı: bugün bitti."},
+
+  "mapSheetSpecial": "Özel görev · {date}",
+  "@mapSheetSpecial": {"description": "Gün sayfası başlığı: deneme günü.", "placeholders": {"date": {"type": "String"}}},
+
+  "mapSheetDay": "{date}",
+  "@mapSheetDay": {"description": "Gün sayfası başlığı: başka bir gün.", "placeholders": {"date": {"type": "String"}}},
+
+  "mapSheetProgress": "{done}/{total} görev · toplam {points}P",
+  "@mapSheetProgress": {"description": "Gün sayfası alt satırı.", "placeholders": {"done": {"type": "int"}, "total": {"type": "int"}, "points": {"type": "int"}}},
+
+  "mapSheetUpcoming": "Sırası gelince açılacak",
+  "@mapSheetUpcoming": {"description": "Gelecek günün alt satırı."},
+
+  "mapSheetEmpty": "Bu gün için görev yok.",
+  "@mapSheetEmpty": {"description": "Görevi olmayan gün."},
+
+  "mapLockedTitle": "Bu durak henüz kilitli",
+  "@mapLockedTitle": {"description": "Kilitli gün kartı."},
+
+  "mapLockedHint": "{count} görev, {points}P",
+  "@mapLockedHint": {"description": "Kilitli gün kartındaki özet.", "placeholders": {"count": {"type": "int"}, "points": {"type": "int"}}},
+
+  "mapDayCompleteTitle": "Gün tamam! Yol bir durak ilerledi.",
+  "@mapDayCompleteTitle": {"description": "Gün bittiğinde gösterilen kutlama."},
+
+  "mapDayCompleteBody": "Kazandığın {points}P ödül havuzunda kullanılabilir.",
+  "@mapDayCompleteBody": {"description": "Gün bittiğinde gösterilen kutlama metni.", "placeholders": {"points": {"type": "int"}}},
+
+  "rewardsPoolLabel": "ÖDÜL HAVUZU",
+  "@rewardsPoolLabel": {"description": "Ödül sekmesindeki bakiye kartının etiketi."},
+
+  "rewardsSummary": "{count} ödül açık · en yakını {cheapest}P",
+  "@rewardsSummary": {"description": "Bakiye kartındaki özet.", "placeholders": {"count": {"type": "int"}, "cheapest": {"type": "int"}}},
+
+  "rewardsSummaryEmpty": "Henüz açık ödül yok",
+  "@rewardsSummaryEmpty": {"description": "Açık ödül yokken bakiye kartındaki özet."},
+
+  "rewardCategoryAll": "Tümü",
+  "@rewardCategoryAll": {"description": "Tüm kategorileri gösteren filtre."},
+
+  "rewardsReady": "Hazır · dokun ve iste",
+  "@rewardsReady": {"description": "İstenebilir ödül kartının alt satırı."},
+
+  "rewardsSaved": "%{percent} biriktin",
+  "@rewardsSaved": {"description": "Kilitli ödül kartının alt satırı.", "placeholders": {"percent": {"type": "int"}}},
+
+  "rewardsPending": "Onay bekliyor",
+  "@rewardsPending": {"description": "Onay bekleyen ödül kartının alt satırı."},
+
+  "rewardsEmptyCategory": "Bu kategoride ödül yok.",
+  "@rewardsEmptyCategory": {"description": "Seçili kategoride ödül yokken."},
+
+  "rewardsRequestsTitle": "İsteklerim",
+  "@rewardsRequestsTitle": {"description": "Çocuğun ödül isteklerinin başlığı."},
+
+  "rewardsRequestMeta": "{date} · {cost}P",
+  "@rewardsRequestMeta": {"description": "İstek satırının tarihi ve bedeli.", "placeholders": {"date": {"type": "String"}, "cost": {"type": "int"}}},
+
+  "redemptionPending": "Onay bekliyor",
+  "@redemptionPending": {"description": "İstek durumu."},
+
+  "redemptionApproved": "Onaylandı",
+  "@redemptionApproved": {"description": "İstek durumu."},
+
+  "redemptionRejected": "Şimdi olmaz",
+  "@redemptionRejected": {"description": "İstek durumu."},
+
+  "setupDoneToast": "Kurulum tamam · {tasks} görev, {rewards} ödül hazır",
+  "@setupDoneToast": {"description": "Kurulum bitince gösterilen bildirim.", "placeholders": {"tasks": {"type": "int"}, "rewards": {"type": "int"}}},
+
+  "setupDoneRewardsToast": "Kurulum tamam · {rewards} ödül hazır",
+  "@setupDoneRewardsToast": {"description": "Kurulum bitince, görev sayısı okunamadığında gösterilen bildirim.", "placeholders": {"rewards": {"type": "int"}}},
+
+  "rewardsRequestSent": "{reward} isteği gönderildi.",
+  "@rewardsRequestSent": {"description": "İstek gönderilince gösterilen bildirim.", "placeholders": {"reward": {"type": "String"}}},
+
+  "childGrade": "{grade}. sınıf",
+  "@childGrade": {"description": "Çocuğun sınıfı.", "placeholders": {"grade": {"type": "int"}}},
+
+  "progressTitle": "İlerleme",
+  "@progressTitle": {"description": "İlerleme sekmesinin başlığı."},
+
+  "progressLevelLabel": "SEVİYE",
+  "@progressLevelLabel": {"description": "Seviye kutusunun etiketi."},
+
+  "progressLevelGap": "Sonraki seviyeye {points} puan",
+  "@progressLevelGap": {"description": "Seviye kartındaki kalan puan.", "placeholders": {"points": {"type": "int"}}},
+
+  "levelRankRookie": "Çaylak Avcı",
+  "@levelRankRookie": {"description": "Seviye adı."},
+
+  "levelRankTracker": "İz Sürücü",
+  "@levelRankTracker": {"description": "Seviye adı."},
+
+  "levelRankMapMaster": "Harita Ustası",
+  "@levelRankMapMaster": {"description": "Seviye adı."},
+
+  "levelRankTreasureHunter": "Hazine Avcısı",
+  "@levelRankTreasureHunter": {"description": "Seviye adı."},
+
+  "progressStreakLabel": "SERİ",
+  "@progressStreakLabel": {"description": "Seri kutusunun etiketi."},
+
+  "progressStreakCaption": "gün üst üste",
+  "@progressStreakCaption": {"description": "Seri kutusunun alt satırı."},
+
+  "progressTotalLabel": "TOPLAM",
+  "@progressTotalLabel": {"description": "Toplam kutusunun etiketi."},
+
+  "progressTotalCaption": "tamamlanan görev",
+  "@progressTotalCaption": {"description": "Toplam kutusunun alt satırı."},
+
+  "progressWeekTitle": "Bu hafta",
+  "@progressWeekTitle": {"description": "Haftalık grafiğin başlığı."},
+
+  "progressMonthCaption": "Tamamlanan günler",
+  "@progressMonthCaption": {"description": "Aylık takvimin sağ üstündeki not."},
+
+  "progressAchievementsTitle": "Başarımlar",
+  "@progressAchievementsTitle": {"description": "Başarımlar kartının başlığı."},
+
+  "achievementWeekStreakTitle": "{days} gün seri",
+  "@achievementWeekStreakTitle": {"description": "Başarım.", "placeholders": {"days": {"type": "int"}}},
+
+  "achievementWeekStreakBody": "Bir hafta hiç kaçırmadın",
+  "@achievementWeekStreakBody": {"description": "Başarım açıklaması."},
+
+  "achievementFirstPracticeTitle": "İlk deneme sınavı",
+  "@achievementFirstPracticeTitle": {"description": "Başarım."},
+
+  "achievementFirstPracticeBody": "İlk deneme sınavını bitirdin",
+  "@achievementFirstPracticeBody": {"description": "Başarım açıklaması."},
+
+  "achievementPracticeMasterTitle": "Deneme ustası",
+  "@achievementPracticeMasterTitle": {"description": "Başarım."},
+
+  "achievementPracticeMasterBody": "{target} deneme çöz · {done}/{target}",
+  "@achievementPracticeMasterBody": {"description": "Başarım açıklaması ve ilerlemesi.", "placeholders": {"target": {"type": "int"}, "done": {"type": "int"}}},
+
+  "profileTitle": "Profil",
+  "@profileTitle": {"description": "Profil sekmesinin başlığı."},
+
+  "profileChildLine": "{grade}. sınıf · Seviye {level} · {rank}",
+  "@profileChildLine": {"description": "Profil kartındaki alt satır.", "placeholders": {"grade": {"type": "int"}, "level": {"type": "int"}, "rank": {"type": "String"}}},
+
+  "profileStatPoints": "puan",
+  "@profileStatPoints": {"description": "Profil istatistiği."},
+
+  "profileStatStreak": "gün seri",
+  "@profileStatStreak": {"description": "Profil istatistiği."},
+
+  "profileStatTasks": "görev",
+  "@profileStatTasks": {"description": "Profil istatistiği."},
+
+  "profileAppearanceTitle": "Görünüm",
+  "@profileAppearanceTitle": {"description": "Görünüm kartının başlığı."},
+
+  "profileAppearanceSummary": "{mode} · {accent}",
+  "@profileAppearanceSummary": {"description": "Görünüm kartının alt satırı.", "placeholders": {"mode": {"type": "String"}, "accent": {"type": "String"}}},
+
+  "profileParentMode": "Ebeveyn modu",
+  "@profileParentMode": {"description": "Ebeveyn tarafına giden satır."},
+
+  "profileParentModeBody": "Onaylar ve ödül havuzu · PIN gerekir",
+  "@profileParentModeBody": {"description": "Ebeveyn modu satırının açıklaması."},
+
+  "profileExamDate": "Sınav tarihi",
+  "@profileExamDate": {"description": "Sınav tarihi satırı."},
+
+  "profileLinkedParent": "Bağlı ebeveyn",
+  "@profileLinkedParent": {"description": "Bağlı ebeveyn satırı."},
+
+  "parentGateTitle": "Ebeveyn PIN'i",
+  "@parentGateTitle": {"description": "PIN kapısının başlığı."},
+
+  "parentGateBody": "Ebeveyn moduna geçmek için 4 haneli kodu gir.",
+  "@parentGateBody": {"description": "PIN kapısının açıklaması."},
+
+  "failurePinWrong": "PIN hatalı, tekrar dene.",
+  "@failurePinWrong": {"description": "Yanlış ebeveyn PIN'i."},
+
+  "parentExit": "Çık",
+  "@parentExit": {"description": "Ebeveyn modundan çıkış."},
+
+  "parentActiveChildLabel": "BU CİHAZDA SEÇİLİ ÇOCUK",
+  "@parentActiveChildLabel": {"description": "Çocuk seçicinin etiketi."},
+
+  "parentChildToday": "{name} · bugün",
+  "@parentChildToday": {"description": "Çocuğun bugün kartının başlığı.", "placeholders": {"name": {"type": "String"}}},
+
+  "parentChildTodayLine": "{done}/{total} görev bitti · seri {streak} gün",
+  "@parentChildTodayLine": {"description": "Çocuğun bugün kartının alt satırı.", "placeholders": {"done": {"type": "int"}, "total": {"type": "int"}, "streak": {"type": "int"}}},
+
+  "parentTabApprovals": "Onaylar",
+  "@parentTabApprovals": {"description": "Ebeveyn sekmesi."},
+
+  "parentTabPool": "Ödül havuzu",
+  "@parentTabPool": {"description": "Ebeveyn sekmesi."},
+
+  "parentApprovalMeta": "{child} · {date}",
+  "@parentApprovalMeta": {"description": "Onay kartındaki çocuk ve tarih.", "placeholders": {"child": {"type": "String"}, "date": {"type": "String"}}},
+
+  "parentApprovalAfter": "Onaylanırsa {points}P kalır",
+  "@parentApprovalAfter": {"description": "Onaydan sonra kalacak bakiye.", "placeholders": {"points": {"type": "int"}}},
+
+  "parentReject": "Şimdi olmaz",
+  "@parentReject": {"description": "İsteği reddet."},
+
+  "parentApprove": "Onayla",
+  "@parentApprove": {"description": "İsteği onayla."},
+
+  "parentNoApprovals": "Bekleyen istek yok",
+  "@parentNoApprovals": {"description": "Bekleyen istek olmadığında."},
+
+  "parentNoApprovalsBody": "{name} yeni bir ödül istediğinde burada görünecek.",
+  "@parentNoApprovalsBody": {"description": "Bekleyen istek olmadığında açıklama.", "placeholders": {"name": {"type": "String"}}},
+
+  "parentDayTasks": "{day} · görevler",
+  "@parentDayTasks": {"description": "Gün şeridinin başlığı.", "placeholders": {"day": {"type": "String"}}},
+
+  "parentTapToEdit": "düzenlemek için dokun",
+  "@parentTapToEdit": {"description": "Gün şeridinin notu."},
+
+  "parentToday": "Bugün",
+  "@parentToday": {"description": "Gün şeridi."},
+
+  "parentTomorrow": "Yarın",
+  "@parentTomorrow": {"description": "Gün şeridi."},
+
+  "parentDayChipSub": "{weekday} · {count} görev",
+  "@parentDayChipSub": {"description": "Gün şeridi kutusunun alt satırı.", "placeholders": {"weekday": {"type": "String"}, "count": {"type": "int"}}},
+
+  "parentTaskDone": "Bitti",
+  "@parentTaskDone": {"description": "Tamamlanmış görev."},
+
+  "parentTaskWaiting": "Bekliyor",
+  "@parentTaskWaiting": {"description": "Bekleyen görev."},
+
+  "parentTaskMeta": "{topic} · {time} · {points}P",
+  "@parentTaskMeta": {"description": "Ebeveyn görev satırının alt satırı.", "placeholders": {"topic": {"type": "String"}, "time": {"type": "String"}, "points": {"type": "int"}}},
+
+  "parentAddReward": "Yeni ödül ekle",
+  "@parentAddReward": {"description": "Havuza yeni ödül formunu açar."},
+
+  "parentPresetsLabel": "HAZIR ÖNERİLER",
+  "@parentPresetsLabel": {"description": "Hazır ödül önerilerinin etiketi."},
+
+  "parentNewReward": "Yeni ödül",
+  "@parentNewReward": {"description": "Yeni ödül formunun başlığı."},
+
+  "parentRewardNameHint": "Örn. Bisiklet turu",
+  "@parentRewardNameHint": {"description": "Ödül adı ipucu."},
+
+  "parentRewardCostLabel": "PUAN BEDELİ",
+  "@parentRewardCostLabel": {"description": "Ödül bedeli etiketi."},
+
+  "commonCancel": "Vazgeç",
+  "@commonCancel": {"description": "Yapılanı kaydetmeden kapat."},
+
+  "parentAddToPool": "Havuza ekle",
+  "@parentAddToPool": {"description": "Yeni ödülü havuza ekle."},
+
+  "parentPoolTitle": "Havuzdaki ödüller",
+  "@parentPoolTitle": {"description": "Ödül listesinin başlığı."},
+
+  "parentPoolOpen": "{count} açık",
+  "@parentPoolOpen": {"description": "Açık ödül sayısı.", "placeholders": {"count": {"type": "int"}}},
+
+  "parentRewardOn": "Açık",
+  "@parentRewardOn": {"description": "Açık ödül."},
+
+  "parentRewardOff": "Kapalı",
+  "@parentRewardOff": {"description": "Kapalı ödül."},
+
+  "parentRewardRowMeta": "{category} · {state}",
+  "@parentRewardRowMeta": {"description": "Havuz satırının alt satırı.", "placeholders": {"category": {"type": "String"}, "state": {"type": "String"}}},
+
+  "parentRemove": "Kaldır",
+  "@parentRemove": {"description": "Ödülü havuzdan kaldır."},
+
+  "parentTaskSheetNew": "Yeni görev",
+  "@parentTaskSheetNew": {"description": "Görev sayfasının başlığı."},
+
+  "parentTaskSheetEdit": "Görevi düzenle",
+  "@parentTaskSheetEdit": {"description": "Görev sayfasının başlığı."},
+
+  "parentTaskEndLabel": "BİTİŞ",
+  "@parentTaskEndLabel": {"description": "Tekrarlayan görevin bitişi."},
+
+  "taskSeriesOneWeek": "1 hafta",
+  "@taskSeriesOneWeek": {"description": "Seri bitişi."},
+
+  "taskSeriesTwoWeeks": "2 hafta",
+  "@taskSeriesTwoWeeks": {"description": "Seri bitişi."},
+
+  "taskSeriesFourWeeks": "4 hafta",
+  "@taskSeriesFourWeeks": {"description": "Seri bitişi."},
+
+  "taskSeriesUntilExam": "Sınava kadar",
+  "@taskSeriesUntilExam": {"description": "Seri bitişi."},
+
+  "parentTaskAdd": "Görevi ekle",
+  "@parentTaskAdd": {"description": "Yeni görevi kaydet."},
+
+  "parentTaskSave": "Kaydet",
+  "@parentTaskSave": {"description": "Düzenlenen görevi kaydet."},
+
+  "parentNoticeApproved": "İstek onaylandı.",
+  "@parentNoticeApproved": {"description": "Ebeveyn bildirimi."},
+
+  "parentNoticeRejected": "İstek şimdilik reddedildi.",
+  "@parentNoticeRejected": {"description": "Ebeveyn bildirimi."},
+
+  "parentNoticeRewardAdded": "Ödül havuza eklendi.",
+  "@parentNoticeRewardAdded": {"description": "Ebeveyn bildirimi."},
+
+  "parentNoticeTasksAdded": "Görev plana eklendi.",
+  "@parentNoticeTasksAdded": {"description": "Ebeveyn bildirimi."},
+
+  "parentNoticeTaskSaved": "Görev kaydedildi.",
+  "@parentNoticeTaskSaved": {"description": "Ebeveyn bildirimi."},
+
+  "parentNoticeTaskRemoved": "Görev silindi.",
+  "@parentNoticeTaskRemoved": {"description": "Ebeveyn bildirimi."},
+
+  "authContinueGoogle": "Google ile devam et",
+  "@authContinueGoogle": {"description": "Google ile giriş düğmesi."},
+
+  "authContinueApple": "Apple ile devam et",
+  "@authContinueApple": {"description": "Apple ile giriş düğmesi."},
+
+  "failurePlatformSignInFailed": "Giriş tamamlanamadı, tekrar dene.",
+  "@failurePlatformSignInFailed": {"description": "Platform girişi reddedildi."},
+
+  "failureSignInCancelled": "Giriş iptal edildi.",
+  "@failureSignInCancelled": {"description": "Giriş penceresi kapatıldı."},
+
+  "failureNetwork": "İnternet bağlantısı kurulamadı.",
+  "@failureNetwork": { "description": "Ağ hatası." },
+
+  "failureUnexpectedResponse": "Sunucudan beklenmeyen bir yanıt geldi.",
+  "@failureUnexpectedResponse": { "description": "Çözümlenemeyen yanıt." },
+
+  "failureExamDateMissing": "Sınav tarihi henüz belirlenmedi.",
+  "@failureExamDateMissing": { "description": "Yıla ait sınav tarihi yok." },
+
+  "failureStorageUnavailable": "Ayarların kaydedilemedi.",
+  "@failureStorageUnavailable": { "description": "Cihazın kendi deposu okunamadı ya da yazılamadı." },
+
+  "failureUnknown": "Bir şeyler ters gitti.",
+  "@failureUnknown": { "description": "Başka açıklaması olmayan hata." }
+}

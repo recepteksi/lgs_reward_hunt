@@ -48,7 +48,16 @@ ad-hoc, so it installs only on devices registered in the Apple Developer
 account: add a tester's UDID there (Firebase's iOS tester flow collects it),
 then the next build reaches them. TestFlight needs no UDID.
 
-## 5. Version numbers
+## 5. Release notes
+
+`CHANGELOG.md` is where a release is described, in the words a tester reads.
+Add what you changed under `## [Unreleased]` as part of the branch that changes
+it — `dart run tool/bump_version.dart <part>` closes that section with the new
+version and today's date. CI reads the top released section
+(`dart run tool/release_notes.dart`) and ships it as the Firebase App
+Distribution release notes and Google Play's "what's new" (500 characters).
+
+## 6. Version numbers
 
 The version name is semantic and lives once, in `pubspec.yaml`:
 
@@ -63,7 +72,7 @@ after `+` is never edited by hand: CI uses run number × 10 + attempt + 1000, so
 every upload to a store is higher than the last. A merge to `main` tags
 `v<version>-build.<n>`.
 
-## 6. Release: `dev` → `main`
+## 7. Release: `dev` → `main`
 
 Only when dev is what should reach testers of the real app. **Ask first.**
 

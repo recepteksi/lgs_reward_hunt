@@ -8,6 +8,11 @@ import 'dart:io';
 /// The build number after `+` is left alone: CI derives it from the run, so
 /// every upload is higher than the last without anyone counting.
 ///
+/// It also closes `## [Unreleased]` in `CHANGELOG.md`, stamping what is under
+/// it with the new version and today's date — the notes CI then ships to
+/// testers. An empty Unreleased section is a warning, not a failure: a release
+/// with nothing to say for it is unusual, but it is the author's call.
+///
 ///     dart run tool/bump_version.dart patch
 void main(List<String> arguments) {
   const List<String> parts = <String>['major', 'minor', 'patch'];
@@ -47,5 +52,41 @@ void main(List<String> arguments) {
       'version: $next${current.group(4) ?? ''}',
     ),
   );
+  _stampChangelog(next);
   stdout.writeln('version: $next');
 }
+
+/// Turns `## [Unreleased]` into `## [<version>] - <today>` and opens a fresh
+/// Unreleased section above it.
+void _stampChangelog(String version) {
+  final File changelog = File('CHANGELOG.md');
+  if (!changelog.existsSync()) return;
+
+  const String unreleased = '## [Unreleased]';
+  final String text = changelog.readAsStringSync();
+  final int start = text.indexOf(unreleased);
+  if (start == -1) {
+    stderr.writeln('CHANGELOG.md has no $unreleased section');
+    return;
+  }
+
+  final int next = text.indexOf('\n## ', start + unreleased.length);
+  final String notes = text
+      .substring(start + unreleased.length, next == -1 ? text.length : next)
+      .trim();
+  if (notes.isEmpty) {
+    stderr.writeln('warning: $unreleased is empty — $version ships no notes');
+  }
+
+  final DateTime today = DateTime.now();
+  final String date = '${today.year}-${_two(today.month)}-${_two(today.day)}';
+  changelog.writeAsStringSync(
+    text.replaceRange(
+      start,
+      start + unreleased.length,
+      '$unreleased\n\n## [$version] - $date',
+    ),
+  );
+}
+
+String _two(int number) => number.toString().padLeft(2, '0');

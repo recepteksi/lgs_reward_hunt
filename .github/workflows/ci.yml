@@ -25,6 +25,10 @@
 # from a tester is read back with
 # `flutter symbolize -i <trace> -d <symbols>/app.ios-arm64.symbols`.
 #
+# Release notes come from the top section of CHANGELOG.md
+# (`tool/release_notes.dart`), so Firebase testers and Play's "what's new" read
+# the same words a person wrote, not a commit subject.
+#
 # A distribution job whose secrets are not configured yet is skipped with a
 # notice rather than failed: the gate stays meaningful while a store is still
 # being set up. Secrets are listed in WORKFLOW.md.
@@ -125,6 +129,15 @@ jobs:
           printf 'storeFile=%s\nstorePassword=%s\nkeyAlias=%s\nkeyPassword=%s\n' \
             "$RUNNER_TEMP/upload.jks" "$STORE_PASSWORD" "$KEY_ALIAS" "$KEY_PASSWORD" > android/key.properties
       - run: flutter pub get
+      - name: Read the release notes
+        id: notes
+        run: |
+          {
+            echo 'text<<CHANGELOG_EOF'
+            dart run tool/release_notes.dart
+            echo
+            echo CHANGELOG_EOF
+          } >> "$GITHUB_OUTPUT"
       - name: Build APK
         run: |
           flutter build apk --flavor "$FLAVOR" --release \
@@ -138,7 +151,7 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
           groups: testers
           file: build/app/outputs/flutter-apk/app-${{ env.FLAVOR }}-release.apk
-          releaseNotes: ${{ github.event.head_commit.message }}
+          releaseNotes: ${{ steps.notes.outputs.text }}
       - name: Keep the Android symbols
         uses: actions/upload-artifact@v4
         with:
@@ -152,6 +165,11 @@ jobs:
           flutter build appbundle --flavor prod --release \
             --build-number "$BUILD_NUMBER" \
             --obfuscate --split-debug-info=build/symbols/android
+      - name: Write Play's what's new
+        if: needs.plan.outputs.play == 'true'
+        run: |
+          mkdir -p "$RUNNER_TEMP/whatsnew"
+          dart run tool/release_notes.dart > "$RUNNER_TEMP/whatsnew/whatsnew-tr-TR"
       - name: Google Play internal testing
         if: needs.plan.outputs.play == 'true'
         uses: r0adkll/upload-google-play@v1
@@ -161,6 +179,7 @@ jobs:
           releaseFiles: build/app/outputs/bundle/prodRelease/app-prod-release.aab
           track: internal
           status: ${{ vars.PLAY_RELEASE_STATUS || 'completed' }}
+          whatsNewDirectory: ${{ runner.temp }}/whatsnew
 
   ios:
     name: iOS ${{ needs.plan.outputs.flavor }} → TestFlight + Firebase
@@ -195,6 +214,15 @@ jobs:
         run: |
           dart pub global activate flutterfire_cli
           echo "$HOME/.pub-cache/bin" >> "$GITHUB_PATH"
+      - name: Read the release notes
+        id: notes
+        run: |
+          {
+            echo 'text<<CHANGELOG_EOF'
+            dart run tool/release_notes.dart
+            echo
+            echo CHANGELOG_EOF
+          } >> "$GITHUB_OUTPUT"
       - name: Build Flutter for iOS
         run: |
           flutter build ios --flavor "$FLAVOR" --release --no-codesign \
@@ -249,7 +277,7 @@ jobs:
         env:
           CREDENTIALS: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
           APP_ID: ${{ env.FLAVOR == 'prod' && '1:451080433558:ios:d350473a3acebb96ca37b7' || '1:451080433558:ios:264abff819e4e3b4ca37b7' }}
-          NOTES: ${{ github.event.head_commit.message }}
+          NOTES: ${{ steps.notes.outputs.text }}
           IPA: ${{ steps.adhoc.outputs.ipa }}
         run: |
           printf '%s' "$CREDENTIALS" > "$RUNNER_TEMP/firebase-credentials.json"

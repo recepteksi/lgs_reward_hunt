@@ -12,6 +12,13 @@
 # — a re-run included — is higher than the last and than any build uploaded by
 # hand before CI existed. The Firebase client config is not in the public repo;
 # every job restores it from the FIREBASE_CONFIG_ARCHIVE secret.
+# Every shipped build is obfuscated (`--obfuscate --split-debug-info`), so the
+# Dart in the package carries no readable class or method names. The symbols
+# that map a crash back to source are NOT shipped: they are kept as a build
+# artifact for 90 days, one folder per platform and build number. A stack trace
+# from a tester is read back with
+# `flutter symbolize -i <trace> -d <symbols>/app.ios-arm64.symbols`.
+#
 # A distribution job whose secrets are not configured yet is skipped with a
 # notice rather than failed: the gate stays meaningful while a store is still
 # being set up. Secrets are listed in WORKFLOW.md.
@@ -113,7 +120,10 @@ jobs:
             "$RUNNER_TEMP/upload.jks" "$STORE_PASSWORD" "$KEY_ALIAS" "$KEY_PASSWORD" > android/key.properties
       - run: flutter pub get
       - name: Build APK
-        run: flutter build apk --flavor "$FLAVOR" --release --build-number "$BUILD_NUMBER"
+        run: |
+          flutter build apk --flavor "$FLAVOR" --release \
+            --build-number "$BUILD_NUMBER" \
+            --obfuscate --split-debug-info=build/symbols/android
       - name: Firebase App Distribution
         if: needs.plan.outputs.firebase == 'true'
         uses: wzieba/Firebase-Distribution-Github-Action@v1
@@ -123,9 +133,19 @@ jobs:
           groups: testers
           file: build/app/outputs/flutter-apk/app-${{ env.FLAVOR }}-release.apk
           releaseNotes: ${{ github.event.head_commit.message }}
+      - name: Keep the Android symbols
+        uses: actions/upload-artifact@v4
+        with:
+          name: symbols-android-${{ needs.plan.outputs.flavor }}-${{ needs.plan.outputs.build_number }}
+          path: build/symbols/android
+          retention-days: 90
+          if-no-files-found: error
       - name: Build AAB
         if: needs.plan.outputs.play == 'true'
-        run: flutter build appbundle --flavor prod --release --build-number "$BUILD_NUMBER"
+        run: |
+          flutter build appbundle --flavor prod --release \
+            --build-number "$BUILD_NUMBER" \
+            --obfuscate --split-debug-info=build/symbols/android
       - name: Google Play internal testing
         if: needs.plan.outputs.play == 'true'
         uses: r0adkll/upload-google-play@v1
@@ -163,7 +183,10 @@ jobs:
           printf '%s' "$KEY_P8" > "$RUNNER_TEMP/keys/AuthKey_${ASC_KEY_ID}.p8"
       - run: flutter pub get
       - name: Build Flutter for iOS
-        run: flutter build ios --flavor "$FLAVOR" --release --no-codesign --build-number "$BUILD_NUMBER"
+        run: |
+          flutter build ios --flavor "$FLAVOR" --release --no-codesign \
+            --build-number "$BUILD_NUMBER" \
+            --obfuscate --split-debug-info=build/symbols/ios
       - name: Archive (cloud-managed signing)
         run: |
           xcodebuild archive \
@@ -173,6 +196,13 @@ jobs:
             -allowProvisioningUpdates \
             -authenticationKeyPath "$RUNNER_TEMP/keys/AuthKey_${ASC_KEY_ID}.p8" \
             -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID"
+      - name: Keep the iOS symbols
+        uses: actions/upload-artifact@v4
+        with:
+          name: symbols-ios-${{ needs.plan.outputs.flavor }}-${{ needs.plan.outputs.build_number }}
+          path: build/symbols/ios
+          retention-days: 90
+          if-no-files-found: error
       - name: Export and upload to TestFlight
         run: |
           xcodebuild -exportArchive \

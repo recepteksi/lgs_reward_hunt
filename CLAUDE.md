@@ -120,6 +120,8 @@ mirror lib (`test/<layer>/<feature>/`). ⚙
 
 ```bash
 flutter run --flavor dev                                  # or prod
+flutter build appbundle --flavor prod --release \\
+  --obfuscate --split-debug-info=build/symbols/android    # how CI ships every build
 dart run tool/generate_project_map.dart                   # after moving/adding files
 dart run build_runner build --delete-conflicting-outputs  # after @injectable / @JsonSerializable
 flutter gen-l10n                                          # after editing app_tr.arb

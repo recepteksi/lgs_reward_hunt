@@ -59,6 +59,21 @@ to TestFlight, then tags `v<version>-build.<n>`. Bump `version:` in
 `pubspec.yaml` for a new version name; build numbers are automatic
 (run number × 10 + attempt + 1000).
 
+## Obfuscated builds
+
+Every build CI ships is obfuscated: `--obfuscate --split-debug-info=build/symbols/<platform>`
+strips Dart class and method names from the package. The symbol files that read
+a crash back are kept as a run artifact (`symbols-<platform>-<flavor>-<build>`,
+90 days) and never shipped. To read a tester's stack trace:
+
+```bash
+gh run download <run-id> -n symbols-ios-prod-1234
+flutter symbolize -i trace.txt -d app.ios-arm64.symbols
+```
+
+Locally the same flags apply — see the release build commands in CLAUDE.md.
+Android code shrinking (R8) is on by default for a release build.
+
 ## Secrets (GitHub → Settings → Secrets and variables → Actions)
 
 | Secret | What | Used by |

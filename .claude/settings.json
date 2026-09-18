@@ -4,7 +4,7 @@
       "Read(./**/*.g.dart)",
       "Read(./lib/application/di/injection.config.dart)",
       "Read(./lib/presentation/base/ui/values/l10n/generated/**)",
-      "Read(./build/**)",
+      "Read(./build/**/*.dart)",
       "Read(./android/build/**)",
       "Read(./ios/Pods/**)",
       "Read(./.dart_tool/**)",

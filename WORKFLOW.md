@@ -42,7 +42,11 @@ gh pr merge <number> --squash --delete-branch
 ```
 
 **A merge to `dev` ships a dev build:** the Android dev APK to Firebase App
-Distribution (group `testers`) and the iOS dev app to TestFlight, in parallel.
+Distribution (group `testers`), and the iOS dev app to TestFlight *and* Firebase
+App Distribution — one archive exported twice. The iOS build on Firebase is
+ad-hoc, so it installs only on devices registered in the Apple Developer
+account: add a tester's UDID there (Firebase's iOS tester flow collects it),
+then the next build reaches them. TestFlight needs no UDID.
 
 ## 5. Release: `dev` → `main`
 
@@ -55,7 +59,7 @@ gh pr merge <number> --merge
 
 **A merge to `main` ships prod:** the Android prod APK to Firebase App
 Distribution, the prod AAB to Google Play internal testing, and the iOS prod app
-to TestFlight, then tags `v<version>-build.<n>`. Bump `version:` in
+to TestFlight and Firebase, then tags `v<version>-build.<n>`. Bump `version:` in
 `pubspec.yaml` for a new version name; build numbers are automatic
 (run number × 10 + attempt + 1000).
 

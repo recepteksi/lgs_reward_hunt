@@ -3,10 +3,16 @@
 #
 #   PR → dev / main   gate only
 #   push dev          gate → Android dev APK to Firebase App Distribution
-#                          → iOS dev build to TestFlight          (in parallel)
+#                          → iOS dev build to TestFlight AND Firebase
 #   push main         gate → Android prod APK to Firebase App Distribution
 #                          → Android prod AAB to Google Play, internal testing
-#                          → iOS prod build to TestFlight          (in parallel)
+#                          → iOS prod build to TestFlight AND Firebase
+#
+# One archive, exported twice: `app-store-connect` uploads itself to App Store
+# Connect, `release-testing` (ad-hoc) writes an IPA for Firebase App
+# Distribution. An ad-hoc build only installs on devices registered in the Apple
+# Developer account, so that half is a warning when no device is registered
+# yet — TestFlight still shipped.
 #
 # Build numbers are run number × 10 + attempt, plus an offset, so every upload
 # — a re-run included — is higher than the last and than any build uploaded by
@@ -157,7 +163,7 @@ jobs:
           status: ${{ vars.PLAY_RELEASE_STATUS || 'completed' }}
 
   ios:
-    name: iOS ${{ needs.plan.outputs.flavor }} → TestFlight
+    name: iOS ${{ needs.plan.outputs.flavor }} → TestFlight + Firebase
     needs: plan
     if: needs.plan.outputs.testflight == 'true'
     runs-on: macos-latest
@@ -219,6 +225,32 @@ jobs:
             -allowProvisioningUpdates \
             -authenticationKeyPath "$RUNNER_TEMP/keys/AuthKey_${ASC_KEY_ID}.p8" \
             -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID"
+      - name: Export an ad-hoc IPA for Firebase
+        id: adhoc
+        if: needs.plan.outputs.firebase == 'true'
+        run: |
+          if xcodebuild -exportArchive \
+            -archivePath "$RUNNER_TEMP/Runner.xcarchive" \
+            -exportOptionsPlist ios/ExportOptionsAdHoc.plist \
+            -exportPath "$RUNNER_TEMP/adhoc" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$RUNNER_TEMP/keys/AuthKey_${ASC_KEY_ID}.p8" \
+            -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID"
+          then
+            ipa=$(ls "$RUNNER_TEMP/adhoc"/*.ipa | head -n1)
+            echo "ipa=$ipa" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::Ad-hoc export failed — register a tester device in the Apple Developer account, or the build only reaches TestFlight"
+          fi
+      - name: Firebase App Distribution (iOS)
+        if: steps.adhoc.outputs.ipa != ''
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{ env.FLAVOR == 'prod' && '1:451080433558:ios:d350473a3acebb96ca37b7' || '1:451080433558:ios:264abff819e4e3b4ca37b7' }}
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+          groups: testers
+          file: ${{ steps.adhoc.outputs.ipa }}
+          releaseNotes: ${{ github.event.head_commit.message }}
 
   tag:
     name: Tag the release

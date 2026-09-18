@@ -44,6 +44,8 @@ import 'package:lgs_reward_hunt/application/auth/use_cases/set_parent_pin_use_ca
     as _i739;
 import 'package:lgs_reward_hunt/application/auth/use_cases/sign_in_use_case.dart'
     as _i886;
+import 'package:lgs_reward_hunt/application/auth/use_cases/sign_out_use_case.dart'
+    as _i885;
 import 'package:lgs_reward_hunt/application/auth/use_cases/sign_up_use_case.dart'
     as _i433;
 import 'package:lgs_reward_hunt/application/auth/use_cases/verify_parent_pin_use_case.dart'
@@ -196,6 +198,13 @@ _i174.GetIt init(
   );
   gh.lazySingleton<_i840.ExamScheduleRepositoryInterface>(
     () => const _i916.ExamScheduleRepository(),
+  );
+  gh.factory<_i885.SignOutUseCase>(
+    () => _i885.SignOutUseCase(
+      gh<_i784.SessionRepositoryInterface>(),
+      gh<_i958.PlatformSignInInterface>(),
+      gh<_i567.ChildSnapshotCacheInterface>(),
+    ),
   );
   gh.factory<_i193.ReadChildSnapshotUseCase>(
     () =>
@@ -491,19 +500,6 @@ _i174.GetIt init(
       gh<_i193.ReadChildSnapshotUseCase>(),
     ),
   );
-  gh.factory<_i170.ProgressCubit>(
-    () => _i170.ProgressCubit(
-      gh<_i899.LoadChildHeaderUseCase>(),
-      gh<_i1042.LoadProgressUseCase>(),
-      gh<_i193.ReadChildSnapshotUseCase>(),
-    ),
-  );
-  gh.factory<_i500.DeviceChildCubit>(
-    () => _i500.DeviceChildCubit(
-      gh<_i651.LoadDeviceChoiceUseCase>(),
-      gh<_i95.ChooseDeviceChildUseCase>(),
-    ),
-  );
   gh.factory<_i975.ParentCubit>(
     () => _i975.ParentCubit(
       gh<_i388.LoadParentDashboardUseCase>(),
@@ -515,6 +511,20 @@ _i174.GetIt init(
       gh<_i722.AddRewardUseCase>(),
       gh<_i990.UpdateRewardUseCase>(),
       gh<_i942.RemoveRewardUseCase>(),
+      gh<_i885.SignOutUseCase>(),
+    ),
+  );
+  gh.factory<_i170.ProgressCubit>(
+    () => _i170.ProgressCubit(
+      gh<_i899.LoadChildHeaderUseCase>(),
+      gh<_i1042.LoadProgressUseCase>(),
+      gh<_i193.ReadChildSnapshotUseCase>(),
+    ),
+  );
+  gh.factory<_i500.DeviceChildCubit>(
+    () => _i500.DeviceChildCubit(
+      gh<_i651.LoadDeviceChoiceUseCase>(),
+      gh<_i95.ChooseDeviceChildUseCase>(),
     ),
   );
   return getIt;

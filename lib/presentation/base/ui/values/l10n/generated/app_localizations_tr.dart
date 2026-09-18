@@ -936,6 +936,9 @@ class AppL10nTr extends AppL10n {
   String get parentExit => 'Çık';
 
   @override
+  String get parentSignOut => 'Hesaptan çıkış yap';
+
+  @override
   String get parentActiveChildLabel => 'BU CİHAZDA SEÇİLİ ÇOCUK';
 
   @override

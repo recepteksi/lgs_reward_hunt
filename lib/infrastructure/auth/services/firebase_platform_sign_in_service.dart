@@ -31,6 +31,9 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 ///
 /// A sheet the parent closes answers `FailureMessageKey.signInCancelled`; any
 /// other refusal `FailureMessageKey.platformSignInFailed`.
+///
+/// [signOut] never fails. A parent who asked to sign out is signed out of the
+/// app whether or not the platform heard about it.
 @LazySingleton(as: PlatformSignInInterface)
 final class FirebasePlatformSignInService implements PlatformSignInInterface {
   FirebasePlatformSignInService();
@@ -92,8 +95,12 @@ final class FirebasePlatformSignInService implements PlatformSignInInterface {
 
   @override
   Future<void> signOut() async {
-    await FirebaseAuth.instance.signOut();
-    if (_googleReady) await GoogleSignIn.instance.signOut();
+    try {
+      await FirebaseAuth.instance.signOut();
+      if (_googleReady) await GoogleSignIn.instance.signOut();
+    } catch (_) {
+      return;
+    }
   }
 
   Future<(UserCredential, String, String)> _google() async {

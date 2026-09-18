@@ -835,6 +835,9 @@
   "parentExit": "Çık",
   "@parentExit": {"description": "Ebeveyn modundan çıkış."},
 
+  "parentSignOut": "Hesaptan çıkış yap",
+  "@parentSignOut": {"description": "Ebeveynin cihazdaki oturumu kapatması; çıkış ikonunun okunan adı."},
+
   "parentActiveChildLabel": "BU CİHAZDA SEÇİLİ ÇOCUK",
   "@parentActiveChildLabel": {"description": "Çocuk seçicinin etiketi."},
 

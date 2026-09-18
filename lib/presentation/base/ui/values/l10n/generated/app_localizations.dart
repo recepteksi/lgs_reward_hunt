@@ -1707,6 +1707,12 @@ abstract class AppL10n {
   /// **'Çık'**
   String get parentExit;
 
+  /// Ebeveynin cihazdaki oturumu kapatması; çıkış ikonunun okunan adı.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hesaptan çıkış yap'**
+  String get parentSignOut;
+
   /// Çocuk seçicinin etiketi.
   ///
   /// In tr, this message translates to:

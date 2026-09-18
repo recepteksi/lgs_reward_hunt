@@ -12,6 +12,15 @@ Versions: [semantic](https://semver.org/lang/tr/).
 
 ## [Unreleased]
 
+### Eklendi
+
+- Ebeveyn sayfasında "Hesaptan çıkış yap" düğmesi. Sayfa yüklenemese bile görünür.
+
+### Düzeltildi
+
+- Yeni hesap açıp uygulamayı kapatınca veriler kayboluyordu ve her sayfa hata veriyordu. Test verileri artık cihazda saklanıyor.
+- Profil yüklenemediğinde tema ayarı ve ebeveyn modu da kayboluyordu. Artık hata olsa da görünüyorlar.
+
 ## [1.1.0] - 2026-09-18
 
 ### Eklendi

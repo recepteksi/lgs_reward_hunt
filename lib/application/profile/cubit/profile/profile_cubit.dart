@@ -40,7 +40,7 @@ final class ProfileCubit extends Cubit<ProfileState> {
 
     switch (result) {
       case Left(:final value):
-        if (!quietly) emit(ProfileFailed(value));
+        if (!quietly) emit(ProfileFailed(value, _readSnapshot()));
       case Right(:final value):
         emit(ProfileReady(value));
     }

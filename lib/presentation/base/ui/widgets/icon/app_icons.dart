@@ -16,6 +16,9 @@
 ///
 /// [shield] is the parent's door: it is a guard, not a lock, because the parent
 /// is the person who set the tasks rather than an obstacle to them.
+///
+/// [signOut] is a door with an arrow leaving it. It is only on the parent's
+/// side, because signing out is the parent's action.
 abstract final class AppIcons {
   static const String home =
       '<svg viewBox="0 0 24 24"><path d="M11.3 3.2a1.1 1.1 0 0 1 1.4 0l7.6 6.2c.3.2.4.5.4.8V20a1.6 1.6 0 0 1-1.6 1.6h-4.4v-6.2H9.3v6.2H4.9A1.6 1.6 0 0 1 3.3 20v-9.8c0-.3.1-.6.4-.8z" fill="currentColor"/></svg>';
@@ -64,6 +67,9 @@ abstract final class AppIcons {
 
   static const String locked =
       '<svg viewBox="0 0 18 18"><rect x="3" y="8" width="12" height="8" rx="2" fill="currentColor"/><path d="M6 8V6a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+
+  static const String signOut =
+      '<svg viewBox="0 0 24 24"><path d="M9.6 4.2H6a1.8 1.8 0 0 0-1.8 1.8v12A1.8 1.8 0 0 0 6 19.8h3.6M15.4 16.4 19.8 12l-4.4-4.4M19.6 12H9.4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
   static const String clock =
       '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M12 6.8v5.5l3.4 2" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>';

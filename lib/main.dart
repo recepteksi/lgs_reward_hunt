@@ -1,6 +1,8 @@
+import 'package:either_dart/either.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:lgs_reward_hunt/application/auth/use_cases/sign_out_use_case.dart';
 import 'package:lgs_reward_hunt/application/di/injection.dart';
 import 'package:lgs_reward_hunt/application/session/use_cases/read_session_use_case.dart';
 import 'package:lgs_reward_hunt/application/settings/cubit/appearance/appearance_cubit.dart';
@@ -44,6 +46,11 @@ import 'package:lgs_reward_hunt/presentation/router/app_route_paths.dart';
 /// mock backend's accounts; [_debugAccounts] reads them straight from the
 /// store, which only this file may see from `presentation`'s side.
 ///
+/// The mock backend keeps its store on the device, as a server keeps its rows,
+/// so an account made in one launch is still there in the next. A session that
+/// names a parent the store does not have is signed out before the first
+/// frame, instead of opening on pages that can only fail.
+///
 /// The stored session decides which screen the app opens on. It is read here
 /// rather than by a screen, because a screen that asked "should I be showing?"
 /// would already be the wrong one; a device that has never been signed in
@@ -61,12 +68,18 @@ Future<void> main() async {
 
   await configureDependencies();
 
-  if (AppConfig.useMockBackend) await getIt<DioClient>().initMock();
+  if (AppConfig.useMockBackend) {
+    await getIt<DioClient>().initMock(keepOnDevice: true);
+  }
 
   final AppearanceCubit appearance = getIt<AppearanceCubit>();
   await appearance.restore();
 
-  final session = await getIt<ReadSessionUseCase>()();
+  Either<Failure, SessionValueObject> session =
+      await getIt<ReadSessionUseCase>()();
+  if (AppConfig.useMockBackend && _isStale(session)) {
+    session = await getIt<SignOutUseCase>()();
+  }
 
   runApp(
     App(
@@ -86,6 +99,23 @@ Future<void> main() async {
       ),
     ),
   );
+}
+
+/// Whether the stored session names a parent the mock backend does not have.
+/// This happens when the device kept the session but lost the store, for
+/// example an old build's store that no longer parses. Every request would
+/// then fail, so `main` signs out and the app opens on the intro.
+bool _isStale(Either<Failure, SessionValueObject> session) {
+  final String? parentId = session.fold(
+    (Failure _) => null,
+    (SessionValueObject value) => value.parentId,
+  );
+  return parentId != null &&
+      getIt<DioClient>().mockStore.findById(
+            getIt<DioClient>().mockStore.parents,
+            parentId,
+          ) ==
+          null;
 }
 
 /// Every parent in the mock backend with their credentials and children, the

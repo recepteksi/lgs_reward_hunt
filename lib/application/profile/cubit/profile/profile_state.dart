@@ -13,11 +13,15 @@ final class ProfileLoading extends ProfileState {
   final ChildSnapshotReadModel snapshot;
 }
 
-/// The profile could not be read; the tab is a retry.
+/// The profile could not be read. The part that needs a load is a retry, and
+/// the rest of the tab stays: [snapshot] for the bar, plus the appearance
+/// setting and the way into parent mode, which need no server.
 final class ProfileFailed extends ProfileState {
-  const ProfileFailed(this.failure);
+  const ProfileFailed(this.failure, this.snapshot);
 
   final Failure failure;
+
+  final ChildSnapshotReadModel snapshot;
 }
 
 /// The profile.

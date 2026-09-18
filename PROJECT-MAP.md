@@ -1,6 +1,6 @@
 # Project map
 
-**GENERATED — do not edit.** `dart run tool/generate_project_map.dart` rewrites it; `dart run tool/check_structure.dart` fails while it is stale. Rules: [CLAUDE.md](CLAUDE.md). 458 source files.
+**GENERATED — do not edit.** `dart run tool/generate_project_map.dart` rewrites it; `dart run tool/check_structure.dart` fails while it is stale. Rules: [CLAUDE.md](CLAUDE.md). 459 source files.
 
 `core` → nothing · `domain` → core · `application` → domain · `infrastructure` → domain · `presentation` → application, domain. `main.dart` and `application/di/` are the composition root.
 
@@ -34,7 +34,7 @@ Kind folders hold one suffix each: entities · value_objects · read_models · e
 - `infrastructure/config/` _(2)_ — firebase
 - `infrastructure/network/` _(20)_ — crypto, dto, interceptors, mock
 - `presentation/base/` _(99)_ — ui
-- `presentation/debug/` _(19)_ — pages
+- `presentation/debug/` _(20)_ — pages, widgets
 - `presentation/router/` _(7)_ — arguments
 - `presentation/base/ui/widgets/` — app_bar, avatar, badge, buttons, card, feedback, icon, input, map, navigation, progress, reward, scaffold, section, state, task, text
 

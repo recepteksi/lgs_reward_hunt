@@ -9,7 +9,9 @@ import 'package:lgs_reward_hunt/domain/session/value_objects/session_value_objec
 import 'package:lgs_reward_hunt/infrastructure/config/app_config.dart';
 import 'package:lgs_reward_hunt/infrastructure/config/flavor_enum.dart';
 import 'package:lgs_reward_hunt/infrastructure/network/dio_client.dart';
+import 'package:lgs_reward_hunt/infrastructure/network/mock/mock_store.dart';
 import 'package:lgs_reward_hunt/presentation/app.dart';
+import 'package:lgs_reward_hunt/presentation/debug/widgets/debug_accounts_overlay.dart';
 import 'package:lgs_reward_hunt/presentation/router/app_route_paths.dart';
 
 /// The entry point for every flavor, and the only file outside a layer.
@@ -37,6 +39,10 @@ import 'package:lgs_reward_hunt/presentation/router/app_route_paths.dart';
 /// While there is no backend, the mock is installed behind Dio here too —
 /// before anything can send a request — because it is configuration, and this
 /// is the one file that sees both the flag and the client.
+///
+/// A dev build gets a see-through button over every screen that lists the
+/// mock backend's accounts; [_debugAccounts] reads them straight from the
+/// store, which only this file may see from `presentation`'s side.
 ///
 /// The stored session decides which screen the app opens on. It is read here
 /// rather than by a screen, because a screen that asked "should I be showing?"
@@ -67,6 +73,9 @@ Future<void> main() async {
       title: AppConfig.appTitle,
       appearance: appearance,
       showDebugBanner: AppConfig.isDevelopment,
+      debugAccounts: AppConfig.isDevelopment && AppConfig.useMockBackend
+          ? _debugAccounts
+          : null,
       startAt: session.fold(
         (Failure _) => AppRoutePaths.intro.path(),
         (SessionValueObject value) => !value.isSignedIn
@@ -77,4 +86,41 @@ Future<void> main() async {
       ),
     ),
   );
+}
+
+/// Every parent in the mock backend with their credentials and children, the
+/// signed-in one marked, read fresh each time the dev button opens.
+List<Map<String, String>> _debugAccounts() {
+  final DioClient client = getIt<DioClient>();
+  final MockStore store = client.mockStore;
+  String text(Object? value) => value?.toString() ?? '-';
+
+  return <Map<String, String>>[
+    for (final Map<String, Object?> parent in store.parents)
+      <String, String>{
+        if (_isSignedIn(client, store, parent))
+          DebugAccountsOverlay.currentMarker: 'true',
+        'parent': text(parent['name']),
+        'email': text(parent['email']),
+        'password': text(parent['password']),
+        'pin': text(parent['pin']),
+        'linkCode': text(parent['linkCode']),
+        for (final Map<String, Object?> child in store.children.where(
+          (Map<String, Object?> row) => row['parentId'] == parent['id'],
+        ))
+          'child ${text(child['id'])}':
+              '${text(child['name'])} · grade ${text(child['gradeLevel'])}',
+      },
+  ];
+}
+
+bool _isSignedIn(
+  DioClient client,
+  MockStore store,
+  Map<String, Object?> parent,
+) {
+  final String? id = client.currentAccountId;
+  return id != null &&
+      (parent['id'] == id ||
+          store.childIdsOf(parent['id']! as String).contains(id));
 }

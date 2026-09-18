@@ -12,8 +12,11 @@ Versions: [semantic](https://semver.org/lang/tr/).
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-09-18
+
 ### Eklendi
 
+- Dev sürümünde her ekranda yarı saydam bir test düğmesi: basınca test hesaplarının e-posta, şifre, PIN ve bağlantı kodları görünür; satıra dokunmak değeri kopyalar.
 - Sürüm notları bu dosyadan geliyor: Firebase ve Play'de testçilerin okuduğu metin `CHANGELOG.md`'nin en üst sürümü.
 
 ## [1.0.0] - 2026-09-18

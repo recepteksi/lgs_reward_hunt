@@ -4,6 +4,7 @@ import 'package:lgs_reward_hunt/application/settings/cubit/appearance/appearance
 import 'package:lgs_reward_hunt/presentation/base/ui/values/app_accent_enum.dart';
 import 'package:lgs_reward_hunt/presentation/base/ui/values/app_theme.dart';
 import 'package:lgs_reward_hunt/presentation/base/ui/values/l10n/generated/app_localizations.dart';
+import 'package:lgs_reward_hunt/presentation/debug/widgets/debug_accounts_overlay.dart';
 import 'package:lgs_reward_hunt/presentation/router/app_router.dart';
 
 /// The application shell: theme, localization and routing, and nothing else.
@@ -35,6 +36,10 @@ import 'package:lgs_reward_hunt/presentation/router/app_router.dart';
 /// The localization delegates carry `flutter_localizations`' own as well as the
 /// generated one, so Material's strings are translated too.
 ///
+/// [debugAccounts] reads the backend's accounts for the see-through
+/// [DebugAccountsOverlay] button; `main` hands it in for the dev flavor only,
+/// and without it no button is built.
+///
 /// [appearance] is the app-wide appearance Cubit. `main` hands it in because
 /// only the composition root and a page's `BlocProvider` may reach `getIt`.
 class App extends StatelessWidget {
@@ -43,6 +48,7 @@ class App extends StatelessWidget {
     required this.showDebugBanner,
     required this.startAt,
     required this.appearance,
+    this.debugAccounts,
     super.key,
   });
 
@@ -53,6 +59,8 @@ class App extends StatelessWidget {
   final String startAt;
 
   final AppearanceCubit appearance;
+
+  final List<Map<String, String>> Function()? debugAccounts;
 
   @override
   Widget build(BuildContext context) {
@@ -74,9 +82,18 @@ class App extends StatelessWidget {
             localizationsDelegates: AppL10n.localizationsDelegates,
             supportedLocales: AppL10n.supportedLocales,
             routerConfig: AppRouter.of(startAt),
+            builder: _withDebugAccounts,
           );
         },
       ),
     );
+  }
+
+  Widget _withDebugAccounts(BuildContext context, Widget? child) {
+    final List<Map<String, String>> Function()? read = debugAccounts;
+    final Widget page = child ?? const SizedBox.shrink();
+    return read == null
+        ? page
+        : DebugAccountsOverlay(readAccounts: read, child: page);
   }
 }

@@ -58,13 +58,22 @@ void main(List<String> arguments) {
 
 /// Turns `## [Unreleased]` into `## [<version>] - <today>` and opens a fresh
 /// Unreleased section above it.
+///
+/// The heading is matched as a whole line: the changelog's own introduction
+/// names `## [Unreleased]` in prose, and stamping that mention split the
+/// sentence and left the real section open.
 void _stampChangelog(String version) {
   final File changelog = File('CHANGELOG.md');
   if (!changelog.existsSync()) return;
 
   const String unreleased = '## [Unreleased]';
   final String text = changelog.readAsStringSync();
-  final int start = text.indexOf(unreleased);
+  final int start =
+      RegExp(
+        '^${RegExp.escape(unreleased)}\$',
+        multiLine: true,
+      ).firstMatch(text)?.start ??
+      -1;
   if (start == -1) {
     stderr.writeln('CHANGELOG.md has no $unreleased section');
     return;

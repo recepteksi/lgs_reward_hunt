@@ -46,6 +46,12 @@ class _DebugAccountsOverlayState extends State<DebugAccountsOverlay> {
 
   static const double _panelMaxHeightFactor = 0.7;
 
+  static const double _border = 1;
+
+  static const double _currentBorder = 2;
+
+  static const double _rowGap = 2;
+
   List<Map<String, String>>? _accounts;
 
   void _toggle() => setState(
@@ -126,7 +132,7 @@ class _DebugAccountsOverlayState extends State<DebugAccountsOverlay> {
         borderRadius: BorderRadius.circular(AppRadii.sm),
         border: Border.all(
           color: current ? palette.primary : palette.outline,
-          width: current ? 2 : 1,
+          width: current ? _currentBorder : _border,
         ),
       ),
       child: Column(
@@ -138,7 +144,7 @@ class _DebugAccountsOverlayState extends State<DebugAccountsOverlay> {
                 onTap: () =>
                     Clipboard.setData(ClipboardData(text: field.value)),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 2),
+                  padding: const EdgeInsets.symmetric(vertical: _rowGap),
                   child: Text.rich(
                     TextSpan(
                       children: <InlineSpan>[

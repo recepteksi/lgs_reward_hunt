@@ -16,6 +16,7 @@ import 'package:lgs_reward_hunt/presentation/base/ui/widgets/icon/app_icons.dart
 import 'package:lgs_reward_hunt/presentation/base/ui/widgets/scaffold/app_scaffold.dart';
 import 'package:lgs_reward_hunt/presentation/base/ui/widgets/state/app_error_view.dart';
 import 'package:lgs_reward_hunt/presentation/parent/pages/parent/body/parent_body.dart';
+import 'package:lgs_reward_hunt/presentation/parent/pages/parent/modal_bottom_sheet/parent_sign_out_sheet.dart';
 import 'package:lgs_reward_hunt/presentation/parent/pages/parent/widgets/parent_skeleton.dart';
 import 'package:lgs_reward_hunt/presentation/router/app_route_paths.dart';
 
@@ -25,7 +26,7 @@ import 'package:lgs_reward_hunt/presentation/router/app_route_paths.dart';
 /// It is reached through the PIN gate and has no navigation bar — it belongs
 /// to a different person than the tabs do. The bar carries the parent's name
 /// and the way out, which returns to the child's profile, where the door was.
-/// Next to it is signing out, in every state, including a dashboard that could
+/// Next to it is signing out, asked once in a sheet, in every state, including a dashboard that could
 /// not load: signing out needs no server, and it is how a parent whose data is
 /// gone gets back to the intro. An action worth confirming is announced once,
 /// as a toast.
@@ -66,7 +67,7 @@ class ParentPage extends StatelessWidget {
                 semanticLabel: l10n.parentSignOut,
                 onPressed: state is ParentSignedOut
                     ? null
-                    : context.read<ParentCubit>().signOut,
+                    : () => _confirmSignOut(context),
               ),
               AppButton.text(
                 label: l10n.parentExit,
@@ -93,6 +94,16 @@ class ParentPage extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+
+  void _confirmSignOut(BuildContext context) {
+    final ParentCubit cubit = context.read<ParentCubit>();
+    showModalBottomSheet<void>(
+      context: context,
+      useSafeArea: true,
+      backgroundColor: AppPalette.of(context).background,
+      builder: (_) => ParentSignOutSheet(onConfirm: cubit.signOut),
     );
   }
 }

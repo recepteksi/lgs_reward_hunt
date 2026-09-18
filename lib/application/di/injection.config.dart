@@ -90,6 +90,8 @@ import 'package:lgs_reward_hunt/application/session/cubit/device_child/device_ch
     as _i500;
 import 'package:lgs_reward_hunt/application/session/use_cases/choose_device_child_use_case.dart'
     as _i95;
+import 'package:lgs_reward_hunt/application/session/use_cases/confirm_session_use_case.dart'
+    as _i760;
 import 'package:lgs_reward_hunt/application/session/use_cases/read_session_use_case.dart'
     as _i329;
 import 'package:lgs_reward_hunt/application/session/use_cases/save_session_use_case.dart'
@@ -306,6 +308,13 @@ _i174.GetIt init(
       gh<_i495.LoadRewardPoolUseCase>(),
       gh<_i327.SaveRewardPoolUseCase>(),
       gh<_i266.LoadTaskPlanUseCase>(),
+    ),
+  );
+  gh.factory<_i760.ConfirmSessionUseCase>(
+    () => _i760.ConfirmSessionUseCase(
+      gh<_i784.SessionRepositoryInterface>(),
+      gh<_i835.AccountRepositoryInterface>(),
+      gh<_i885.SignOutUseCase>(),
     ),
   );
   gh.factory<_i566.LoadAvatarsUseCase>(

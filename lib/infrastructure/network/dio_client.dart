@@ -26,9 +26,9 @@ import 'package:lgs_reward_hunt/infrastructure/network/mock/mock_store_archive.d
 /// `AppConfig.useMockBackend` is on. With `keepOnDevice`, which `main` passes,
 /// the store is written to the device after every change and read back on the
 /// next launch instead of being seeded again, so an account made today is
-/// still there tomorrow. Tests leave it off and start from a clean store. [disableMock] puts the real transport
-/// back; the day a backend appears, turning that flag off is the whole
-/// migration.
+/// still there tomorrow. Tests leave it off and start from a clean store.
+/// [disableMock] puts the real transport back; the day a backend appears,
+/// turning that flag off is the whole migration.
 ///
 /// [currentAccountId] is what [SessionInterceptor] reads on every request. It
 /// is a mutable field rather than a constructor argument because the account

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lgs_reward_hunt/infrastructure/network/crypto/passthrough_payload_codec.dart';
 import 'package:lgs_reward_hunt/infrastructure/network/dio_client.dart';
@@ -7,7 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 ///
 /// A parent who signs up and reopens the app must still exist. Before this,
 /// the store was seeded again on every launch while the session survived, so
-/// every page asked for an account that was gone.
+/// every page asked for an account that was gone. A restored row is plain
+/// JSON, so a handler reading a nested value must not expect a typed list.
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -50,6 +52,24 @@ void main() {
       );
     },
   );
+
+  test('a link code used before a restart is still refused after it', () async {
+    final DioClient first = await launch();
+    final String code = first.mockStore.parents.first['linkCode']! as String;
+    await first.dio.post<Map<String, dynamic>>(
+      '/children/link',
+      data: <String, Object?>{'linkCode': code, 'name': 'Elif'},
+    );
+
+    final DioClient second = await launch();
+    final response = await second.dio.post<Map<String, dynamic>>(
+      '/children/link',
+      data: <String, Object?>{'linkCode': code, 'name': 'Kerem'},
+      options: Options(validateStatus: (_) => true),
+    );
+
+    expect(response.statusCode, 409);
+  });
 
   test('a store that cannot be read is seeded again', () async {
     SharedPreferences.setMockInitialValues(<String, Object>{

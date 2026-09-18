@@ -1713,6 +1713,18 @@ abstract class AppL10n {
   /// **'Hesaptan çıkış yap'**
   String get parentSignOut;
 
+  /// Çıkış onay sayfasının başlığı.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hesaptan çıkılsın mı?'**
+  String get parentSignOutTitle;
+
+  /// Çıkış onay sayfasının açıklaması.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tekrar girmek için e-posta ve şifren ya da Google/Apple hesabın gerekecek.'**
+  String get parentSignOutBody;
+
   /// Çocuk seçicinin etiketi.
   ///
   /// In tr, this message translates to:

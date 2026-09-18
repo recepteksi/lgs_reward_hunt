@@ -939,6 +939,13 @@ class AppL10nTr extends AppL10n {
   String get parentSignOut => 'Hesaptan çıkış yap';
 
   @override
+  String get parentSignOutTitle => 'Hesaptan çıkılsın mı?';
+
+  @override
+  String get parentSignOutBody =>
+      'Tekrar girmek için e-posta ve şifren ya da Google/Apple hesabın gerekecek.';
+
+  @override
   String get parentActiveChildLabel => 'BU CİHAZDA SEÇİLİ ÇOCUK';
 
   @override

@@ -35,7 +35,9 @@ part 'parent_state.dart';
 ///
 /// [signOut] works in any state, including [ParentFailed], because it needs
 /// nothing from the server. It ends in [ParentSignedOut], and the page then
-/// leaves for the intro.
+/// leaves for the intro. A session that could not be cleared stays on the
+/// page with the failure, because leaving would reopen signed in next launch.
+/// A second tap while it runs does nothing.
 ///
 /// [clock] is today's moment, injected so a test can stand on any day.
 @injectable
@@ -75,6 +77,8 @@ final class ParentCubit extends Cubit<ParentState> {
   final SignOutUseCase _signOut;
 
   DateTime Function() clock;
+
+  bool _signingOut = false;
 
   Future<void> load() async {
     emit(const ParentLoading());
@@ -155,11 +159,22 @@ final class ParentCubit extends Cubit<ParentState> {
       _act((_) => _removeReward(rewardId));
 
   Future<void> signOut() async {
-    if (state is ParentSignedOut) return;
+    if (_signingOut || state is ParentSignedOut) return;
+    _signingOut = true;
 
-    await _signOut();
+    final result = await _signOut();
+    _signingOut = false;
     if (isClosed) return;
-    emit(const ParentSignedOut());
+
+    final ParentState current = state;
+    emit(switch (result) {
+      Right() => const ParentSignedOut(),
+      Left(:final value) when current is ParentShowing => ParentActionFailed(
+        current.dashboard,
+        value,
+      ),
+      Left(:final value) => ParentFailed(value),
+    });
   }
 
   Future<void> _act(

@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+
 import 'package:lgs_reward_hunt/infrastructure/network/mock/mock_store.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,11 +17,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// else, a first launch or an old or broken one, answers `false`, and the
 /// caller seeds a new one. [save] writes the whole store after each change.
 /// The mock is small enough that writing all of it costs less than working out
-/// which part changed.
+/// which part changed. A store that cannot be read or saved is logged, so a
+/// dev build can tell why its household disappeared.
 final class MockStoreArchive {
   const MockStoreArchive();
 
   static const String _key = 'mock.store';
+
+  static const String _unreadable =
+      'MockStoreArchive: the saved store could not be read; seeding a new one.';
 
   Future<bool> load(MockStore store) async {
     try {
@@ -27,10 +33,13 @@ final class MockStoreArchive {
         _key,
       );
       if (saved == null) return false;
-      return store.restore(
+      final bool restored = store.restore(
         Map<String, Object?>.from(jsonDecode(saved) as Map<Object?, Object?>),
       );
-    } catch (_) {
+      if (!restored) debugPrint(_unreadable);
+      return restored;
+    } catch (error) {
+      debugPrint('$_unreadable $error');
       return false;
     }
   }
@@ -41,8 +50,8 @@ final class MockStoreArchive {
         _key,
         jsonEncode(store.toJson()),
       );
-    } catch (_) {
-      return;
+    } catch (error) {
+      debugPrint('MockStoreArchive: the store was not saved. $error');
     }
   }
 }

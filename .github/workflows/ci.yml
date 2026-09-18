@@ -182,6 +182,13 @@ jobs:
           mkdir -p "$RUNNER_TEMP/keys"
           printf '%s' "$KEY_P8" > "$RUNNER_TEMP/keys/AuthKey_${ASC_KEY_ID}.p8"
       - run: flutter pub get
+      - name: Install the FlutterFire CLI
+        # The Runner target has a FlutterFire build phase that copies the
+        # flavor's GoogleService-Info.plist into the bundle; without the CLI
+        # the Xcode build fails with "flutterfire: command not found".
+        run: |
+          dart pub global activate flutterfire_cli
+          echo "$HOME/.pub-cache/bin" >> "$GITHUB_PATH"
       - name: Build Flutter for iOS
         run: |
           flutter build ios --flavor "$FLAVOR" --release --no-codesign \

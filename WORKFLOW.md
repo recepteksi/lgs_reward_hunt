@@ -48,11 +48,27 @@ ad-hoc, so it installs only on devices registered in the Apple Developer
 account: add a tester's UDID there (Firebase's iOS tester flow collects it),
 then the next build reaches them. TestFlight needs no UDID.
 
-## 5. Release: `dev` → `main`
+## 5. Version numbers
+
+The version name is semantic and lives once, in `pubspec.yaml`:
+
+```bash
+dart run tool/bump_version.dart patch   # a fix
+dart run tool/bump_version.dart minor   # a feature
+dart run tool/bump_version.dart major   # something a user has to relearn
+```
+
+Bump it on a branch, like any change, before the release PR. The build number
+after `+` is never edited by hand: CI uses run number × 10 + attempt + 1000, so
+every upload to a store is higher than the last. A merge to `main` tags
+`v<version>-build.<n>`.
+
+## 6. Release: `dev` → `main`
 
 Only when dev is what should reach testers of the real app. **Ask first.**
 
 ```bash
+dart run tool/bump_version.dart patch   # on a branch, merged to dev first
 gh pr create --base main --head dev --title "release: <version>" --body "<changes>"
 gh pr merge <number> --merge
 ```
@@ -77,6 +93,16 @@ flutter symbolize -i trace.txt -d app.ios-arm64.symbols
 
 Locally the same flags apply — see the release build commands in CLAUDE.md.
 Android code shrinking (R8) is on by default for a release build.
+
+## Where each build goes
+
+| | Firebase App Distribution | TestFlight | Google Play |
+|---|---|---|---|
+| `dev` push (dev flavor) | Android APK + iOS ad-hoc | iOS dev app | — |
+| `main` push (prod flavor) | Android APK + iOS ad-hoc | iOS prod app | internal testing (AAB) |
+
+Every build is obfuscated. Firebase takes both platforms in both flavors;
+Play takes prod only, because there is one listing.
 
 ## Secrets (GitHub → Settings → Secrets and variables → Actions)
 

@@ -243,14 +243,19 @@ jobs:
             echo "::warning::Ad-hoc export failed — register a tester device in the Apple Developer account, or the build only reaches TestFlight"
           fi
       - name: Firebase App Distribution (iOS)
+        # The Firebase action is a container action and runs on Linux only, so
+        # the macOS job uploads with the CLI.
         if: steps.adhoc.outputs.ipa != ''
-        uses: wzieba/Firebase-Distribution-Github-Action@v1
-        with:
-          appId: ${{ env.FLAVOR == 'prod' && '1:451080433558:ios:d350473a3acebb96ca37b7' || '1:451080433558:ios:264abff819e4e3b4ca37b7' }}
-          serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
-          groups: testers
-          file: ${{ steps.adhoc.outputs.ipa }}
-          releaseNotes: ${{ github.event.head_commit.message }}
+        env:
+          CREDENTIALS: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+          APP_ID: ${{ env.FLAVOR == 'prod' && '1:451080433558:ios:d350473a3acebb96ca37b7' || '1:451080433558:ios:264abff819e4e3b4ca37b7' }}
+          NOTES: ${{ github.event.head_commit.message }}
+          IPA: ${{ steps.adhoc.outputs.ipa }}
+        run: |
+          printf '%s' "$CREDENTIALS" > "$RUNNER_TEMP/firebase-credentials.json"
+          export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/firebase-credentials.json"
+          npx -y firebase-tools@latest appdistribution:distribute "$IPA" \
+            --app "$APP_ID" --groups testers --release-notes "$NOTES"
 
   tag:
     name: Tag the release

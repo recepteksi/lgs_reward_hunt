@@ -89,3 +89,10 @@ tar czf - android/app/src/{dev,prod}/google-services.json \
   lib/infrastructure/config/firebase/firebase_options_{dev,prod}.dart \
   | base64 | gh secret set FIREBASE_CONFIG_ARCHIVE
 ```
+
+## Firebase from the agent
+
+`.mcp.json` registers the Firebase CLI's MCP server (`firebase mcp --dir .`),
+so a session can read the project, its apps, App Distribution and Auth without
+shelling out. It uses whatever `firebase login` on the machine is signed in as.
+

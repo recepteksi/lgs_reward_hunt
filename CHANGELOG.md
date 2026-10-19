@@ -12,6 +12,8 @@ Versions: [semantic](https://semver.org/lang/tr/).
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-10-19
+
 ### Eklendi
 
 - Ebeveyn sayfasında "Hesaptan çıkış yap" düğmesi. Sayfa yüklenemese bile görünür.

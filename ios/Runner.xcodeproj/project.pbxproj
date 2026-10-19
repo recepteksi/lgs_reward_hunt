@@ -3,35 +3,35 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
-		16F487D31BA15F9BA9A70BE7 /* Flutter/devRelease.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = A2B4CE898857E9598B99E0D9 /* Flutter/devRelease.xcconfig */; };
+		16F487D31BA15F9BA9A70BE7 /* devRelease.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = A2B4CE898857E9598B99E0D9 /* devRelease.xcconfig */; };
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
-		53B18BFEA9B6AF56FD0C1F9E /* Flutter/prodDebug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E5AB313526081040EE5240A6 /* Flutter/prodDebug.xcconfig */; };
-		55DB6985B0D2AC11E98C2893 /* Flutter/prodRelease.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = F967491E45BC68D0FB3D1450 /* Flutter/prodRelease.xcconfig */; };
+		53B18BFEA9B6AF56FD0C1F9E /* prodDebug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E5AB313526081040EE5240A6 /* prodDebug.xcconfig */; };
+		55DB6985B0D2AC11E98C2893 /* prodRelease.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = F967491E45BC68D0FB3D1450 /* prodRelease.xcconfig */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		7884E8682EC3CC0700C636F2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7884E8672EC3CC0400C636F2 /* SceneDelegate.swift */; };
-		78A318202AECB46A00862997 = {isa = PBXBuildFile; productRef = 78A3181F2AECB46A00862997; };
+		78A318202AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
-		98A1D46AD4A2B4B0CFE096AB /* Flutter/devProfile.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = B232847CB529F9DC1B593920 /* Flutter/devProfile.xcconfig */; };
-		A479B028746BEE0123E5096E /* Runner/prodLaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B535D2577A6FB56F06133830 /* Runner/prodLaunchScreen.storyboard */; };
-		B64EF640DC83BFCEB85EC585 /* Flutter/prodProfile.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 8EC2A988DFB38ABF63775722 /* Flutter/prodProfile.xcconfig */; };
-		CA0493FBDD3B35D3AAD4A5A8 /* Runner/devLaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F23DCECFA689C3227C74285 /* Runner/devLaunchScreen.storyboard */; };
-		E4351B358910BE50433BC63B /* Flutter/devDebug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 6CD9E4971F57A4527CB5D78E /* Flutter/devDebug.xcconfig */; };
+		98A1D46AD4A2B4B0CFE096AB /* devProfile.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = B232847CB529F9DC1B593920 /* devProfile.xcconfig */; };
+		A479B028746BEE0123E5096E /* prodLaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B535D2577A6FB56F06133830 /* prodLaunchScreen.storyboard */; };
+		B64EF640DC83BFCEB85EC585 /* prodProfile.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 8EC2A988DFB38ABF63775722 /* prodProfile.xcconfig */; };
+		CA0493FBDD3B35D3AAD4A5A8 /* devLaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F23DCECFA689C3227C74285 /* devLaunchScreen.storyboard */; };
+		E4351B358910BE50433BC63B /* devDebug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 6CD9E4971F57A4527CB5D78E /* devDebug.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		331C8085294A63A400263BE5 = {
+		331C8085294A63A400263BE5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 97C146E61CF9000F007C117D /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 97C146ED1CF9000F007C117D /* Runner */;
+			remoteGlobalIDString = 97C146ED1CF9000F007C117D;
 			remoteInfo = Runner;
 		};
 /* End PBXContainerItemProxy section */
@@ -55,14 +55,14 @@
 		331C807B294A618700263BE5 /* RunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnerTests.swift; sourceTree = "<group>"; };
 		331C8081294A63A400263BE5 /* RunnerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RunnerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
-		6CD9E4971F57A4527CB5D78E /* Flutter/devDebug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; path = Flutter/devDebug.xcconfig; sourceTree = "<group>"; };
-		6F23DCECFA689C3227C74285 /* Runner/devLaunchScreen.storyboard */ = {isa = PBXFileReference; includeInIndex = 1; path = Runner/devLaunchScreen.storyboard; sourceTree = "<group>"; };
+		6CD9E4971F57A4527CB5D78E /* devDebug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Flutter/devDebug.xcconfig; sourceTree = "<group>"; };
+		6F23DCECFA689C3227C74285 /* devLaunchScreen.storyboard */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.storyboard; path = Runner/devLaunchScreen.storyboard; sourceTree = "<group>"; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7884E8672EC3CC0400C636F2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		78E0A7A72DC9AD7400C4905E /* FlutterGeneratedPluginSwiftPackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = FlutterGeneratedPluginSwiftPackage; path = Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
-		8EC2A988DFB38ABF63775722 /* Flutter/prodProfile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; path = Flutter/prodProfile.xcconfig; sourceTree = "<group>"; };
+		8EC2A988DFB38ABF63775722 /* prodProfile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Flutter/prodProfile.xcconfig; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
 		9740EEB31CF90195004384FC /* Generated.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Generated.xcconfig; path = Flutter/Generated.xcconfig; sourceTree = "<group>"; };
 		97C146EE1CF9000F007C117D /* Runner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Runner.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -70,11 +70,11 @@
 		97C146FD1CF9000F007C117D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A2B4CE898857E9598B99E0D9 /* Flutter/devRelease.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; path = Flutter/devRelease.xcconfig; sourceTree = "<group>"; };
-		B232847CB529F9DC1B593920 /* Flutter/devProfile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; path = Flutter/devProfile.xcconfig; sourceTree = "<group>"; };
-		B535D2577A6FB56F06133830 /* Runner/prodLaunchScreen.storyboard */ = {isa = PBXFileReference; includeInIndex = 1; path = Runner/prodLaunchScreen.storyboard; sourceTree = "<group>"; };
-		E5AB313526081040EE5240A6 /* Flutter/prodDebug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; path = Flutter/prodDebug.xcconfig; sourceTree = "<group>"; };
-		F967491E45BC68D0FB3D1450 /* Flutter/prodRelease.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; path = Flutter/prodRelease.xcconfig; sourceTree = "<group>"; };
+		A2B4CE898857E9598B99E0D9 /* devRelease.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Flutter/devRelease.xcconfig; sourceTree = "<group>"; };
+		B232847CB529F9DC1B593920 /* devProfile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Flutter/devProfile.xcconfig; sourceTree = "<group>"; };
+		B535D2577A6FB56F06133830 /* prodLaunchScreen.storyboard */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.storyboard; path = Runner/prodLaunchScreen.storyboard; sourceTree = "<group>"; };
+		E5AB313526081040EE5240A6 /* prodDebug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Flutter/prodDebug.xcconfig; sourceTree = "<group>"; };
+		F967491E45BC68D0FB3D1450 /* prodRelease.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Flutter/prodRelease.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,7 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				78A318202AECB46A00862997,
+				78A318202AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -105,12 +105,12 @@
 				9740EEB21CF90195004384FC /* Debug.xcconfig */,
 				7AFA3C8E1D35360C0083082E /* Release.xcconfig */,
 				9740EEB31CF90195004384FC /* Generated.xcconfig */,
-				6CD9E4971F57A4527CB5D78E /* Flutter/devDebug.xcconfig */,
-				B232847CB529F9DC1B593920 /* Flutter/devProfile.xcconfig */,
-				A2B4CE898857E9598B99E0D9 /* Flutter/devRelease.xcconfig */,
-				E5AB313526081040EE5240A6 /* Flutter/prodDebug.xcconfig */,
-				8EC2A988DFB38ABF63775722 /* Flutter/prodProfile.xcconfig */,
-				F967491E45BC68D0FB3D1450 /* Flutter/prodRelease.xcconfig */,
+				6CD9E4971F57A4527CB5D78E /* devDebug.xcconfig */,
+				B232847CB529F9DC1B593920 /* devProfile.xcconfig */,
+				A2B4CE898857E9598B99E0D9 /* devRelease.xcconfig */,
+				E5AB313526081040EE5240A6 /* prodDebug.xcconfig */,
+				8EC2A988DFB38ABF63775722 /* prodProfile.xcconfig */,
+				F967491E45BC68D0FB3D1450 /* prodRelease.xcconfig */,
 			);
 			name = Flutter;
 			sourceTree = "<group>";
@@ -122,8 +122,8 @@
 				97C146F01CF9000F007C117D /* Runner */,
 				97C146EF1CF9000F007C117D /* Products */,
 				331C8082294A63A400263BE5 /* RunnerTests */,
-				6F23DCECFA689C3227C74285 /* Runner/devLaunchScreen.storyboard */,
-				B535D2577A6FB56F06133830 /* Runner/prodLaunchScreen.storyboard */,
+				6F23DCECFA689C3227C74285 /* devLaunchScreen.storyboard */,
+				B535D2577A6FB56F06133830 /* prodLaunchScreen.storyboard */,
 			);
 			sourceTree = "<group>";
 		};
@@ -165,7 +165,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				331C8086294A63A400263BE5,
+				331C8086294A63A400263BE5 /* PBXTargetDependency */,
 			);
 			name = RunnerTests;
 			productName = RunnerTests;
@@ -182,6 +182,7 @@
 				97C146EC1CF9000F007C117D /* Resources */,
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
+				D2F462425653E0CE37200746 /* FlutterFire: "flutterfire bundle-service-file" */,
 			);
 			buildRules = (
 			);
@@ -189,7 +190,7 @@
 			);
 			name = Runner;
 			packageProductDependencies = (
-				78A3181F2AECB46A00862997,
+				78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */,
 			);
 			productName = Runner;
 			productReference = 97C146EE1CF9000F007C117D /* Runner.app */;
@@ -207,7 +208,7 @@
 				TargetAttributes = {
 					331C8080294A63A400263BE5 = {
 						CreatedOnToolsVersion = 14.0;
-						TestTargetID = 97C146ED1CF9000F007C117D /* Runner */;
+						TestTargetID = 97C146ED1CF9000F007C117D;
 					};
 					97C146ED1CF9000F007C117D = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -225,7 +226,7 @@
 			);
 			mainGroup = 97C146E51CF9000F007C117D;
 			packageReferences = (
-				781AD8BC2B33823900A9FFBB,
+				781AD8BC2B33823900A9FFBB /* XCLocalSwiftPackageReference "FlutterGeneratedPluginSwiftPackage" */,
 			);
 			productRefGroup = 97C146EF1CF9000F007C117D /* Products */;
 			projectDirPath = "";
@@ -253,14 +254,14 @@
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
-				E4351B358910BE50433BC63B /* Flutter/devDebug.xcconfig in Resources */,
-				98A1D46AD4A2B4B0CFE096AB /* Flutter/devProfile.xcconfig in Resources */,
-				16F487D31BA15F9BA9A70BE7 /* Flutter/devRelease.xcconfig in Resources */,
-				53B18BFEA9B6AF56FD0C1F9E /* Flutter/prodDebug.xcconfig in Resources */,
-				B64EF640DC83BFCEB85EC585 /* Flutter/prodProfile.xcconfig in Resources */,
-				55DB6985B0D2AC11E98C2893 /* Flutter/prodRelease.xcconfig in Resources */,
-				CA0493FBDD3B35D3AAD4A5A8 /* Runner/devLaunchScreen.storyboard in Resources */,
-				A479B028746BEE0123E5096E /* Runner/prodLaunchScreen.storyboard in Resources */,
+				E4351B358910BE50433BC63B /* devDebug.xcconfig in Resources */,
+				98A1D46AD4A2B4B0CFE096AB /* devProfile.xcconfig in Resources */,
+				16F487D31BA15F9BA9A70BE7 /* devRelease.xcconfig in Resources */,
+				53B18BFEA9B6AF56FD0C1F9E /* prodDebug.xcconfig in Resources */,
+				B64EF640DC83BFCEB85EC585 /* prodProfile.xcconfig in Resources */,
+				55DB6985B0D2AC11E98C2893 /* prodRelease.xcconfig in Resources */,
+				CA0493FBDD3B35D3AAD4A5A8 /* devLaunchScreen.storyboard in Resources */,
+				A479B028746BEE0123E5096E /* prodLaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,6 +299,24 @@
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build";
 		};
+		D2F462425653E0CE37200746 /* FlutterFire: "flutterfire bundle-service-file" */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "FlutterFire: \"flutterfire bundle-service-file\"";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\n#!/bin/bash\nPATH=\"${PATH}:$FLUTTER_ROOT/bin:${PUB_CACHE}/bin:$HOME/.pub-cache/bin\"\nflutterfire bundle-service-file --plist-destination=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\" --build-configuration=${CONFIGURATION} --platform=ios --apple-project-path=\"${SRCROOT}\"\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -322,10 +341,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		331C8086294A63A400263BE5 = {
+		331C8086294A63A400263BE5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 97C146ED1CF9000F007C117D /* Runner */;
-			targetProxy = 331C8085294A63A400263BE5;
+			targetProxy = 331C8085294A63A400263BE5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -351,7 +370,7 @@
 /* Begin XCBuildConfiguration section */
 		0E332E49E8CDC06BF156F810 /* Profile-prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8EC2A988DFB38ABF63775722 /* Flutter/prodProfile.xcconfig */;
+			baseConfigurationReference = 8EC2A988DFB38ABF63775722 /* prodProfile.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-$(ASSET_PREFIX)";
@@ -422,7 +441,7 @@
 		};
 		11BFD77822EDE65FFA84D40F /* Debug-prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E5AB313526081040EE5240A6 /* Flutter/prodDebug.xcconfig */;
+			baseConfigurationReference = E5AB313526081040EE5240A6 /* prodDebug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-$(ASSET_PREFIX)";
@@ -498,7 +517,7 @@
 		};
 		1A76A20C381348A0F23D7FEE /* Profile-dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B232847CB529F9DC1B593920 /* Flutter/devProfile.xcconfig */;
+			baseConfigurationReference = B232847CB529F9DC1B593920 /* devProfile.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -628,7 +647,7 @@
 		};
 		557B5B254C4483CD219EC888 /* Debug-prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E5AB313526081040EE5240A6 /* Flutter/prodDebug.xcconfig */;
+			baseConfigurationReference = E5AB313526081040EE5240A6 /* prodDebug.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -636,7 +655,7 @@
 		};
 		5EA21179C7C21E273FB5CA7D /* Release-prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F967491E45BC68D0FB3D1450 /* Flutter/prodRelease.xcconfig */;
+			baseConfigurationReference = F967491E45BC68D0FB3D1450 /* prodRelease.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-$(ASSET_PREFIX)";
@@ -709,7 +728,7 @@
 		};
 		624A1D09FBDEDB470AEB1575 /* Release-dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A2B4CE898857E9598B99E0D9 /* Flutter/devRelease.xcconfig */;
+			baseConfigurationReference = A2B4CE898857E9598B99E0D9 /* devRelease.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-$(ASSET_PREFIX)";
@@ -782,7 +801,7 @@
 		};
 		6667485DD715BDB924864F03 /* Profile-dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B232847CB529F9DC1B593920 /* Flutter/devProfile.xcconfig */;
+			baseConfigurationReference = B232847CB529F9DC1B593920 /* devProfile.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-$(ASSET_PREFIX)";
@@ -853,11 +872,53 @@
 		};
 		6B7C2F4AEF4BF8A6844C3598 /* Release-dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A2B4CE898857E9598B99E0D9 /* Flutter/devRelease.xcconfig */;
+			baseConfigurationReference = A2B4CE898857E9598B99E0D9 /* devRelease.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = "Release-dev";
+		};
+		6B7DEE833059B023001B04EE /* Debug-dev */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = RunnerTests;
+			};
+			name = "Debug-dev";
+		};
+		6B7DEE843059B023001B04EE /* Profile-dev */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = RunnerTests;
+			};
+			name = "Profile-dev";
+		};
+		6B7DEE853059B023001B04EE /* Release-dev */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = RunnerTests;
+			};
+			name = "Release-dev";
+		};
+		6B7DEE863059B023001B04EE /* Debug-prod */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = RunnerTests;
+			};
+			name = "Debug-prod";
+		};
+		6B7DEE873059B023001B04EE /* Profile-prod */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = RunnerTests;
+			};
+			name = "Profile-prod";
+		};
+		6B7DEE883059B023001B04EE /* Release-prod */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = RunnerTests;
+			};
+			name = "Release-prod";
 		};
 		97C147031CF9000F007C117D /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1019,7 +1080,7 @@
 		};
 		996C0F811E91050494659CEE /* Debug-dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6CD9E4971F57A4527CB5D78E /* Flutter/devDebug.xcconfig */;
+			baseConfigurationReference = 6CD9E4971F57A4527CB5D78E /* devDebug.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -1027,7 +1088,7 @@
 		};
 		C96733CCDD9E1F6894AA9052 /* Profile-prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8EC2A988DFB38ABF63775722 /* Flutter/prodProfile.xcconfig */;
+			baseConfigurationReference = 8EC2A988DFB38ABF63775722 /* prodProfile.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -1035,7 +1096,7 @@
 		};
 		CD80FE3504A5B738EEC8860E /* Debug-dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6CD9E4971F57A4527CB5D78E /* Flutter/devDebug.xcconfig */;
+			baseConfigurationReference = 6CD9E4971F57A4527CB5D78E /* devDebug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-$(ASSET_PREFIX)";
@@ -1111,7 +1172,7 @@
 		};
 		FA34403F26994E7FB44484C5 /* Release-prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F967491E45BC68D0FB3D1450 /* Flutter/prodRelease.xcconfig */;
+			baseConfigurationReference = F967491E45BC68D0FB3D1450 /* prodRelease.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -1126,6 +1187,12 @@
 				331C8088294A63A400263BE5 /* Debug */,
 				331C8089294A63A400263BE5 /* Release */,
 				331C808A294A63A400263BE5 /* Profile */,
+				6B7DEE833059B023001B04EE /* Debug-dev */,
+				6B7DEE843059B023001B04EE /* Profile-dev */,
+				6B7DEE853059B023001B04EE /* Release-dev */,
+				6B7DEE863059B023001B04EE /* Debug-prod */,
+				6B7DEE873059B023001B04EE /* Profile-prod */,
+				6B7DEE883059B023001B04EE /* Release-prod */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1165,14 +1232,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		781AD8BC2B33823900A9FFBB = {
+		781AD8BC2B33823900A9FFBB /* XCLocalSwiftPackageReference "FlutterGeneratedPluginSwiftPackage" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage;
 		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		78A3181F2AECB46A00862997 = {
+		78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FlutterGeneratedPluginSwiftPackage;
 		};

@@ -1,0 +1,312 @@
+# The quality gate on every pull request and push, and distribution on dev and
+# main once the gate is green.
+#
+#   PR → dev / main   gate only
+#   push dev          gate → Android dev APK to Firebase App Distribution
+#                          → iOS dev build to TestFlight AND Firebase
+#   push main         gate → Android prod APK to Firebase App Distribution
+#                          → Android prod AAB to Google Play, internal testing
+#                          → iOS prod build to TestFlight AND Firebase
+#
+# One archive, exported twice: `app-store-connect` uploads itself to App Store
+# Connect, `release-testing` (ad-hoc) writes an IPA for Firebase App
+# Distribution. An ad-hoc build only installs on devices registered in the Apple
+# Developer account, so that half is a warning when no device is registered
+# yet — TestFlight still shipped.
+#
+# Build numbers are run number × 10 + attempt, plus an offset, so every upload
+# — a re-run included — is higher than the last and than any build uploaded by
+# hand before CI existed. The Firebase client config is not in the public repo;
+# every job restores it from the FIREBASE_CONFIG_ARCHIVE secret.
+# Every shipped build is obfuscated (`--obfuscate --split-debug-info`), so the
+# Dart in the package carries no readable class or method names. The symbols
+# that map a crash back to source are NOT shipped: they are kept as a build
+# artifact for 90 days, one folder per platform and build number. A stack trace
+# from a tester is read back with
+# `flutter symbolize -i <trace> -d <symbols>/app.ios-arm64.symbols`.
+#
+# Release notes come from the top section of CHANGELOG.md
+# (`tool/release_notes.dart`), so Firebase testers and Play's "what's new" read
+# the same words a person wrote, not a commit subject.
+#
+# A distribution job whose secrets are not configured yet is skipped with a
+# notice rather than failed: the gate stays meaningful while a store is still
+# being set up. Secrets are listed in WORKFLOW.md.
+name: ci
+
+on:
+  pull_request:
+    branches: [dev, main]
+  push:
+    branches: [dev, main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+env:
+  BUILD_NUMBER_OFFSET: 1000
+
+jobs:
+  gate:
+    name: Gate (analyze · check_structure · test)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/firebase-config
+        with:
+          archive: ${{ secrets.FIREBASE_CONFIG_ARCHIVE }}
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: flutter analyze
+      - run: dart run tool/check_structure.dart
+      - run: flutter test
+
+  plan:
+    name: Plan distribution
+    needs: gate
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    outputs:
+      flavor: ${{ steps.plan.outputs.flavor }}
+      build_number: ${{ steps.plan.outputs.build_number }}
+      firebase: ${{ steps.plan.outputs.firebase }}
+      play: ${{ steps.plan.outputs.play }}
+      testflight: ${{ steps.plan.outputs.testflight }}
+    steps:
+      - id: plan
+        env:
+          HAS_FIREBASE: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON != '' && secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+          HAS_PLAY: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON != '' && secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+          HAS_TESTFLIGHT: ${{ secrets.APP_STORE_CONNECT_KEY_P8 != '' }}
+        run: |
+          if [ "$GITHUB_REF" = "refs/heads/main" ]; then flavor=prod; else flavor=dev; fi
+          echo "flavor=$flavor" >> "$GITHUB_OUTPUT"
+          echo "build_number=$((GITHUB_RUN_NUMBER * 10 + GITHUB_RUN_ATTEMPT + BUILD_NUMBER_OFFSET))" >> "$GITHUB_OUTPUT"
+          echo "firebase=$HAS_FIREBASE" >> "$GITHUB_OUTPUT"
+          if [ "$flavor" = "prod" ]; then echo "play=$HAS_PLAY" >> "$GITHUB_OUTPUT"; else echo "play=false" >> "$GITHUB_OUTPUT"; fi
+          echo "testflight=$HAS_TESTFLIGHT" >> "$GITHUB_OUTPUT"
+          [ "$HAS_FIREBASE" = "true" ] || echo "::notice::Firebase App Distribution skipped — FIREBASE_SERVICE_ACCOUNT_JSON / ANDROID_KEYSTORE_BASE64 not set"
+          [ "$flavor" != "prod" ] || [ "$HAS_PLAY" = "true" ] || echo "::notice::Google Play skipped — PLAY_SERVICE_ACCOUNT_JSON not set"
+          [ "$HAS_TESTFLIGHT" = "true" ] || echo "::notice::TestFlight skipped — APP_STORE_CONNECT_KEY_P8 not set"
+
+  android:
+    name: Android ${{ needs.plan.outputs.flavor }} → Firebase${{ needs.plan.outputs.flavor == 'prod' && ' + Play internal' || '' }}
+    needs: plan
+    if: needs.plan.outputs.firebase == 'true' || needs.plan.outputs.play == 'true'
+    runs-on: ubuntu-latest
+    env:
+      FLAVOR: ${{ needs.plan.outputs.flavor }}
+      BUILD_NUMBER: ${{ needs.plan.outputs.build_number }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/firebase-config
+        with:
+          archive: ${{ secrets.FIREBASE_CONFIG_ARCHIVE }}
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - name: Restore the upload keystore
+        env:
+          KEYSTORE: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          STORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          echo "$KEYSTORE" | base64 -d > "$RUNNER_TEMP/upload.jks"
+          printf 'storeFile=%s\nstorePassword=%s\nkeyAlias=%s\nkeyPassword=%s\n' \
+            "$RUNNER_TEMP/upload.jks" "$STORE_PASSWORD" "$KEY_ALIAS" "$KEY_PASSWORD" > android/key.properties
+      - run: flutter pub get
+      - name: Read the release notes
+        id: notes
+        run: |
+          {
+            echo 'text<<CHANGELOG_EOF'
+            dart run tool/release_notes.dart
+            echo
+            echo CHANGELOG_EOF
+          } >> "$GITHUB_OUTPUT"
+      - name: Build APK
+        run: |
+          flutter build apk --flavor "$FLAVOR" --release \
+            --build-number "$BUILD_NUMBER" \
+            --obfuscate --split-debug-info=build/symbols/android
+      - name: Firebase App Distribution
+        if: needs.plan.outputs.firebase == 'true'
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{ env.FLAVOR == 'prod' && '1:451080433558:android:3f3edee3c33e5af5ca37b7' || '1:451080433558:android:1ea75b6d4e4cd3a3ca37b7' }}
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+          groups: testers
+          file: build/app/outputs/flutter-apk/app-${{ env.FLAVOR }}-release.apk
+          releaseNotes: ${{ steps.notes.outputs.text }}
+      - name: Keep the Android symbols
+        uses: actions/upload-artifact@v4
+        with:
+          name: symbols-android-${{ needs.plan.outputs.flavor }}-${{ needs.plan.outputs.build_number }}
+          path: build/symbols/android
+          retention-days: 90
+          if-no-files-found: error
+      - name: Build AAB
+        if: needs.plan.outputs.play == 'true'
+        run: |
+          flutter build appbundle --flavor prod --release \
+            --build-number "$BUILD_NUMBER" \
+            --obfuscate --split-debug-info=build/symbols/android
+      - name: Write Play's what's new
+        if: needs.plan.outputs.play == 'true'
+        run: |
+          mkdir -p "$RUNNER_TEMP/whatsnew"
+          dart run tool/release_notes.dart > "$RUNNER_TEMP/whatsnew/whatsnew-tr-TR"
+      - name: Google Play internal testing
+        if: needs.plan.outputs.play == 'true'
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: com.lgsrewardhunt.app
+          releaseFiles: build/app/outputs/bundle/prodRelease/app-prod-release.aab
+          track: internal
+          status: ${{ vars.PLAY_RELEASE_STATUS || 'completed' }}
+          whatsNewDirectory: ${{ runner.temp }}/whatsnew
+
+  ios:
+    name: iOS ${{ needs.plan.outputs.flavor }} → TestFlight + Firebase
+    needs: plan
+    if: needs.plan.outputs.testflight == 'true'
+    runs-on: macos-latest
+    env:
+      FLAVOR: ${{ needs.plan.outputs.flavor }}
+      BUILD_NUMBER: ${{ needs.plan.outputs.build_number }}
+      ASC_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/firebase-config
+        with:
+          archive: ${{ secrets.FIREBASE_CONFIG_ARCHIVE }}
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - name: Restore the App Store Connect key
+        env:
+          KEY_P8: ${{ secrets.APP_STORE_CONNECT_KEY_P8 }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/keys"
+          printf '%s' "$KEY_P8" > "$RUNNER_TEMP/keys/AuthKey_${ASC_KEY_ID}.p8"
+      - run: flutter pub get
+      - name: Install the FlutterFire CLI
+        # The Runner target has a FlutterFire build phase that copies the
+        # flavor's GoogleService-Info.plist into the bundle; without the CLI
+        # the Xcode build fails with "flutterfire: command not found".
+        run: |
+          dart pub global activate flutterfire_cli
+          echo "$HOME/.pub-cache/bin" >> "$GITHUB_PATH"
+      - name: Read the release notes
+        id: notes
+        run: |
+          {
+            echo 'text<<CHANGELOG_EOF'
+            dart run tool/release_notes.dart
+            echo
+            echo CHANGELOG_EOF
+          } >> "$GITHUB_OUTPUT"
+      - name: Build Flutter for iOS
+        run: |
+          flutter build ios --flavor "$FLAVOR" --release --no-codesign \
+            --build-number "$BUILD_NUMBER" \
+            --obfuscate --split-debug-info=build/symbols/ios
+      - name: Archive (cloud-managed signing)
+        run: |
+          xcodebuild archive \
+            -workspace ios/Runner.xcworkspace -scheme "$FLAVOR" \
+            -configuration "Release-$FLAVOR" -destination generic/platform=iOS \
+            -archivePath "$RUNNER_TEMP/Runner.xcarchive" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$RUNNER_TEMP/keys/AuthKey_${ASC_KEY_ID}.p8" \
+            -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID"
+      - name: Keep the iOS symbols
+        uses: actions/upload-artifact@v4
+        with:
+          name: symbols-ios-${{ needs.plan.outputs.flavor }}-${{ needs.plan.outputs.build_number }}
+          path: build/symbols/ios
+          retention-days: 90
+          if-no-files-found: error
+      - name: Export and upload to TestFlight
+        run: |
+          xcodebuild -exportArchive \
+            -archivePath "$RUNNER_TEMP/Runner.xcarchive" \
+            -exportOptionsPlist ios/ExportOptions.plist \
+            -exportPath "$RUNNER_TEMP/export" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$RUNNER_TEMP/keys/AuthKey_${ASC_KEY_ID}.p8" \
+            -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID"
+      - name: Export an ad-hoc IPA for Firebase
+        id: adhoc
+        if: needs.plan.outputs.firebase == 'true'
+        run: |
+          if xcodebuild -exportArchive \
+            -archivePath "$RUNNER_TEMP/Runner.xcarchive" \
+            -exportOptionsPlist ios/ExportOptionsAdHoc.plist \
+            -exportPath "$RUNNER_TEMP/adhoc" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$RUNNER_TEMP/keys/AuthKey_${ASC_KEY_ID}.p8" \
+            -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID"
+          then
+            ipa=$(ls "$RUNNER_TEMP/adhoc"/*.ipa | head -n1)
+            echo "ipa=$ipa" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::Ad-hoc export failed — register a tester device in the Apple Developer account, or the build only reaches TestFlight"
+          fi
+      - name: Firebase App Distribution (iOS)
+        # The Firebase action is a container action and runs on Linux only, so
+        # the macOS job uploads with the CLI.
+        if: steps.adhoc.outputs.ipa != ''
+        env:
+          CREDENTIALS: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+          APP_ID: ${{ env.FLAVOR == 'prod' && '1:451080433558:ios:d350473a3acebb96ca37b7' || '1:451080433558:ios:264abff819e4e3b4ca37b7' }}
+          NOTES: ${{ steps.notes.outputs.text }}
+          IPA: ${{ steps.adhoc.outputs.ipa }}
+        run: |
+          printf '%s' "$CREDENTIALS" > "$RUNNER_TEMP/firebase-credentials.json"
+          export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/firebase-credentials.json"
+          npx -y firebase-tools@latest appdistribution:distribute "$IPA" \
+            --app "$APP_ID" --groups testers --release-notes "$NOTES"
+
+  tag:
+    name: Tag the release
+    needs: [gate, plan, android, ios]
+    if: >-
+      always() && github.event_name == 'push' && github.ref == 'refs/heads/main' &&
+      needs.gate.result == 'success' && needs.plan.result == 'success' &&
+      !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      BUILD_NUMBER: ${{ needs.plan.outputs.build_number }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          version=$(grep '^version:' pubspec.yaml | sed 's/version: //; s/+.*//')
+          tag="v${version}-build.${BUILD_NUMBER}"
+          if git ls-remote --exit-code --tags origin "refs/tags/$tag" >/dev/null; then
+            echo "::notice::$tag already exists"
+            exit 0
+          fi
+          git tag -a "$tag" -m "$tag"
+          git push origin "$tag"

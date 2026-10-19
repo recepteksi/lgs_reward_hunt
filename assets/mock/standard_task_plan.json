@@ -1,0 +1,65 @@
+[
+  {
+    "kind": "lesson",
+    "category": "math",
+    "topic": "Çarpanlar ve katlar",
+    "startMinute": 1140,
+    "durationMinutes": 30,
+    "points": 20,
+    "repeat": "weekdays"
+  },
+  {
+    "kind": "lesson",
+    "category": "turkish",
+    "topic": "Paragrafta anlam",
+    "startMinute": 1200,
+    "durationMinutes": 25,
+    "points": 15,
+    "repeat": "weekdays"
+  },
+  {
+    "kind": "lesson",
+    "category": "science",
+    "topic": "Basınç",
+    "startMinute": 1050,
+    "durationMinutes": 25,
+    "points": 20,
+    "repeat": "weekdays"
+  },
+  {
+    "kind": "lesson",
+    "category": "reading",
+    "topic": "20 sayfa kitap",
+    "startMinute": 1260,
+    "durationMinutes": 20,
+    "points": 10,
+    "repeat": "daily"
+  },
+  {
+    "kind": "chore",
+    "category": "brushTeeth",
+    "topic": "Sabah ve akşam",
+    "startMinute": 1290,
+    "durationMinutes": 5,
+    "points": 5,
+    "repeat": "daily"
+  },
+  {
+    "kind": "chore",
+    "category": "tidyRoom",
+    "topic": "Masa ve yatak",
+    "startMinute": 960,
+    "durationMinutes": 10,
+    "points": 10,
+    "repeat": "daily"
+  },
+  {
+    "kind": "chore",
+    "category": "dishes",
+    "topic": "Akşam yemeği sonrası",
+    "startMinute": 1230,
+    "durationMinutes": 15,
+    "points": 10,
+    "repeat": "weekend"
+  }
+]

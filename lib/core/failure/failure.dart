@@ -7,14 +7,13 @@
 /// is a compile error at every place that decides what to show, instead of
 /// quietly reaching a default branch that says "something went wrong".
 ///
-/// A [Failure] carries a [messageKey], never a sentence. Copy is resolved from
-/// that key in the presentation layer, so the same failure can read differently
-/// in Turkish and English, and so a message can be reworded without touching
-/// the layer that produced it.
+/// A [Failure] carries a [messageKey], never a sentence: a stable key the
+/// presentation layer resolves to localized copy. So the same failure can read
+/// differently in Turkish and English, and a message can be reworded without
+/// touching the layer that produced it.
 sealed class Failure {
   const Failure(this.messageKey);
 
-  /// A stable key the presentation layer resolves to localized copy.
   final String messageKey;
 }
 
@@ -24,10 +23,12 @@ final class NetworkFailure extends Failure {
 }
 
 /// The request was understood and refused, or the input was not valid.
+///
+/// [field] names the input that was wrong, when one field in particular can be
+/// blamed.
 final class ValidationFailure extends Failure {
   const ValidationFailure(super.messageKey, {this.field});
 
-  /// The input that was wrong, when one field in particular can be blamed.
   final String? field;
 }
 
@@ -39,6 +40,15 @@ final class NotFoundFailure extends Failure {
 /// The caller is not signed in, or the session has expired.
 final class UnauthorizedFailure extends Failure {
   const UnauthorizedFailure(super.messageKey);
+}
+
+/// The device's own storage could not be read or written.
+///
+/// Separate from [UnknownFailure] because the answer to it is different: there
+/// is no server to retry against and nothing the user did wrong, so a screen
+/// that hits this carries on with the default rather than showing an error.
+final class StorageFailure extends Failure {
+  const StorageFailure(super.messageKey);
 }
 
 /// Anything not worth a variant of its own — always the last resort.

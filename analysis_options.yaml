@@ -16,7 +16,7 @@ analyzer:
   exclude:
     - "**/*.g.dart"
     - "**/*.config.dart"
-    - "lib/presentation/l10n/generated/**"
+    - "lib/presentation/base/ui/values/l10n/generated/**"
     - build/**
     - android/**
     - ios/**
@@ -47,6 +47,40 @@ linter:
     # gone. This is the crash that only happens on a slow network.
     use_build_context_synchronously: true
     avoid_slow_async_io: true
+
+    # ── Mistakes this project has made, or would make next ────────────────
+    # A debug print left in a test; a doc comment naming a type that moved or
+    # was renamed (every move in this repo renames something); a `default:`
+    # that hides a new enum member from every switch over it; a subscription
+    # or sink nobody closes.
+    avoid_print: true
+    comment_references: true
+    no_default_cases: true
+    exhaustive_cases: true
+    cancel_subscriptions: true
+    close_sinks: true
+    only_throw_errors: true
+    unnecessary_statements: true
+    literal_only_boolean_expressions: true
+    no_literal_bool_comparisons: true
+    unnecessary_null_checks: true
+    test_types_in_equals: true
+    invalid_case_patterns: true
+    avoid_positional_boolean_parameters: true
+    avoid_unused_constructor_parameters: true
+    prefer_void_to_null: true
+    use_super_parameters: true
+    type_annotate_public_apis: true
+    # Dead public code costs every reader and every agent that opens the file.
+    unreachable_from_main: true
+    # Deliberately NOT enabled, each with a reason:
+    #  * discarded_futures — `create: (_) => getIt<X>()..load()` is how every
+    #    page starts its Cubit; `unawaited_futures` (an error above) already
+    #    catches a forgotten await inside async code, where it matters.
+    #  * avoid_catches_without_on_clauses — a repository is the boundary that
+    #    turns ANY throw into a Failure; narrowing its catch would let one escape.
+    #  * missing_whitespace_between_adjacent_strings — the avatar SVG markup is
+    #    split across adjacent literals on purpose.
 
     # ── Readability ───────────────────────────────────────────────────────
     directives_ordering: true

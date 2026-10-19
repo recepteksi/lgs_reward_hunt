@@ -1,10 +1,11 @@
-# Turkish is the template, not English: the product is for students sitting a
-# Turkish exam, so tr is the language the copy is written in and en is the
-# translation. Making en the template would mean every string is authored twice
-# and the one that ships to almost every user is the derived one.
-arb-dir: lib/presentation/l10n/arb
+# Turkish is the only language, and the template. The product is for students
+# sitting a Turkish exam and their parents; there is no audience for a second
+# locale, and a translation nobody reads is a file that drifts out of step with
+# the one that ships. If a second language ever arrives it arrives as another
+# .arb beside this one — never as English strings written into widgets.
+arb-dir: lib/presentation/base/ui/values/l10n/arb
 template-arb-file: app_tr.arb
 output-localization-file: app_localizations.dart
 output-class: AppL10n
-output-dir: lib/presentation/l10n/generated
+output-dir: lib/presentation/base/ui/values/l10n/generated
 nullable-getter: false

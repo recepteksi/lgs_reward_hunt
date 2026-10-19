@@ -1,0 +1,21 @@
+{
+  // json_serializable and injectable write a file beside the source they read,
+  // so eight DTOs in infrastructure/auth/dto show as sixteen entries. Nesting
+  // folds each generated file under the source it came from — the same setup
+  // as gitchi-frontend.
+  //
+  // The files stay on disk and in git. Hiding them outright would make a failed
+  // generation invisible.
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": false,
+  "explorer.fileNesting.patterns": {
+    "*.dart": "${capture}.g.dart, ${capture}.freezed.dart, ${capture}.config.dart"
+  },
+
+  "search.exclude": {
+    "**/*.g.dart": true,
+    "**/*.freezed.dart": true,
+    "**/*.config.dart": true,
+    "**/l10n/generated/**": true
+  }
+}

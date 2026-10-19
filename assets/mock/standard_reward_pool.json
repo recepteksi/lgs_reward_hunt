@@ -1,0 +1,27 @@
+[
+  {
+    "name": "1 saat ekstra oyun",
+    "category": "screen",
+    "cost": 120
+  },
+  {
+    "name": "Sevdiğin tatlı",
+    "category": "treat",
+    "cost": 80
+  },
+  {
+    "name": "Sinema bileti",
+    "category": "fun",
+    "cost": 350
+  },
+  {
+    "name": "Arkadaşla buluşma",
+    "category": "social",
+    "cost": 200
+  },
+  {
+    "name": "Hafta sonu geç yatma",
+    "category": "free",
+    "cost": 150
+  }
+]

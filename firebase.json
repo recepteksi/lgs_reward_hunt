@@ -1,0 +1,76 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "buildConfigurations": {
+          "src/dev": {
+            "projectId": "lgs-reward-hunt",
+            "appId": "1:451080433558:android:1ea75b6d4e4cd3a3ca37b7",
+            "fileOutput": "android/app/src/dev/google-services.json"
+          },
+          "src/prod": {
+            "projectId": "lgs-reward-hunt",
+            "appId": "1:451080433558:android:3f3edee3c33e5af5ca37b7",
+            "fileOutput": "android/app/src/prod/google-services.json"
+          }
+        }
+      },
+      "ios": {
+        "buildConfigurations": {
+          "Debug-dev": {
+            "projectId": "lgs-reward-hunt",
+            "appId": "1:451080433558:ios:264abff819e4e3b4ca37b7",
+            "uploadDebugSymbols": false,
+            "fileOutput": "ios/config/dev/GoogleService-Info.plist"
+          },
+          "Debug-prod": {
+            "projectId": "lgs-reward-hunt",
+            "appId": "1:451080433558:ios:d350473a3acebb96ca37b7",
+            "uploadDebugSymbols": false,
+            "fileOutput": "ios/config/prod/GoogleService-Info.plist"
+          },
+          "Profile-dev": {
+            "projectId": "lgs-reward-hunt",
+            "appId": "1:451080433558:ios:264abff819e4e3b4ca37b7",
+            "uploadDebugSymbols": false,
+            "fileOutput": "ios/config/dev/GoogleService-Info.plist"
+          },
+          "Release-dev": {
+            "projectId": "lgs-reward-hunt",
+            "appId": "1:451080433558:ios:264abff819e4e3b4ca37b7",
+            "uploadDebugSymbols": false,
+            "fileOutput": "ios/config/dev/GoogleService-Info.plist"
+          },
+          "Profile-prod": {
+            "projectId": "lgs-reward-hunt",
+            "appId": "1:451080433558:ios:d350473a3acebb96ca37b7",
+            "uploadDebugSymbols": false,
+            "fileOutput": "ios/config/prod/GoogleService-Info.plist"
+          },
+          "Release-prod": {
+            "projectId": "lgs-reward-hunt",
+            "appId": "1:451080433558:ios:d350473a3acebb96ca37b7",
+            "uploadDebugSymbols": false,
+            "fileOutput": "ios/config/prod/GoogleService-Info.plist"
+          }
+        }
+      },
+      "dart": {
+        "lib/infrastructure/config/firebase/firebase_options_dev.dart": {
+          "projectId": "lgs-reward-hunt",
+          "configurations": {
+            "android": "1:451080433558:android:1ea75b6d4e4cd3a3ca37b7",
+            "ios": "1:451080433558:ios:264abff819e4e3b4ca37b7"
+          }
+        },
+        "lib/infrastructure/config/firebase/firebase_options_prod.dart": {
+          "projectId": "lgs-reward-hunt",
+          "configurations": {
+            "android": "1:451080433558:android:3f3edee3c33e5af5ca37b7",
+            "ios": "1:451080433558:ios:d350473a3acebb96ca37b7"
+          }
+        }
+      }
+    }
+  }
+}

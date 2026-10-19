@@ -14,6 +14,11 @@
 /// [reset] exists for tests, which need a store that has not been played with
 /// by the last one.
 ///
+/// [toJson] and [restore] are the whole store as one JSON map, id sequence
+/// included, so `MockStoreArchive` can keep it on the device: a parent who
+/// signs up and reopens the app must find their household still there. A map
+/// [restore] cannot read leaves the store empty and answers `false`.
+///
 /// The helpers at the bottom are the store operations more than one handler
 /// needs: [childIdsOf] a household's children, [addLedger] a points entry,
 /// [issueLinkCode] a fresh code, [sameDay] a calendar-day comparison.
@@ -82,6 +87,55 @@ final class MockStore {
     taskPlans.clear();
     _sequence = 0;
   }
+
+  Map<String, Object?> toJson() => <String, Object?>{
+    _sequenceKey: _sequence,
+    for (final MapEntry<String, List<Map<String, Object?>>> entry
+        in _collections.entries)
+      entry.key: entry.value,
+    _taskPlansKey: taskPlans,
+  };
+
+  bool restore(Map<String, Object?> json) {
+    reset();
+    try {
+      for (final MapEntry<String, List<Map<String, Object?>>> entry
+          in _collections.entries) {
+        entry.value.addAll(_rows(json[entry.key]));
+      }
+      for (final MapEntry<Object?, Object?> plan
+          in (json[_taskPlansKey]! as Map<Object?, Object?>).entries) {
+        taskPlans[plan.key! as String] = _rows(plan.value);
+      }
+      _sequence = json[_sequenceKey]! as int;
+      return true;
+    } catch (_) {
+      reset();
+      return false;
+    }
+  }
+
+  static const String _sequenceKey = 'sequence';
+
+  static const String _taskPlansKey = 'taskPlans';
+
+  Map<String, List<Map<String, Object?>>> get _collections =>
+      <String, List<Map<String, Object?>>>{
+        'parents': parents,
+        'children': children,
+        'tasks': tasks,
+        'rewards': rewards,
+        'redemptions': redemptions,
+        'ledger': ledger,
+        'avatars': avatars,
+        'standardTaskPlan': standardTaskPlan,
+        'standardRewardPool': standardRewardPool,
+      };
+
+  static List<Map<String, Object?>> _rows(Object? value) =>
+      (value! as List<Object?>)
+          .map((Object? row) => Map<String, Object?>.from(row! as Map))
+          .toList();
 
   Set<String> childIdsOf(String parentId) => children
       .where((Map<String, Object?> row) => row['parentId'] == parentId)

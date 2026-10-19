@@ -20,6 +20,7 @@ List<String> codeRules(List<SourceFile> lib) => <String>[
     ..._states(file),
     ..._injection(file),
     ..._dtos(file),
+    ..._mockRows(file),
   ],
   ..._kit(lib),
   ..._copy(lib),
@@ -236,6 +237,19 @@ List<String> _injection(SourceFile file) {
       ? <String>['${file.path}  not registered for injection']
       : <String>[];
 }
+
+final RegExp _typedJsonCast = RegExp(
+  r'as (?:List<(?!Object\?)[\w?]+>|Map<(?!Object\?|String, Object\?)[\w?, ]+>)',
+);
+
+List<String> _mockRows(SourceFile file) =>
+    file.path.contains('/mock/') &&
+        file.isUnder('lib/infrastructure/') &&
+        _typedJsonCast.hasMatch(file.text)
+    ? <String>[
+        '${file.path}  a mock row is plain JSON; read nested values as List<Object?> / Map<String, Object?> — a restored store has no typed lists',
+      ]
+    : <String>[];
 
 List<String> _dtos(SourceFile file) {
   final List<String> problems = <String>[];

@@ -16,14 +16,21 @@ import 'package:lgs_reward_hunt/infrastructure/network/mock/mock_router.dart';
 /// [latency] is deliberately not zero. A backend that answers instantly hides
 /// every missing loading state, and those only ever show up on a real phone on
 /// a real network — which is the worst place to find them.
+///
+/// [onChanged] runs after every request that is not a `GET`, which covers every
+/// request that can change the store. It is how the store gets saved.
 final class MockHttpClientAdapter implements HttpClientAdapter {
   MockHttpClientAdapter(
     this._router, {
     this.latency = const Duration(milliseconds: 260),
+    this.onChanged,
   });
+
+  static const String _read = 'GET';
 
   final MockRouter _router;
   final Duration latency;
+  final Future<void> Function()? onChanged;
 
   @override
   Future<ResponseBody> fetch(
@@ -33,6 +40,7 @@ final class MockHttpClientAdapter implements HttpClientAdapter {
   ) async {
     await Future<void>.delayed(latency);
     final response = _router.handle(options);
+    if (options.method.toUpperCase() != _read) await onChanged?.call();
     return ResponseBody.fromString(
       jsonEncode(response.body),
       response.status,

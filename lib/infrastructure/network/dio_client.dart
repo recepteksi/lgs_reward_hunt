@@ -9,6 +9,7 @@ import 'package:lgs_reward_hunt/infrastructure/network/mock/mock_http_client_ada
 import 'package:lgs_reward_hunt/infrastructure/network/mock/mock_router.dart';
 import 'package:lgs_reward_hunt/infrastructure/network/mock/mock_seed.dart';
 import 'package:lgs_reward_hunt/infrastructure/network/mock/mock_store.dart';
+import 'package:lgs_reward_hunt/infrastructure/network/mock/mock_store_archive.dart';
 
 /// The one Dio the app talks through.
 ///
@@ -22,9 +23,12 @@ import 'package:lgs_reward_hunt/infrastructure/network/mock/mock_store.dart';
 /// every repository's parsing run exactly as they will against the real
 /// server. It loads the backend's content from `assets/mock/` and, unless
 /// [initMock] is told otherwise, the demo household; `main` calls it while
-/// `AppConfig.useMockBackend` is on. [disableMock] puts the real transport
-/// back; the day a backend appears, turning that flag off is the whole
-/// migration.
+/// `AppConfig.useMockBackend` is on. With `keepOnDevice`, which `main` passes,
+/// the store is written to the device after every change and read back on the
+/// next launch instead of being seeded again, so an account made today is
+/// still there tomorrow. Tests leave it off and start from a clean store.
+/// [disableMock] puts the real transport back; the day a backend appears,
+/// turning that flag off is the whole migration.
 ///
 /// [currentAccountId] is what [SessionInterceptor] reads on every request. It
 /// is a mutable field rather than a constructor argument because the account
@@ -56,14 +60,23 @@ final class DioClient {
 
   DateTime Function() clock = DateTime.now;
 
-  Future<void> initMock({bool withDemoHousehold = true}) async {
-    mockStore.reset();
-    await MockSeed.loadCatalog(mockStore);
-    if (withDemoHousehold) {
-      await MockSeed.loadDemoHousehold(mockStore, now: clock());
+  Future<void> initMock({
+    bool withDemoHousehold = true,
+    bool keepOnDevice = false,
+  }) async {
+    const MockStoreArchive archive = MockStoreArchive();
+    final bool restored = keepOnDevice && await archive.load(mockStore);
+    if (!restored) {
+      mockStore.reset();
+      await MockSeed.loadCatalog(mockStore);
+      if (withDemoHousehold) {
+        await MockSeed.loadDemoHousehold(mockStore, now: clock());
+      }
+      if (keepOnDevice) await archive.save(mockStore);
     }
     dio.httpClientAdapter = MockHttpClientAdapter(
       MockRouter(mockStore, clock: () => clock()),
+      onChanged: keepOnDevice ? () => archive.save(mockStore) : null,
     );
   }
 

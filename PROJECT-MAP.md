@@ -1,6 +1,6 @@
 # Project map
 
-**GENERATED — do not edit.** `dart run tool/generate_project_map.dart` rewrites it; `dart run tool/check_structure.dart` fails while it is stale. Rules: [CLAUDE.md](CLAUDE.md). 459 source files.
+**GENERATED — do not edit.** `dart run tool/generate_project_map.dart` rewrites it; `dart run tool/check_structure.dart` fails while it is stale. Rules: [CLAUDE.md](CLAUDE.md). 464 source files.
 
 `core` → nothing · `domain` → core · `application` → domain · `infrastructure` → domain · `presentation` → application, domain. `main.dart` and `application/di/` are the composition root.
 
@@ -9,7 +9,7 @@
 | feature | domain | application | infrastructure | presentation pages |
 |---|---|---|---|---|
 | `account` | entities 2 · interfaces 2 · read_models 4 · rules 1 · value_objects 4 | cubit 4 · use_cases 6 | dto 3 · mock 1 · repositories 2 | child_form, child_setup |
-| `auth` | enums 2 · interfaces 2 · read_models 1 · rules 1 · validators 1 · value_objects 6 | cubit 8 · use_cases 6 | dto 6 · mock 1 · repositories 1 · services 1 | auth, intro, parent_gate, parent_pin, password |
+| `auth` | enums 2 · interfaces 2 · read_models 1 · rules 1 · validators 1 · value_objects 6 | cubit 8 · use_cases 7 | dto 6 · mock 1 · repositories 1 · services 1 | auth, intro, parent_gate, parent_pin, password |
 | `avatar` | entities 1 · enums 2 · interfaces 1 | use_cases 1 | dto 1 · mock 1 · repositories 1 |  |
 | `exam` | interfaces 1 · validators 1 · value_objects 1 | use_cases 1 | repositories 1 |  |
 | `parent` | enums 1 · read_models 1 · rules 1 | cubit 2 · use_cases 1 |  | parent |
@@ -17,7 +17,7 @@
 | `profile` | read_models 1 | cubit 2 · use_cases 1 |  | profile |
 | `progress` | enums 3 · read_models 1 · rules 1 | cubit 2 · use_cases 1 |  | progress |
 | `reward` | entities 3 · enums 3 · interfaces 2 · read_models 1 · rules 1 · validators 1 · value_objects 1 | cubit 4 · use_cases 8 | dto 9 · mock 1 · repositories 2 | reward_setup, rewards |
-| `session` | interfaces 1 · value_objects 1 | cubit 2 · use_cases 3 | repositories 1 | device_child |
+| `session` | interfaces 1 · value_objects 1 | cubit 2 · use_cases 4 | repositories 1 | device_child |
 | `settings` | enums 2 · interfaces 1 · value_objects 1 | cubit 2 · use_cases 2 | repositories 1 |  |
 | `study_path` | enums 1 · read_models 3 · rules 1 | cubit 2 · use_cases 1 |  | home |
 | `task` | entities 2 · enums 5 · interfaces 2 · rules 2 · validators 1 · value_objects 1 | cubit 2 · use_cases 6 | dto 7 · mock 2 · repositories 2 | task_setup |
@@ -32,7 +32,7 @@ Kind folders hold one suffix each: entities · value_objects · read_models · e
 - `core/validators/` _(7)_
 - `application/di/` _(1)_
 - `infrastructure/config/` _(2)_ — firebase
-- `infrastructure/network/` _(20)_ — crypto, dto, interceptors, mock
+- `infrastructure/network/` _(21)_ — crypto, dto, interceptors, mock
 - `presentation/base/` _(99)_ — ui
 - `presentation/debug/` _(20)_ — pages, widgets
 - `presentation/router/` _(7)_ — arguments

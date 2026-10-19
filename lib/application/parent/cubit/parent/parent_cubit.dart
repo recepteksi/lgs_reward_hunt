@@ -1,6 +1,7 @@
 import 'package:either_dart/either.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:lgs_reward_hunt/application/auth/use_cases/sign_out_use_case.dart';
 import 'package:lgs_reward_hunt/application/parent/use_cases/load_parent_dashboard_use_case.dart';
 import 'package:lgs_reward_hunt/application/reward/use_cases/add_reward_use_case.dart';
 import 'package:lgs_reward_hunt/application/reward/use_cases/decide_redemption_use_case.dart';
@@ -32,6 +33,12 @@ part 'parent_state.dart';
 /// [ParentDone] with its [ParentNoticeEnum], which the page shows once. Which tab and which day are
 /// showing are the page's, not this.
 ///
+/// [signOut] works in any state, including [ParentFailed], because it needs
+/// nothing from the server. It ends in [ParentSignedOut], and the page then
+/// leaves for the intro. A session that could not be cleared stays on the
+/// page with the failure, because leaving would reopen signed in next launch.
+/// A second tap while it runs does nothing.
+///
 /// [clock] is today's moment, injected so a test can stand on any day.
 @injectable
 final class ParentCubit extends Cubit<ParentState> {
@@ -45,6 +52,7 @@ final class ParentCubit extends Cubit<ParentState> {
     this._addReward,
     this._updateReward,
     this._removeReward,
+    this._signOut,
   ) : clock = DateTime.now,
       super(const ParentLoading());
 
@@ -66,7 +74,11 @@ final class ParentCubit extends Cubit<ParentState> {
 
   final RemoveRewardUseCase _removeReward;
 
+  final SignOutUseCase _signOut;
+
   DateTime Function() clock;
+
+  bool _signingOut = false;
 
   Future<void> load() async {
     emit(const ParentLoading());
@@ -145,6 +157,25 @@ final class ParentCubit extends Cubit<ParentState> {
 
   Future<void> removeReward(String rewardId) =>
       _act((_) => _removeReward(rewardId));
+
+  Future<void> signOut() async {
+    if (_signingOut || state is ParentSignedOut) return;
+    _signingOut = true;
+
+    final result = await _signOut();
+    _signingOut = false;
+    if (isClosed) return;
+
+    final ParentState current = state;
+    emit(switch (result) {
+      Right() => const ParentSignedOut(),
+      Left(:final value) when current is ParentShowing => ParentActionFailed(
+        current.dashboard,
+        value,
+      ),
+      Left(:final value) => ParentFailed(value),
+    });
+  }
 
   Future<void> _act(
     Future<Either<Failure, Object?>> Function(

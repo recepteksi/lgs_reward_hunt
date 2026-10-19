@@ -1,8 +1,10 @@
+import 'package:either_dart/either.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lgs_reward_hunt/application/account/use_cases/load_household_use_case.dart';
 import 'package:lgs_reward_hunt/application/auth/cubit/parent_gate/parent_gate_cubit.dart';
+import 'package:lgs_reward_hunt/application/auth/use_cases/sign_out_use_case.dart';
 import 'package:lgs_reward_hunt/application/auth/use_cases/verify_parent_pin_use_case.dart';
 import 'package:lgs_reward_hunt/application/di/injection.dart';
 import 'package:lgs_reward_hunt/application/parent/cubit/parent/parent_cubit.dart';
@@ -17,6 +19,13 @@ import 'package:lgs_reward_hunt/application/session/use_cases/read_session_use_c
 import 'package:lgs_reward_hunt/application/task/use_cases/add_task_series_use_case.dart';
 import 'package:lgs_reward_hunt/application/task/use_cases/delete_task_use_case.dart';
 import 'package:lgs_reward_hunt/application/task/use_cases/update_task_use_case.dart';
+import 'package:lgs_reward_hunt/core/constants/failure_message_key.dart';
+import 'package:lgs_reward_hunt/core/failure/failure.dart';
+import 'package:lgs_reward_hunt/domain/auth/enums/auth_provider_enum.dart';
+import 'package:lgs_reward_hunt/domain/auth/interfaces/platform_sign_in_interface.dart';
+import 'package:lgs_reward_hunt/domain/auth/value_objects/platform_identity_value_object.dart';
+import 'package:lgs_reward_hunt/domain/session/interfaces/session_repository_interface.dart';
+import 'package:lgs_reward_hunt/domain/session/value_objects/session_value_object.dart';
 import 'package:lgs_reward_hunt/infrastructure/account/repositories/account_repository.dart';
 import 'package:lgs_reward_hunt/infrastructure/account/repositories/child_snapshot_cache_repository.dart';
 import 'package:lgs_reward_hunt/infrastructure/auth/repositories/auth_repository.dart';
@@ -38,16 +47,47 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../support/mock_backend.dart';
 
+final class _UnclearableSession implements SessionRepositoryInterface {
+  const _UnclearableSession();
+
+  static const SessionRepository _stored = SessionRepository();
+
+  @override
+  Future<Either<Failure, SessionValueObject>> read() => _stored.read();
+
+  @override
+  Future<Either<Failure, SessionValueObject>> save(
+    SessionValueObject session,
+  ) => _stored.save(session);
+
+  @override
+  Future<Either<Failure, SessionValueObject>> clear() async =>
+      const Left(StorageFailure(FailureMessageKey.storageUnavailable));
+}
+
+final class _FakePlatform implements PlatformSignInInterface {
+  @override
+  Future<Either<Failure, PlatformIdentityValueObject>> signIn(
+    AuthProviderEnum provider,
+  ) async => throw UnimplementedError();
+
+  @override
+  Future<void> signOut() async {}
+}
+
 /// Into the parent's side with the PIN, and answering a request there.
 ///
 /// A wrong PIN is refused and the dots clear; the right one opens the parent
 /// page, where the demo child's waiting request is approved and a suggested
-/// reward is added to the pool.
+/// reward is added to the pool. Signing out works even when the dashboard
+/// cannot load, and lands on the intro with the session cleared.
 void main() {
   final DateTime wednesday = DateTime(2026, 9, 16, 16);
   late DioClient client;
+  late SessionRepositoryInterface signOutSession;
 
   setUp(() async {
+    signOutSession = const SessionRepository();
     client = await mockBackend(clock: () => wednesday);
     SharedPreferences.setMockInitialValues(<String, Object>{
       'session.parentId': demoParent(client)['id']! as String,
@@ -87,6 +127,11 @@ void main() {
           AddRewardUseCase(rewards),
           UpdateRewardUseCase(rewards),
           RemoveRewardUseCase(rewards),
+          SignOutUseCase(
+            signOutSession,
+            _FakePlatform(),
+            ChildSnapshotCacheRepository(),
+          ),
         )..clock = () => wednesday,
       );
   });
@@ -173,6 +218,94 @@ void main() {
     await settle(tester);
 
     expect(client.mockStore.rewards.length, before + 1);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('a parent whose data is gone can still sign out', (
+    WidgetTester tester,
+  ) async {
+    tester.view.physicalSize = const Size(360, 640);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    SharedPreferences.setMockInitialValues(<String, Object>{
+      'session.parentId': 'parent_gone',
+      'session.activeChildId': 'child_gone',
+    });
+
+    await tester.pumpWidget(
+      MaterialApp.router(
+        theme: AppTheme.light(AppAccentEnum.blue),
+        locale: const Locale('tr'),
+        localizationsDelegates: AppL10n.localizationsDelegates,
+        supportedLocales: AppL10n.supportedLocales,
+        routerConfig: GoRouter(
+          initialLocation: AppRoutePaths.parent.path(),
+          routes: <RouteBase>[
+            GoRoute(
+              path: AppRoutePaths.parent.pathEnd(),
+              builder: (_, _) => const ParentPage(),
+            ),
+            GoRoute(
+              path: AppRoutePaths.intro.pathEnd(),
+              builder: (_, _) => const Text('intro'),
+            ),
+          ],
+        ),
+      ),
+    );
+    await settle(tester);
+    expect(find.text('Tekrar dene'), findsOneWidget);
+
+    await tester.tap(find.bySemanticsLabel('Hesaptan çıkış yap'));
+    await tester.pumpAndSettle();
+    expect(find.text('Hesaptan çıkılsın mı?'), findsOneWidget);
+    await tester.tap(find.text('Hesaptan çıkış yap'));
+    await settle(tester);
+
+    expect(find.text('intro'), findsOneWidget);
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    expect(preferences.getString('session.parentId'), isNull);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('a session that cannot be cleared keeps the parent on the page', (
+    WidgetTester tester,
+  ) async {
+    tester.view.physicalSize = const Size(360, 640);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    signOutSession = const _UnclearableSession();
+
+    await tester.pumpWidget(
+      MaterialApp.router(
+        theme: AppTheme.light(AppAccentEnum.blue),
+        locale: const Locale('tr'),
+        localizationsDelegates: AppL10n.localizationsDelegates,
+        supportedLocales: AppL10n.supportedLocales,
+        routerConfig: GoRouter(
+          initialLocation: AppRoutePaths.parent.path(),
+          routes: <RouteBase>[
+            GoRoute(
+              path: AppRoutePaths.parent.pathEnd(),
+              builder: (_, _) => const ParentPage(),
+            ),
+            GoRoute(
+              path: AppRoutePaths.intro.pathEnd(),
+              builder: (_, _) => const Text('intro'),
+            ),
+          ],
+        ),
+      ),
+    );
+    await settle(tester);
+
+    await tester.tap(find.bySemanticsLabel('Hesaptan çıkış yap'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Hesaptan çıkış yap'));
+    await settle(tester);
+
+    expect(find.text('intro'), findsNothing);
+    expect(find.text('Onaylar'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 }

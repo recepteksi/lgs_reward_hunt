@@ -123,12 +123,12 @@ final class MockAccountHandler implements MockHandlerInterface {
     for (final parent in _store.parents) {
       if (parent['linkCode'] != code) continue;
       final child = _insertChild(parent['id']! as String, name, request.body);
-      (parent['usedLinkCodes']! as List<String>).add(code);
+      (parent['usedLinkCodes']! as List<Object?>).add(code);
       parent['linkCode'] = _store.issueLinkCode();
       return MockResponse.created(child);
     }
     for (final parent in _store.parents) {
-      if ((parent['usedLinkCodes']! as List<String>).contains(code)) {
+      if ((parent['usedLinkCodes']! as List<Object?>).contains(code)) {
         return MockResponse.fail(409, FailureMessageKey.linkCodeUsed);
       }
     }

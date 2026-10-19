@@ -40,7 +40,8 @@ import '../../../../support/mock_backend.dart';
 ///
 /// It shows the child, their parent and the next exam, and the appearance card
 /// changes the app's setting — dark mode and the pink accent both land in the
-/// shell's Cubit.
+/// shell's Cubit. A profile that cannot load still offers the appearance
+/// setting and the way into parent mode.
 void main() {
   final DateTime wednesday = DateTime(2026, 9, 16, 16);
   late AppearanceCubit appearance;
@@ -180,5 +181,49 @@ void main() {
     await tester.pump(const Duration(seconds: 1));
     await tester.pumpAndSettle();
     expect(find.byType(ProfileSkeleton), findsNothing);
+  });
+
+  testWidgets('a failed profile still shows the theme and parent mode', (
+    WidgetTester tester,
+  ) async {
+    tester.view.physicalSize = const Size(360, 640);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    SharedPreferences.setMockInitialValues(<String, Object>{
+      'session.parentId': 'parent_gone',
+      'session.activeChildId': 'child_gone',
+    });
+
+    await tester.pumpWidget(
+      BlocProvider<AppearanceCubit>.value(
+        value: appearance,
+        child: MaterialApp.router(
+          theme: AppTheme.light(AppAccentEnum.blue),
+          locale: const Locale('tr'),
+          localizationsDelegates: AppL10n.localizationsDelegates,
+          supportedLocales: AppL10n.supportedLocales,
+          routerConfig: GoRouter(
+            initialLocation: AppRoutePaths.profile.path(),
+            routes: <RouteBase>[
+              GoRoute(
+                path: AppRoutePaths.profile.pathEnd(),
+                builder: (_, _) => const ProfilePage(),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+    await tester.pump(const Duration(seconds: 3));
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+    expect(find.text('Tekrar dene'), findsOneWidget);
+    expect(find.text('Ebeveyn modu'), findsOneWidget);
+
+    await tester.tap(find.text('Koyu'));
+    await tester.pump();
+
+    expect(appearance.state.settings.theme, ThemeChoiceEnum.dark);
   });
 }

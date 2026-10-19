@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'structure/code_rules.dart';
+import 'structure/doc_rules.dart';
 import 'structure/folder_rules.dart';
 import 'structure/literal_rules.dart';
 import 'structure/native_rules.dart';
@@ -11,7 +12,7 @@ import 'structure/source_file.dart';
 ///
 /// Folders (the folder method, kinds, bases, pages, Cubits, tests), code (one
 /// declaration per file, comments, the layer line, the app's own widgets,
-/// English code, sealed states, DI, DTOs, the kit, unused copy), literals
+/// English code and docs, sealed states, DI, DTOs, the kit, unused copy), literals
 /// (rule 7), the native wiring a regenerating tool can undo, and a current
 /// `PROJECT-MAP.md`. Each problem names the path and the rule it breaks.
 ///
@@ -22,6 +23,7 @@ void main() {
   final List<String> problems = <String>[
     ...folderRules(),
     ...codeRules(lib),
+    ...docRules(),
     ...literalRules(lib),
     ...nativeRules(),
     if (File('PROJECT-MAP.md').readAsStringSync() != buildProjectMap())

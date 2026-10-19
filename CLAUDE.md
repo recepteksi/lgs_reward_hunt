@@ -107,7 +107,10 @@ mirror lib (`test/<layer>/<feature>/`). ⚙
 19. **No widget names a colour** — `AppPalette.of(context)`; the reward colour
     is the points economy only. ⚙
 20. **Closed type scale**, Nunito bundled as one variable font.
-21. **Code is English**; only copy is Turkish. ⚙
+21. **Everything is English** — code, comments, docs, README, CHANGELOG,
+    commits, PRs. Turkish lives only in what the app shows: `app_tr.arb`,
+    mock content, UI-kit specimens and tests that find that copy. A doc may
+    name the product (LGS Ödül Avı) or quote copy in "double quotes". ⚙
 22. **A pressable sits on a solid edge** (`AppSizes.edgeDepth`), never
     `elevation:` on a page. ⚙
 23. **Loading never empties a screen.** The app bar and navigation bar stay;
